@@ -16,9 +16,9 @@
 
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
-<title>来个代驾</title>
+<title>来个代驾 </title>
 <style type="text/css">
-html,body {
+html,body { 
 	height: 100%;
 }
 
