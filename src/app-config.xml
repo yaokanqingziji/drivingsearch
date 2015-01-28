@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 连接池启动初始值 -->
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<!-- 连接池最大值 -->
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<!-- 最大空限制，当经过一个高峰时间后，连接池慢慢将已经用不到的链接释放掉，一直减少到2 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<!-- 最小空闲时，避免高峰时间来不及申请 -->
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<!-- 保证使用的每个数据源都不会出现长时间没有使用中断后,出现Could not close JDBC Connection这种问题 -->
+		<property name="testOnBorrow">
+			<value>true</value>
+		</property>
+		<property name="validationQuery">
+			<value>SELECT 1 FROM DUAL</value>
+		</property>
+	</bean>
+	<bean id="ldwframeFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="namingStrategy">
+			<bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>com.ldw.frame.entity</value>
+				<value>com.search.entity</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.default_schema=${hibernate.default_schema}
+				hibernate.dialect=${hibernate.dialect}
+				hibernate.hbm2ddl.auto=${hibernate.hbm2ddl.auto}
+				hibernate.show_sql=${hibernate.show_sql}
+				hibernate.format_sql=${hibernate.format_sql}
+				hibernate.cache.use_query_cache=${hibernate.cache.use_second_level_cache}
+				hibernate.connection.autocommit=${hibernate.connection.autocommit}
+				javax.persistence.validation.mode=${javax.persistence.validation.mode}
+			</value>
+		</property>
+	</bean>
+	<bean class="com.ldw.frame.common.db.SessionManager">
+		<property name="sessionFactoryMap">
+			<map>
+				<entry key="session" value-ref="ldwframeFactory" />
+			</map>
+		</property>
+		<property name="defaultSessionFactory" value="session" />
+	</bean>
+	<context:component-scan base-package="com.ldw.frame,com.search">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 支持 @AspectJ 标记 -->
+	<aop:aspectj-autoproxy />
+
+	<!-- 初始化SearchGlobalNames -->
+	<bean id="com.search.base.SearchGlobalNames" class="com.search.base.SearchGlobalNames">
+		<!-- 系统ID -->
+		<property name="APP_ID" value="search" />
+
+		<!-- 系统名称 -->
+		<property name="APP_NAME" value="代驾搜索平台" />
+
+		<!-- 系统字符集 -->
+		<property name="ENCODING" value="UTF-8" />
+
+
+	</bean>
+	<!-- 初始化FrameGlobalNames -->
+	<bean id="com.ldw.frame.refer.global.FrameGlobalNames" class="com.ldw.frame.refer.global.FrameGlobalNames">
+		<!-- 系统ID -->
+		<property name="APP_ID">
+			<bean
+				class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
+				<property name="targetObject" ref="com.search.base.SearchGlobalNames" />
+				<property name="propertyPath" value="APP_ID" />
+			</bean>
+		</property>
+
+		<!-- 系统名称 -->
+		<property name="APP_NAME">
+			<bean
+				class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
+				<property name="targetObject" ref="com.search.base.SearchGlobalNames" />
+				<property name="propertyPath" value="APP_NAME" />
+			</bean>
+		</property>
+		<!-- 系统字符集 -->
+		<property name="ENCODING">
+			<bean
+				class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
+				<property name="targetObject" ref="com.search.base.SearchGlobalNames" />
+				<property name="propertyPath" value="ENCODING" />
+			</bean>
+		</property>
+
+
+		<!-- 系统配置文件 -->
+		<property name="SCLoaderCfg" value="SCLoaderCfg.xml" />
+	</bean>
+</beans>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SCLoader>
+	<elements>
+		<!-- <element type="attribute">
+			<name>orgList</name>
+			<bean>com.ldw.frame.refer.sys.org.service.SysOrgService</bean>
+			<method>loadOrgList</method>
+		</element>
+		自启动方法示例
+		<element type="void">
+			<bean>com.ldw.frame.refer.SampleBean</bean>
+			<method>autoRun</method>
+		</element> -->
+	</elements>
+</SCLoader>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="DEFAULT_CHARSET">
+			<bean class="java.nio.charset.Charset" factory-method="forName" >
+				<constructor-arg type="java.lang.String" value="UTF-8"/>   
+			</bean>
+		</property>
+	</bean> 
+	<mvc:annotation-driven />
+	<!-- 对包下所有注解扫描 特别注意，此处加载时只加载界面访问的包目录，千万不要全部应用目录，否则会覆盖掉上下文加载  -->
+	<context:component-scan base-package="com.ldw.frame,com.search" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<mvc:default-servlet-handler  />
+	<mvc:interceptors>
+        <!-- 拦截所有 系统拦截 主要用于系统级视图控制，如不同产品的跳转  -->
+        <bean class="com.ldw.frame.base.ControllerInterceptor" />
+         <!-- 可以增加不同系统的日志、业务处理   -->
+        <!-- 部分拦截 **为通配符 
+        <mvc:interceptor>
+            <mvc:mapping path="/sys/list/**" />
+            <bean class="com.inscre.crm.web.interceptor.PermissionInterceptor" />
+        </mvc:interceptor>
+        -->
+	</mvc:interceptors>
+	<!--  对模型视图名称的解析，即在模型视图名称添加前后缀,在requestmapping输入的地址后自动调用该类进行视图解析-->	
+	<bean id="viewResolver"
+		class="com.ldw.frame.base.BaseViewResolver">
+        <property name="order" value="2" />
+		<!-- 增加jstl的标签支持 -->
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<!-- 访问前缀  -->
+		<property name="prefix" value="/pages/" />
+		<!-- 访问后缀  -->
+		<property name="suffix" value=".jsp"></property>
+	</bean> 
+
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="1" />
+        <property name="favorParameter" value="true" />
+        <property name="favorPathExtension" value="false"/>
+        <property name="ignoreAcceptHeader" value="false" />
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json" />
+            </map>
+        </property>
+        <property name="defaultViews">
+	        <list>
+	            <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+	        </list>
+        </property>
+    </bean>	
+    
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+	 <bean class="com.search.interceptor.SearchInterceptor" />
+		<!-- <mvc:interceptor>
+			<mvc:mapping path="/*.do" />
+			<bean class="com.search.interceptor.SearchInterceptor" />
+		</mvc:interceptor> -->
+	</mvc:interceptors>
+</beans>
