@@ -162,7 +162,7 @@ html,body {
 	}
 
 	function setPlace() {
-		map.clearOverlays(); //清除地图上所有覆盖物
+		//map.clearOverlays(); //清除地图上所有覆盖物
 		function myFun() {
 			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
 			map.centerAndZoom(pp, 18);
@@ -172,5 +172,10 @@ html,body {
 			onSearchComplete : myFun
 		});
 		local.search(myValue);
+	}
+	
+	//呃。。。计算耗时与距离
+	function calcJlAHs(){
+		
 	}
 </script>
