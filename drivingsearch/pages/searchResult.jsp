@@ -41,7 +41,9 @@
 								<td>${res.jgsx}</td>
 								<td>${res.gsjg}</td>
 								<td>${res.gsmc}(${res.pjjb })</td>
-								<td><button class="btn" type="button">预约</button></td>
+								<td><button class="btn" type="button" onclick="saveLog()">
+										<a href="wtai://wp/mc;${res.yydh} ">预约</a>
+									</button></td>
 							</tr>
 						</c:forEach>
 
@@ -98,4 +100,8 @@
 		$(".table tbody > tr:even").addClass("info");
 		$(".table tbody > tr:odd").addClass("warning");
 	});
+	
+	function saveLog(){
+		alert('a');
+	}
 </script>

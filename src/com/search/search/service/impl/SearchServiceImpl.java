@@ -64,30 +64,33 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setSearchPatchId("searchPatchId");
 			searchOrderModel.setSearchLogId("searchLogId");
 			searchOrderModel.setGsId("A");
-			searchOrderModel.setGsmc("E代驾");
+			searchOrderModel.setGsmc("WL代驾");
 			searchOrderModel.setPjjb("4星");
 			searchOrderModel.setJgsx(BigDecimal.valueOf(1));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(39.0));
+			searchOrderModel.setYydh("18610916585");
 			searchOrderModels.add(searchOrderModel);
 			
 			searchOrderModel = new SearchOrderResultModel();
 			searchOrderModel.setSearchPatchId("searchPatchId");
 			searchOrderModel.setSearchLogId("searchLogId");
 			searchOrderModel.setGsId("B");
-			searchOrderModel.setGsmc("途顺代驾");
+			searchOrderModel.setGsmc("W代驾");
 			searchOrderModel.setPjjb("3星");
 			searchOrderModel.setJgsx(BigDecimal.valueOf(2));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(45.0));
+			searchOrderModel.setYydh("13953133759");
 			searchOrderModels.add(searchOrderModel);
 			
 			searchOrderModel = new SearchOrderResultModel();
 			searchOrderModel.setSearchPatchId("searchPatchId");
 			searchOrderModel.setSearchLogId("searchLogId");
 			searchOrderModel.setGsId("C");
-			searchOrderModel.setGsmc("V代驾");
+			searchOrderModel.setGsmc("S代驾");
 			searchOrderModel.setPjjb("4星");
 			searchOrderModel.setJgsx(BigDecimal.valueOf(3));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(50.0));
+			searchOrderModel.setYydh("15668494627");
 			searchOrderModels.add(searchOrderModel);
 			
 			searchOrderModel = new SearchOrderResultModel();
@@ -98,6 +101,7 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setPjjb("5星");
 			searchOrderModel.setJgsx(BigDecimal.valueOf(4));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(50.5));
+			searchOrderModel.setYydh("15668494627");
 			searchOrderModels.add(searchOrderModel);
 			
 			searchOrderModel = new SearchOrderResultModel();
@@ -108,6 +112,7 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setPjjb("4星");
 			searchOrderModel.setJgsx(BigDecimal.valueOf(5));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(50.5));
+			searchOrderModel.setYydh("18615206630");
 			searchOrderModels.add(searchOrderModel);
 			
 			
