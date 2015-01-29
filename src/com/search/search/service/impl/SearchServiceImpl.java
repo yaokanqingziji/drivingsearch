@@ -76,7 +76,7 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setGsId("B");
 			searchOrderModel.setGsmc("途顺代驾");
 			searchOrderModel.setPjjb("3星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(1));
+			searchOrderModel.setJgsx(BigDecimal.valueOf(2));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(45.0));
 			searchOrderModels.add(searchOrderModel);
 			
@@ -86,7 +86,7 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setGsId("C");
 			searchOrderModel.setGsmc("V代驾");
 			searchOrderModel.setPjjb("4星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(1));
+			searchOrderModel.setJgsx(BigDecimal.valueOf(3));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(50.0));
 			searchOrderModels.add(searchOrderModel);
 			
@@ -96,7 +96,7 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setGsId("D");
 			searchOrderModel.setGsmc("易代驾");
 			searchOrderModel.setPjjb("5星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(1));
+			searchOrderModel.setJgsx(BigDecimal.valueOf(4));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(50.5));
 			searchOrderModels.add(searchOrderModel);
 			
@@ -106,7 +106,7 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchOrderModel.setGsId("E");
 			searchOrderModel.setGsmc("来个代驾啦啦啦啦啦啦");
 			searchOrderModel.setPjjb("4星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(1));
+			searchOrderModel.setJgsx(BigDecimal.valueOf(5));
 			searchOrderModel.setGsjg(BigDecimal.valueOf(50.5));
 			searchOrderModels.add(searchOrderModel);
 			

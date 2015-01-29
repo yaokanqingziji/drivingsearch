@@ -13,7 +13,7 @@
 <script type="text/javascript" src="${app}/js/jquery-1.9.1.js"></script>
 </head>
 <body>
-	<form id="submitForm">
+	<!-- <form id="submitForm">
 		<table>
 			<tr>
 				<td>用户名:</td>
@@ -34,42 +34,14 @@
 					onclick="login()">登&nbsp;&nbsp;录</a></td>
 			</tr>
 		</table>
-	</form>
+	</form> -->
 
-	<script type="text/javascript">
+	<script>
 		$(document).ready(function() {
+			window.location.href="${app}/pages/search.jsp?";
 		});
 
-		//登录函数
-		function login() {
-			//2、登录
-			var username = $("#userno").val();
-			if (username == null || username == "") {
-				alert("请输入用户名！");
-				$("#userno").siblings("span").hide();
-				$("#userno").focus();
-				return false;
-			}
-
-			var password = $("#password").val();
-			if (password == null || password == "") {
-				alert("请输入密码！");
-				$("#password").siblings("span").hide();
-				$("#password").focus();
-				return false;
-			}
-
-			var checkpassword = $("#password").val();
-			$.get("${app}/logon/dologon.do", {
-				userno : $("#userno").val(),
-				password : checkpassword
-			}, function(data) {
-				if (data == "true")
-					window.location.href = "login.jsp";
-				else
-					alert(data);
-			});
-		}
+		
 	</script>
 </body>
 </html>

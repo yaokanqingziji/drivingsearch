@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<c:set var="app" value="<%=request.getContextPath()%>" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,17 +25,27 @@
 				<div class="alert">
 					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。
 				</div>
-					<table class="table">
-						<thead>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>排名</th>
+							<th>价格（元）</th>
+							<th>公司名称</th>
+							<th>电话预约</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<c:forEach items="${searchOrderResultModels}" var="res">
 							<tr>
-								<th>排名</th>
-								<th>价格（元）</th>
-								<th>公司名称</th>
-								<th>电话预约</th>
+								<td>${res.jgsx}</td>
+								<td>${res.gsjg}</td>
+								<td>${res.gsmc}(${res.pjjb })</td>
+								<td><button class="btn" type="button">预约</button></td>
 							</tr>
-						</thead>
-						<tbody>
-							<tr class="info">
+						</c:forEach>
+
+						<!-- 							<tr class="info">
 								<td>1</td>
 								<td>39.0(50.0)</td>
 								<td>E代驾 <br>(4星)
@@ -70,8 +81,9 @@
 								</td>
 								<td><button class="btn" type="button">预约</button></td>
 							</tr>
-						</tbody>
-					</table>
+ -->
+					</tbody>
+				</table>
 				<div class="alert">
 					<strong>友情提醒!</strong> <br>括号内的价格为延长一定耗时后的参考价格。
 				</div>
@@ -81,4 +93,9 @@
 
 </body>
 </html>
-
+<script>
+	$(document).ready(function() {
+		$(".table tbody > tr:even").addClass("info");
+		$(".table tbody > tr:odd").addClass("warning");
+	});
+</script>

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<c:set var="app" value="<%=request.getContextPath()%>" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,9 +17,9 @@
 
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
-<title>来个代驾 </title>
+<title>来个代驾</title>
 <style type="text/css">
-html,body { 
+html,body {
 	height: 100%;
 }
 
@@ -57,7 +58,7 @@ html,body {
 								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：</label><input
 								type="text" id="suggestId2" size="20" value=""
 								style="width: 150px;" /> <br>
-							<button class="btn" type="button">搜索</button>
+							<button class="btn" type="button" onclick="search()">搜索</button>
 						</div>
 						<div id="searchResultPanel"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
@@ -72,12 +73,14 @@ html,body {
 </body>
 </html>
 <script type="text/javascript">
-    
+	function search() {
+		window.location.href = "${app}/search/searchForPersonDrive.do?cfdmc=天上人间&ygjl=20";
+	}
+
 	var map = new BMap.Map("l-map");
 	//TODO 这里需要增加GPS定位
 	map.centerAndZoom("济南", 19); // 初始化地图,设置城市和地图级别。
 
-	
 	var myValue; //
 	var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
 	{
@@ -89,7 +92,6 @@ html,body {
 		"input" : "suggestId2",
 		"location" : map
 	});
-	
 
 	ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
 		var str = "";
@@ -113,7 +115,6 @@ html,body {
 		G("searchResultPanel").innerHTML = str;
 	});
 
-	
 	ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
 		var _value = e.item.value;
 		myValue = _value.province + _value.city + _value.district
@@ -123,7 +124,7 @@ html,body {
 
 		setPlace();
 	});
-	
+
 	ac2.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
 		var str = "";
 		var _value = e.fromitem.value;
@@ -155,7 +156,7 @@ html,body {
 
 		setPlace();
 	});
-	
+
 	// 根据ID获取元素
 	function G(id) {
 		return document.getElementById(id);
@@ -173,9 +174,9 @@ html,body {
 		});
 		local.search(myValue);
 	}
-	
+
 	//呃。。。计算耗时与距离
-	function calcJlAHs(){
-		
+	function calcJlAHs() {
+
 	}
 </script>

@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ldw.frame.base.BaseException;
 import com.search.base.SearchBaseController;
@@ -36,8 +36,8 @@ public class SearchController extends SearchBaseController {
 	 * @date 2015年1月27日 下午2:16:33
 	 */
 	@RequestMapping("/searchForPersonDrive")
-	@ResponseBody
-	public String searchForPersonDrive(HttpServletRequest request,
+	// @ResponseBody
+	public String searchForPersonDrive(ModelMap map, HttpServletRequest request,
 			SearchQueryModel searchQueryModel) throws BaseException {
 		// TODO 入参校验
 
@@ -56,7 +56,14 @@ public class SearchController extends SearchBaseController {
 		BigDecimal gshs = searchResultModel.getSearchLogModel().getYghs();
 		List<SearchOrderResultModel> searchOrderResultModels = searchResultModel
 				.getSearchOrderModels();
+
+		map.put("searchPatchId", searchPatchId);
+		map.put("yysj", yysj);
+		map.put("ddsj", ddsj);
+		map.put("gsjl", gsjl);
+		map.put("gshs", gshs);
+		map.put("searchOrderResultModels", searchOrderResultModels);
 		
-		return "";
+		return "/searchResult";
 	}
 }
