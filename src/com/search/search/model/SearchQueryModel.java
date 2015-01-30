@@ -3,10 +3,9 @@ package com.search.search.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.search.user.model.UserForBusinessModel;
-
 public class SearchQueryModel {
 	private Date yysj;// 预约时间
+	private String yysjStr;
 
 	// 出发地
 	private String cfdmc;// 出发地名称
@@ -23,7 +22,6 @@ public class SearchQueryModel {
 	// 预估耗时（分钟）
 	private BigDecimal yghs;
 
-	private UserForBusinessModel userForBusinessModel; // 用于业务需要的用户对象
 
 	public Date getYysj() {
 		return yysj;
@@ -97,13 +95,15 @@ public class SearchQueryModel {
 		this.yghs = yghs;
 	}
 
-	public UserForBusinessModel getUserForBusinessModel() {
-		return userForBusinessModel;
+
+	public String getYysjStr() {
+		return yysjStr;
 	}
 
-	public void setUserForBusinessModel(
-			UserForBusinessModel userForBusinessModel) {
-		this.userForBusinessModel = userForBusinessModel;
+	public void setYysjStr(String yysjStr) {
+		this.yysjStr = yysjStr;
 	}
+	
+	
 
 }
