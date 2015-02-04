@@ -280,6 +280,7 @@ html,body {
 		var mddmc = mddName;
 		var mddjd = mddPoint.lng;
 		var mddwd = mddPoint.lat;
+		//TODO 耗时还需要处理。 **小时**分钟   是否还有**天**小时**分钟呢。。。。
 		var yghsValue = yghs.replace("分钟", "");
 		var ygjlValue = ygjl.replace("公里", "");
 		//TODO 如果非会员用户使用搜索，那么需要先通过post方法保存临时用户。

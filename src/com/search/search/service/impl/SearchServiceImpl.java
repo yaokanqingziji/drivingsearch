@@ -47,9 +47,8 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchResultModel = new SearchResultModel();
 			searchPatchModel = new SearchPatchResultModel();
 			searchLogModel = new SearchLogResultModel();
-			
+			Date tempDate = null;
 			searchOrderModels = new ArrayList<SearchOrderResultModel>();
-			Date tempDate = dBUtil.getSysDate();
 			//初始化搜索批次
 			searchPatchModel.setSearchPatchId("searchPatchId");
 			searchPatchModel.setYysj(tempDate);
@@ -120,6 +119,8 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 			searchResultModel.setSearchPatchModel(searchPatchModel);
 			searchResultModel.setSearchOrderModels(searchOrderModels);
 		}
+		
+		
 		return searchResultModel;
 	}
 }
