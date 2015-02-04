@@ -29,8 +29,7 @@
 		<property name="testOnBorrow">
 			<value>true</value>
 		</property>
-		<property name="validationQuery">
-			<value>SELECT 1 FROM DUAL</value>
+		<property name="validationQuery" value="${jdbc.validationQuery}">
 		</property>
 	</bean>
 	<bean id="ldwframeFactory"
@@ -84,7 +83,8 @@
 
 		<!-- 系统字符集 -->
 		<property name="ENCODING" value="UTF-8" />
-
+		
+		<property name="dbType" value="mysql" />
 
 	</bean>
 	<!-- 初始化FrameGlobalNames -->
@@ -115,7 +115,13 @@
 			</bean>
 		</property>
 
-
+		<property name="dbType">
+			<bean
+				class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
+				<property name="targetObject" ref="com.search.base.SearchGlobalNames" />
+				<property name="propertyPath" value="dbType" />
+			</bean>
+		</property>
 		<!-- 系统配置文件 -->
 		<property name="SCLoaderCfg" value="SCLoaderCfg.xml" />
 	</bean>
