@@ -1,12 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"%>
+﻿<%@ page contentType="text/html; charset=UTF-8" language="java"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="app" value="<%=request.getContextPath()%>" />
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset=utf-8" />
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0, user-scalable=no" />
 <script src="/drivingsearch/js/jquery-1.9.1.js"></script>
@@ -18,7 +18,7 @@
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
 <title>来个代驾</title>
-<style type="text/css">
+<style >
 html,body {
 	height: 100%;
 }
@@ -75,7 +75,7 @@ html,body {
 	</div>
 </body>
 </html>
-<script type="text/javascript">
+<script>
 	var mapJb = 19;
 	var cfdPoint; //出发地Point （point.lng--经度；  point.lat--纬度）
 	var cfdPosition;
