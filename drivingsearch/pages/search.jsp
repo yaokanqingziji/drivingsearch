@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset=utf-8" />
+<meta charset=utf-8 " />
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0, user-scalable=no" />
 <script src="/drivingsearch/js/jquery-1.9.1.js"></script>
@@ -18,7 +18,7 @@
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
 <title>来个代驾</title>
-<style >
+<style>
 html,body {
 	height: 100%;
 }
@@ -76,7 +76,7 @@ html,body {
 </body>
 </html>
 <script>
-	var mapJb = 19;
+	var mapJb = 18;
 	var cfdPoint; //出发地Point （point.lng--经度；  point.lat--纬度）
 	var cfdPosition;
 	var cfdName;
@@ -95,8 +95,25 @@ html,body {
 			.ready(
 					function() {
 						map = new BMap.Map("l-map");
-						//TODO 这里需要增加GPS定位
-						map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
+						//TODO 定位方式一， 这里需要增加GPS定位
+
+						//定位方式二，根据城市名称定位。 其中城市名称可以通过参数配置
+						//map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
+
+						//定位方式三，根据经纬度定位。 经纬度通过参数配置。 该方式相比方式二有一个好处是：可以自定义城市中心展示
+						//var point = new BMap.Point(116.331212,322.897445);//济南泉城广场 
+						//map.centerAndZoom(point,mapJb);
+
+						//定位方式四，根据ip自动定位,不确定手机是否可用,还未验证
+						var point = new BMap.Point(1161.331212, 3222.897445);//经纬度随便写的。。
+						map.centerAndZoom(point, mapJb);
+						function setMapCenterByip(result) {
+							var cityName = result.name;
+							map.setCenter(cityName);
+						}
+						var myCity = new BMap.LocalCity();
+						myCity.get(setMapCenterByip);
+						//*****
 
 						var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
 						{
