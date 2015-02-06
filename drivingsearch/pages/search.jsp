@@ -55,7 +55,7 @@ html,body {
 						<div id="r-result">
 							<label>预约时间：</label><input id="yysjStr" type="text" /> <br>
 							<label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：</label><input type="text"
-								id="suggestId" onchange="cfdChange()" size="20" value="我的位置"
+								id="suggestId" onchange="cfdChange()" size="20" 
 								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
 								value="" style="width: 150px;" />
@@ -77,6 +77,8 @@ html,body {
 </html>
 <script>
 	var mapJb = 18;
+	var cfdStr = "cfd";
+	var mddStr = "mdd";
 	var cfdPoint; //出发地Point （point.lng--经度；  point.lat--纬度）
 	var cfdPosition;
 	var cfdName;
@@ -90,30 +92,16 @@ html,body {
 
 	var driving = null;//驾车路线对象
 
+	var locationFlag = "0"; //自动定位标志，0代表无法自动定位，1代表可以自动定位
+	var locationErrMsg = "";//自动定位失败原因
+
 	var map;
 	$(document)
 			.ready(
 					function() {
 						map = new BMap.Map("l-map");
-						//TODO 定位方式一， 这里需要增加GPS定位
-
-						//定位方式二，根据城市名称定位。 其中城市名称可以通过参数配置
-						//map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
-
-						//定位方式三，根据经纬度定位。 经纬度通过参数配置。 该方式相比方式二有一个好处是：可以自定义城市中心展示
-						//var point = new BMap.Point(116.331212,322.897445);//济南泉城广场 
-						//map.centerAndZoom(point,mapJb);
-
-						//定位方式四，根据ip自动定位,不确定手机是否可用,还未验证
-						var point = new BMap.Point(1161.331212, 3222.897445);//经纬度随便写的。。
-						map.centerAndZoom(point, mapJb);
-						function setMapCenterByip(result) {
-							var cityName = result.name;
-							map.setCenter(cityName);
-						}
-						var myCity = new BMap.LocalCity();
-						myCity.get(setMapCenterByip);
-						//*****
+						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
+						getLocation();
 
 						var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
 						{
@@ -171,7 +159,7 @@ html,body {
 													+ e.item.index
 													+ "<br />myValue = "
 													+ cfdName;
-											setPlace("cfd");
+											setPlace(cfdStr);
 										});
 
 						ac2.addEventListener("onhighlight",
@@ -220,16 +208,97 @@ html,body {
 													+ "<br />myValue = "
 													+ mddName;
 
-											setPlace("mdd");
+											setPlace(mddStr);
 										});
 
 					});
 
+	//GPS定位
+	function getLocation() {
+		if (navigator.geolocation) { //支持GPS定位
+			navigator.geolocation.getCurrentPosition(setGpsPosition,
+					locationError, {
+						enableHighAccuracy : true,
+						maximumAge : 1000
+					});
+		} else {//不支持GPS定位
+			locationFlag = "0";
+			locationErrMsg = "浏览器不支持使用HTML5来获取地理位置服务";
+			createOtherPosition();
+		}
+	}
+
+	//GPS定位成功回调。定位中心点 同时设置起始位置
+	function setGpsPosition(value) {
+		var geoc = new BMap.Geocoder();
+		//获取经纬度
+		var longitude = value.coords.longitude;
+		var latitude = value.coords.latitude;
+		// 创建点坐标
+		var point = new BMap.Point(longitude, latitude);
+		//根据坐标创建地图中心
+		map.centerAndZoom(point, mapJb);
+		//根据坐标获取cfdName,cfdPosition 类似实现ac的onconfirm
+		geoc.getLocation(point, function(rs) {
+			var addComp = rs.addressComponents;
+			cfdName = rs.business;
+			cfdPosition = addComp.province + addComp.city + addComp.district
+					+ addComp.street + cfdName;
+			if(cfdName == null || cfdName == ''){
+				cfdName = cfdPosition;
+			}
+			//设置出发地名称
+			$("#suggestId").val('我的位置');
+			//设置起始位置标记
+			setPlace(cfdStr);
+			
+		});
+	}
+	//GPS定位失败，采用其他方式进行定位（其他方式仅初始化地图展示中心，无法定位当前位置）
+	function locationError(value) {
+		locationFlag = "0";
+		switch (value.code) {
+		case 1:
+			locationErrMsg = "位置服务被拒绝";
+			break;
+		case 2:
+			locationErrMsg = "暂时获取不到位置信息";
+			break;
+		case 3:
+			locationErrMsg = "获取信息超时";
+			break;
+		case 4:
+			locationErrMsg = "未知错误";
+			break;
+		}
+		createOtherPosition();
+	}
+
+	//排除GPS定位的其他定位。仅设置地图中心点
+	function createOtherPosition() {
+		//定位方式二，根据城市名称定位。 其中城市名称可以通过参数配置
+		map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
+
+		//定位方式三，根据经纬度定位。 经纬度通过参数配置。 该方式相比方式二有一个好处是：可以自定义城市中心展示
+		//var point = new BMap.Point(116.331212,322.897445);//济南泉城广场 
+		//map.centerAndZoom(point,mapJb);
+
+		//定位方式四，根据ip自动定位,不确定手机是否可用,还未验证
+		/* var point = new BMap.Point(1161.331212, 3222.897445);//经纬度随便写的。。
+		map.centerAndZoom(point, mapJb);
+		function setMapCenterByip(result) {
+			var cityName = result.name;
+			map.setCenter(cityName);
+		}
+		var myCity = new BMap.LocalCity();
+		myCity.get(setMapCenterByip); */
+	}
+
 	function setPlace(flag) {
 		var myValue = '';
-		if (flag == "cfd") {
+		if (flag == cfdStr) {
 			myValue = cfdPosition;
-		} else if (flag = "mdd") {
+		} else if (flag = mddStr) {
 			myValue = mddPosition;
 		}
 		map.clearOverlays(); //清除地图上所有覆盖物
@@ -238,9 +307,9 @@ html,body {
 		}
 		function markAndCalc() {
 			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
-			if (flag == "cfd") {
+			if (flag == cfdStr) {
 				cfdPoint = pp;
-			} else if (flag == "mdd") {
+			} else if (flag == mddStr) {
 				mddPoint = pp;
 			}
 			map.centerAndZoom(pp, mapJb);
