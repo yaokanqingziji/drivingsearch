@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.weixin.course.service.CoreService;
 import com.weixin.course.util.SignUtil;
 
 /**
@@ -59,7 +60,7 @@ public class CoreServlet extends HttpServlet {
 		if (SignUtil.checkSignature(signature, timestamp, nonce)) {
 			// 调用核心服务类接收处理请求
 			String respXml = "";
-//			respXml = CoreService.processRequest(request);
+			respXml = CoreService.processRequest(request);
 			out.print(respXml);
 		}
 		out.close();
