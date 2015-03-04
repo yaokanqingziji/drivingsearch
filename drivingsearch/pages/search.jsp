@@ -102,6 +102,8 @@ html,body {
 						map = new BMap.Map("l-map");
 						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
 						getLocation();
+						//调试用。。。。可以删除
+						//createOtherPosition();
 
 						var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
 						{

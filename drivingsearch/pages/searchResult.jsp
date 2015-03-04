@@ -9,7 +9,7 @@
 <meta charset=utf-8" />
 
 <meta name="viewport"
-	content="width=device-width,initial-scale=1.0,maximum-scale=1.0 , user-scalable=no" />
+	content="width=device-width,initial-scale=1.0,maximum-scale=0.8 ,minimum-scale=0.2, user-scalable=no" />
 <script src="/drivingsearch/js/jquery-1.9.1.js"></script>
 <script src="/drivingsearch/bootstrap3.3.0/dist/js/bootstrap.min.js"></script>
 
