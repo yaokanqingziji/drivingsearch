@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset=utf-8" />
+<meta charset=utf-8 " />
 
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0,maximum-scale=0.8 ,minimum-scale=0.2, user-scalable=no" />
@@ -35,14 +35,19 @@
 						</tr>
 					</thead>
 					<tbody>
-
+						<td>1</td>
+						<td>2</td>
+						<td>2</td>
+						<td><button class="btn" type="button" onclick="saveLog()">
+								<a href="tel:18615203360 ">预约</a>
+							</button></td>
 						<c:forEach items="${searchOrderResultModels}" var="res">
 							<tr>
 								<td>${res.jgsx}</td>
 								<td>${res.gsjg}</td>
 								<td>${res.gsmc}(${res.pjjb })</td>
 								<td><button class="btn" type="button" onclick="saveLog()">
-										<a href="wtai://wp/mc;${res.yydh} ">预约</a>
+										<a href="tel:${res.yydh} ">预约</a>
 									</button></td>
 							</tr>
 						</c:forEach>
@@ -100,8 +105,8 @@
 		$(".table tbody > tr:even").addClass("info");
 		$(".table tbody > tr:odd").addClass("warning");
 	});
-	
-	function saveLog(){
+
+	function saveLog() {
 		alert('a');
 	}
 </script>
