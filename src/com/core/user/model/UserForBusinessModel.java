@@ -1,4 +1,4 @@
-package com.search.user.model;
+package com.core.user.model;
 
 /** 
 * @Description: 业务用 用户对象  临时用户与会员用户均需要此model

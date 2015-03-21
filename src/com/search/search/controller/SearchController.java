@@ -11,11 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.core.search.model.SearchOrderResultModel;
+import com.core.search.model.SearchQueryModel;
+import com.core.search.model.SearchResultModel;
 import com.ldw.frame.base.BaseException;
 import com.search.base.SearchBaseController;
-import com.search.search.model.SearchOrderResultModel;
-import com.search.search.model.SearchQueryModel;
-import com.search.search.model.SearchResultModel;
 import com.search.search.service.SearchService;
 
 @Controller

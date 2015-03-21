@@ -1,4 +1,4 @@
-package com.search.user.model;
+package com.core.user.model;
 
 /** 
 * @Description: 用户对象

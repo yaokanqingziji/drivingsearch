@@ -1,4 +1,4 @@
-package com.search.base;
+package com.core.base;
 
 import com.ldw.frame.base.BaseBpo;
 

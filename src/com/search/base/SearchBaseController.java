@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseController;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.exception.AppException;
 import com.ldw.frame.common.exception.BusinessException;
 import com.ldw.frame.common.exception.FrameException;
 import com.ldw.frame.common.paging.PagingModel;
-import com.search.user.model.UserForBusinessModel;
 
 /**
  * Controller层基础类

@@ -7,16 +7,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.core.search.model.SearchLogResultModel;
+import com.core.search.model.SearchOrderResultModel;
+import com.core.search.model.SearchPatchResultModel;
+import com.core.search.model.SearchQueryModel;
+import com.core.search.model.SearchResultModel;
+import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.paging.PagingModel;
 import com.search.base.SearchBaseService;
-import com.search.search.model.SearchLogResultModel;
-import com.search.search.model.SearchOrderResultModel;
-import com.search.search.model.SearchPatchResultModel;
-import com.search.search.model.SearchQueryModel;
-import com.search.search.model.SearchResultModel;
 import com.search.search.service.SearchService;
-import com.search.user.model.UserForBusinessModel;
 @Service("com.search.search.service.impl.SearchServiceImpl")
 public class SearchServiceImpl extends SearchBaseService implements SearchService {
  

@@ -1,10 +1,10 @@
 package com.search.search.service;
 
+import com.core.search.model.SearchQueryModel;
+import com.core.search.model.SearchResultModel;
+import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.paging.PagingModel;
-import com.search.search.model.SearchQueryModel;
-import com.search.search.model.SearchResultModel;
-import com.search.user.model.UserForBusinessModel;
 
 public interface SearchService {
 

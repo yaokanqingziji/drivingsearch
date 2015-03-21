@@ -7,14 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.core.user.model.TempUserModel;
+import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
 import com.search.base.SearchBaseController;
 import com.search.base.SearchCodeNames;
 import com.search.base.SearchSessionNames;
 import com.search.login.model.LoginModel;
 import com.search.login.model.TempUserLoginModel;
-import com.search.user.model.TempUserModel;
-import com.search.user.model.UserForBusinessModel;
 
 /**
  * @Description: 用户登陆Controller， 包括会员登陆与临时用户登陆

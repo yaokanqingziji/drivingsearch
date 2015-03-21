@@ -17,7 +17,7 @@
 	</bean> 
 	<mvc:annotation-driven />
 	<!-- 对包下所有注解扫描 特别注意，此处加载时只加载界面访问的包目录，千万不要全部应用目录，否则会覆盖掉上下文加载  -->
-	<context:component-scan base-package="com.ldw.frame,com.search" use-default-filters="false">
+	<context:component-scan base-package="com.ldw.frame,com.search,com.core" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	<mvc:default-servlet-handler  />
