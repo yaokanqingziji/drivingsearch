@@ -24,7 +24,7 @@ html,body {
 }
 
 #l-map {
-	height: 70%;
+	height: 50%;
 	width: 100%;
 }
 </style>
@@ -59,10 +59,11 @@ html,body {
 								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
 								value="" style="width: 150px;" />
+								<br>
+								<label ><font id="yg" color="red"></font></label>
 						</div>
-						<br>
-						<legend id="yg"></legend>
-						<button class="btn" type="button" onclick="search()">搜索</button>
+						<legend ></legend>
+						<button class="btn" type="button" onclick="search()" id="searchBtn">搜索</button>
 						<div id="searchResultPanel"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 
@@ -100,10 +101,11 @@ html,body {
 			.ready(
 					function() {
 						map = new BMap.Map("l-map");
+						
 						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
-						getLocation();
-						//调试用。。。。可以删除
-						//createOtherPosition();
+						//getLocation();
+						//排除GPS定位
+						createOtherPosition();
 
 						var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
 						{
@@ -297,6 +299,9 @@ html,body {
 	}
 
 	function setPlace(flag) {
+		//解决有下拉列表的情况出现
+		$("#searchBtn").focus();
+		
 		var myValue = '';
 		if (flag == cfdStr) {
 			myValue = cfdPosition;

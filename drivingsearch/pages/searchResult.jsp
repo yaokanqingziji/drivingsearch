@@ -35,12 +35,6 @@
 						</tr>
 					</thead>
 					<tbody>
-						<td>1</td>
-						<td>2</td>
-						<td>2</td>
-						<td><button class="btn" type="button" onclick="saveLog()">
-								<a href="tel:18615203360 ">预约</a>
-							</button></td>
 						<c:forEach items="${searchOrderResultModels}" var="res">
 							<tr>
 								<td>${res.jgsx}</td>
