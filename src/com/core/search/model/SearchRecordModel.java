@@ -3,30 +3,31 @@ package com.core.search.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SearchLogResultModel {
+public class SearchRecordModel {
 
-	private String searchPatchId;
-	private String searchLogId;
-	
+	private String sspcid;
+	private String ssjlid;
+
 	private BigDecimal yghs;
 	private BigDecimal ygjl;
-	
+
+	private Date yysj;
 	private Date ddsj;
 
-	public String getSearchPatchId() {
-		return searchPatchId;
+	public String getSspcid() {
+		return sspcid;
 	}
 
-	public void setSearchPatchId(String searchPatchId) {
-		this.searchPatchId = searchPatchId;
+	public void setSspcid(String sspcid) {
+		this.sspcid = sspcid;
 	}
 
-	public String getSearchLogId() {
-		return searchLogId;
+	public String getSsjlid() {
+		return ssjlid;
 	}
 
-	public void setSearchLogId(String searchLogId) {
-		this.searchLogId = searchLogId;
+	public void setSsjlid(String ssjlid) {
+		this.ssjlid = ssjlid;
 	}
 
 	public BigDecimal getYghs() {
@@ -52,6 +53,13 @@ public class SearchLogResultModel {
 	public void setDdsj(Date ddsj) {
 		this.ddsj = ddsj;
 	}
-	
-	
+
+	public Date getYysj() {
+		return yysj;
+	}
+
+	public void setYysj(Date yysj) {
+		this.yysj = yysj;
+	}
+
 }
