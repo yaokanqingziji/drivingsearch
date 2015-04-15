@@ -1,34 +1,81 @@
 package com.core.search.model;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 public class SearchResultModel {
-	private SearchPatchResultModel searchPatchModel;
-	private SearchLogResultModel searchLogModel;
-	private List<SearchOrderResultModel> searchOrderModels;
+	private String sspcid;
+	private String ssjlid;
+	private String gsid;// 公司ID
+	private String gsmc;// 公司名稱
+	private String pjjb;// 公司评价级别
 
-	public SearchPatchResultModel getSearchPatchModel() {
-		return searchPatchModel;
+	private String yydh;// 预约电话
+
+	private BigDecimal gsjg;// 估算價格
+	private BigDecimal sspm;// 價格順序
+
+	public String getSspcid() {
+		return sspcid;
 	}
 
-	public void setSearchPatchModel(SearchPatchResultModel searchPatchModel) {
-		this.searchPatchModel = searchPatchModel;
+	public void setSspcid(String sspcid) {
+		this.sspcid = sspcid;
 	}
 
-	public SearchLogResultModel getSearchLogModel() {
-		return searchLogModel;
+	public String getSsjlid() {
+		return ssjlid;
 	}
 
-	public void setSearchLogModel(SearchLogResultModel searchLogModel) {
-		this.searchLogModel = searchLogModel;
+	public void setSsjlid(String ssjlid) {
+		this.ssjlid = ssjlid;
 	}
 
-	public List<SearchOrderResultModel> getSearchOrderModels() {
-		return searchOrderModels;
+	public String getGsid() {
+		return gsid;
 	}
 
-	public void setSearchOrderModels(List<SearchOrderResultModel> searchOrderModels) {
-		this.searchOrderModels = searchOrderModels;
+	public void setGsid(String gsid) {
+		this.gsid = gsid;
+	}
+
+	public String getGsmc() {
+		return gsmc;
+	}
+
+	public void setGsmc(String gsmc) {
+		this.gsmc = gsmc;
+	}
+
+	public String getPjjb() {
+		return pjjb;
+	}
+
+	public void setPjjb(String pjjb) {
+		this.pjjb = pjjb;
+	}
+
+	public String getYydh() {
+		return yydh;
+	}
+
+	public void setYydh(String yydh) {
+		this.yydh = yydh;
+	}
+
+	public BigDecimal getGsjg() {
+		return gsjg;
+	}
+
+	public void setGsjg(BigDecimal gsjg) {
+		this.gsjg = gsjg;
+	}
+
+	public BigDecimal getSspm() {
+		return sspm;
+	}
+
+	public void setSspm(BigDecimal sspm) {
+		this.sspm = sspm;
 	}
 
 }

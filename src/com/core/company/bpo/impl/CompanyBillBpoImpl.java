@@ -81,7 +81,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		HashMap<String, List<CBillProjectModel>> tempCBillProjectMap = new HashMap<String, List<CBillProjectModel>>();
 
 		HashMap<String, Object> tempMap;
-		String zcid, jfbbid, jfsjdid, jfxmbh, cbproject;
+		String zcid, jfbbid, jfsjdid, jfxmbh, cbproject,jfxmid;
 		// key:zcid
 		HashMap<String, CRegistResultModel> tempCRMap = new HashMap<String, CRegistResultModel>();
 		CRegistResultModel cRegistModel;
@@ -99,6 +99,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 			jfbbid = (String) tempMap.get("JFBBID");
 			jfsjdid = (String) tempMap.get("JFSJDID");
 			jfxmbh = (String) tempMap.get("JFXMBH");
+			jfxmid = (String) tempMap.get("JFXMID");
 
 			cbproject = jfsjdid + jfxmbh;
 
@@ -117,6 +118,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 				cRegistModel.setYylxr((String) tempMap.get("YYLXR"));
 
 				tempCRMap.put(zcid, cRegistModel);
+				tempCRegistList.add(cRegistModel);
 			}
 			// 版本下时间段转换
 			if (!tempTimeMap.containsKey(jfsjdid)) {
@@ -140,6 +142,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 			if (!tempProjectMap.containsKey(cbproject)) {
 				billProjectModel = new BillProjectModel();
 				billProjectModel.setXmbh(jfxmbh);
+				billProjectModel.setJfxmid(jfxmid);
 
 				if (!tempBillProjectMap.containsKey(jfsjdid)) {
 					tempBillProjectMap.put(jfsjdid,

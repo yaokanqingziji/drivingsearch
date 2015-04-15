@@ -1,30 +1,23 @@
-package com.core.search.model;
+package com.core.search.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SearchQueryModel {
+public class SearchBatchDomain {
 	private String sspcid;
-
-	private Date yysj;// 预约时间
-	private String yysjStr;
-
-	// 出发地
-	private String cfdmc;// 出发地名称
-	private String cfdjd;// 出发地经度
-	private String cfdwd;// 出发地纬度
-
-	// 目的地
-	private String mddmc;// 目的地名称
-	private String mddjd;// 目的地经度
-	private String mddwd;// 目的地纬度
-
-	// 预估距离(公里)
-	private BigDecimal ygjl;
-	// 预估耗时（分钟）
+	private String userid;
+	private Date sssj;
+	private Date yysj;
+	private String cfdmc;
+	private String cfdjd;
+	private String cfdwd;
+	private String mddmc;
+	private String mddjd;
+	private String mddwd;
 	private BigDecimal yghs;
-
-	private Date ddsj; // 到达时间
+	private BigDecimal ygjl;
+	private Date ddsj;
+	private String bz;
 
 	public String getSspcid() {
 		return sspcid;
@@ -32,6 +25,22 @@ public class SearchQueryModel {
 
 	public void setSspcid(String sspcid) {
 		this.sspcid = sspcid;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public Date getSssj() {
+		return sssj;
+	}
+
+	public void setSssj(Date sssj) {
+		this.sssj = sssj;
 	}
 
 	public Date getYysj() {
@@ -90,14 +99,6 @@ public class SearchQueryModel {
 		this.mddwd = mddwd;
 	}
 
-	public BigDecimal getYgjl() {
-		return ygjl;
-	}
-
-	public void setYgjl(BigDecimal ygjl) {
-		this.ygjl = ygjl;
-	}
-
 	public BigDecimal getYghs() {
 		return yghs;
 	}
@@ -106,12 +107,12 @@ public class SearchQueryModel {
 		this.yghs = yghs;
 	}
 
-	public String getYysjStr() {
-		return yysjStr;
+	public BigDecimal getYgjl() {
+		return ygjl;
 	}
 
-	public void setYysjStr(String yysjStr) {
-		this.yysjStr = yysjStr;
+	public void setYgjl(BigDecimal ygjl) {
+		this.ygjl = ygjl;
 	}
 
 	public Date getDdsj() {
@@ -120,6 +121,14 @@ public class SearchQueryModel {
 
 	public void setDdsj(Date ddsj) {
 		this.ddsj = ddsj;
+	}
+
+	public String getBz() {
+		return bz;
+	}
+
+	public void setBz(String bz) {
+		this.bz = bz;
 	}
 
 }

@@ -37,7 +37,7 @@
 					<tbody>
 						<c:forEach items="${searchOrderResultModels}" var="res">
 							<tr>
-								<td>${res.jgsx}</td>
+								<td>${res.sspm}</td>
 								<td>${res.gsjg}</td>
 								<td>${res.gsmc}(${res.pjjb })</td>
 								<td><button class="btn" type="button" onclick="saveLog()">

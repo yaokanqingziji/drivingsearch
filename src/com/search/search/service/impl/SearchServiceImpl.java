@@ -1,25 +1,34 @@
 package com.search.search.service.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.core.search.model.SearchLogResultModel;
-import com.core.search.model.SearchOrderResultModel;
-import com.core.search.model.SearchPatchResultModel;
+import com.core.company.bpo.CompanyBillBpo;
+import com.core.company.model.CompanyBillModel;
+import com.core.search.bpo.SearchBpo;
+import com.core.search.model.SearchBatchModel;
 import com.core.search.model.SearchQueryModel;
+import com.core.search.model.SearchRecordModel;
 import com.core.search.model.SearchResultModel;
+import com.core.search.model.SearchResultsModel;
 import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
-import com.ldw.frame.common.paging.PagingModel;
+import com.ldw.frame.common.exception.BusinessException;
 import com.search.base.SearchBaseService;
 import com.search.search.service.SearchService;
+
 @Service("com.search.search.service.impl.SearchServiceImpl")
-public class SearchServiceImpl extends SearchBaseService implements SearchService {
- 
+public class SearchServiceImpl extends SearchBaseService implements
+		SearchService {
+
+	@Autowired
+	private CompanyBillBpo companyBillBpo;
+
+	@Autowired
+	private SearchBpo searchBpo;
+
 	/**
 	 * @Description: 个人代驾搜索
 	 * @param searchQueryModel
@@ -34,93 +43,37 @@ public class SearchServiceImpl extends SearchBaseService implements SearchServic
 	 * @author ldw
 	 * @date 2015年1月27日 下午10:08:39
 	 */
-	public SearchResultModel searchForPersonDrive(
+	public SearchResultsModel searchForPersonDrive(
 			SearchQueryModel searchQueryModel,
-			UserForBusinessModel userForBusinessModel, PagingModel pagingModel)
-			throws BaseException{
-		SearchResultModel searchResultModel = null;
-		SearchPatchResultModel searchPatchModel;
-		SearchLogResultModel searchLogModel;
-		SearchOrderResultModel searchOrderModel;
-		List<SearchOrderResultModel> searchOrderModels;
-		{//测试用 后续删除。 
-			searchResultModel = new SearchResultModel();
-			searchPatchModel = new SearchPatchResultModel();
-			searchLogModel = new SearchLogResultModel();
-			Date tempDate = null;
-			searchOrderModels = new ArrayList<SearchOrderResultModel>();
-			//初始化搜索批次
-			searchPatchModel.setSearchPatchId("searchPatchId");
-			searchPatchModel.setYysj(tempDate);
-			//初始化搜索记录
-			searchLogModel.setSearchPatchId("searchPatchId");
-			searchLogModel.setSearchLogId("searchLogId");
-			searchLogModel.setYghs(BigDecimal.valueOf(30));
-			searchLogModel.setYgjl(BigDecimal.valueOf(20));
-			searchLogModel.setDdsj(tempDate);
-			//初始化搜索排名
-			searchOrderModel = new SearchOrderResultModel();
-			searchOrderModel.setSearchPatchId("searchPatchId");
-			searchOrderModel.setSearchLogId("searchLogId");
-			searchOrderModel.setGsId("A");
-			searchOrderModel.setGsmc("WL代驾");
-			searchOrderModel.setPjjb("4星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(1));
-			searchOrderModel.setGsjg(BigDecimal.valueOf(39.0));
-			searchOrderModel.setYydh("18610916585");
-			searchOrderModels.add(searchOrderModel);
-			
-			searchOrderModel = new SearchOrderResultModel();
-			searchOrderModel.setSearchPatchId("searchPatchId");
-			searchOrderModel.setSearchLogId("searchLogId");
-			searchOrderModel.setGsId("B");
-			searchOrderModel.setGsmc("W代驾");
-			searchOrderModel.setPjjb("3星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(2));
-			searchOrderModel.setGsjg(BigDecimal.valueOf(45.0));
-			searchOrderModel.setYydh("13953133759");
-			searchOrderModels.add(searchOrderModel);
-			
-			searchOrderModel = new SearchOrderResultModel();
-			searchOrderModel.setSearchPatchId("searchPatchId");
-			searchOrderModel.setSearchLogId("searchLogId");
-			searchOrderModel.setGsId("C");
-			searchOrderModel.setGsmc("S代驾");
-			searchOrderModel.setPjjb("4星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(3));
-			searchOrderModel.setGsjg(BigDecimal.valueOf(50.0));
-			searchOrderModel.setYydh("15668494627");
-			searchOrderModels.add(searchOrderModel);
-			
-			searchOrderModel = new SearchOrderResultModel();
-			searchOrderModel.setSearchPatchId("searchPatchId");
-			searchOrderModel.setSearchLogId("searchLogId");
-			searchOrderModel.setGsId("D");
-			searchOrderModel.setGsmc("易代驾");
-			searchOrderModel.setPjjb("5星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(4));
-			searchOrderModel.setGsjg(BigDecimal.valueOf(50.5));
-			searchOrderModel.setYydh("15668494627");
-			searchOrderModels.add(searchOrderModel);
-			
-			searchOrderModel = new SearchOrderResultModel();
-			searchOrderModel.setSearchPatchId("searchPatchId");
-			searchOrderModel.setSearchLogId("searchLogId");
-			searchOrderModel.setGsId("E");
-			searchOrderModel.setGsmc("来个代驾啦啦啦啦啦啦");
-			searchOrderModel.setPjjb("4星");
-			searchOrderModel.setJgsx(BigDecimal.valueOf(5));
-			searchOrderModel.setGsjg(BigDecimal.valueOf(50.5));
-			searchOrderModel.setYydh("18615206630");
-			searchOrderModels.add(searchOrderModel);
-			
-			
-			searchResultModel.setSearchLogModel(searchLogModel);
-			searchResultModel.setSearchPatchModel(searchPatchModel);
-			searchResultModel.setSearchOrderModels(searchOrderModels);
+			UserForBusinessModel userForBusinessModel) throws BaseException {
+		String djlx = "01";
+		SearchResultsModel searchResultsModel = null;
+		SearchBatchModel searchBatchModel;
+		SearchRecordModel searchRecordModel;
+		List<SearchResultModel> searchResultModels;
+
+		CompanyBillModel companyBillModel;
+		String sspcId, ssjlId;
+
+		// 1.获取计费标准
+		companyBillModel = companyBillBpo.getAllRegistCompanyBillByDjlx(djlx);
+		if(companyBillModel == null){
+			throw new BusinessException("没有代驾信息");
 		}
+		// 2.计算并保存酒后代驾搜索
+		searchRecordModel = searchBpo.CalcAndSavePersonDriveSearch(
+				userForBusinessModel, searchQueryModel, companyBillModel);
 		
-		
-		return searchResultModel;
+		// 3.获取搜索批次、搜索结果信息
+		sspcId = searchRecordModel.getSspcid();
+		ssjlId = searchRecordModel.getSsjlid();
+		searchBatchModel = searchBpo.querySearchBatchModelBysspcId(sspcId);
+		searchResultModels = searchBpo.querySearchResultModels(ssjlId);
+		// 4.返回结果
+		searchResultsModel = new SearchResultsModel();
+		searchResultsModel.setSearchBatchModel(searchBatchModel);
+		searchResultsModel.setSearchRecordModel(searchRecordModel);
+		searchResultsModel.setSearchResultModels(searchResultModels);
+		return searchResultsModel;
 	}
 }
