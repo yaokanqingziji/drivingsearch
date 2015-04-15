@@ -84,7 +84,7 @@
 		<!-- 系统字符集 -->
 		<property name="ENCODING" value="UTF-8" />
 		
-		<property name="dbType" value="mysql" />
+		<property name="dbType" value="oracle" />
 
 	</bean>
 	<!-- 初始化FrameGlobalNames -->
@@ -120,6 +120,23 @@
 				class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
 				<property name="targetObject" ref="com.search.base.SearchGlobalNames" />
 				<property name="propertyPath" value="dbType" />
+			</bean>
+		</property>
+		
+		<property name="DBID">
+			<bean
+				class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+				<property name="targetObject">
+					<ref bean="com.ldw.frame.dao.common.SqlDao" />
+				</property>
+				<property name="targetMethod">
+					<value>getSingleStringValue</value>
+				</property>
+				<property name="arguments">
+					<list>
+						<value>select csz from s_para where csbh='dbid'</value>
+					</list>
+				</property>
 			</bean>
 		</property>
 		<!-- 系统配置文件 -->
