@@ -11,12 +11,21 @@
 	content="width=device-width,initial-scale=1.0, user-scalable=no" />
 <script src="/drivingsearch/js/jquery-1.9.1.js"></script>
 <script src="/drivingsearch/bootstrap3.3.0/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="/drivingsearch/datetimepicker/js/bootstrap-datetimepicker.js"
+	charset="UTF-8"></script>
+<script type="text/javascript"
+	src="/drivingsearch/datetimepicker/js/locales/bootstrap-datetimepicker.fr.js"
+	charset="UTF-8"></script>
 
 <script
 	src="http://api.map.baidu.com/api?ak=2ca7lg3IXlvAckxYfuGdCKyk&v=2.0"></script>
 
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
+<link
+	href="/drivingsearch/datetimepicker/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
 <title>来个代驾</title>
 <style>
 html,body {
@@ -31,16 +40,6 @@ html,body {
 
 </head>
 <body>
-	<!-- 小提示 -->
-	<!-- <div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="alert alert-success" >
-					<strong>警告!</strong> 请注意你的个人隐私安全.
-				</div>
-			</div>
-		</div>
-	</div> -->
 	<!-- 百度极速地图 -->
 	<div id="l-map"></div>
 	<br>
@@ -52,31 +51,40 @@ html,body {
 					<fieldset>
 						<legend></legend>
 						<br>
-						<div id="r-result">
-							<label>预约时间：</label><input id="yysjStr" type="text" /> <br>
-							<label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：</label><input type="text"
-								id="suggestId" onchange="cfdChange()" size="20" 
+						<div class="form-group">
+							<label for="yysjStr" class="col-md-2 control-label">预约时间：</label>
+							<div class="input-group date form_time col-md-2" data-date=""
+								data-date-format="hh:ii" data-link-field="yysjStr"
+								data-link-format="hh:ii">
+								<input class="form-control" size="16" type="text" value=""
+									readonly> <span class="input-group-addon"><span
+									class="glyphicon glyphicon-time"></span></span>
+							</div>
+							<input type="hidden" id="yysjStr" value="" /><br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：</label><input
+								type="text" id="suggestId" onchange="cfdChange()" size="20"
 								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
-								value="" style="width: 150px;" />
-								<br>
-								<label ><font id="yg" color="red"></font></label>
+								value="" style="width: 150px;" /> <br> <label><font
+								id="yg" color="red"></font></label>
 						</div>
-						<legend ></legend>
-						<button class="btn" type="button" onclick="search()" id="searchBtn">搜索</button>
+						<legend></legend>
+						<button class="btn btn-warning" type="button" onclick="search()"
+							id="searchBtn">搜索</button>
 						<div id="searchResultPanel"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 
 						<div id="searchResultPanel2"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
-					</fieldset>
-				</form>
 			</div>
+			</fieldset>
+			</form>
 		</div>
+	</div>
 	</div>
 </body>
 </html>
 <script>
+
 	var mapJb = 18;
 	var cfdStr = "cfd";
 	var mddStr = "mdd";
@@ -100,8 +108,20 @@ html,body {
 	$(document)
 			.ready(
 					function() {
-						map = new BMap.Map("l-map");
+						$('.form_time').datetimepicker({
+							language : 'fr',
+							weekStart : 1,
+							todayBtn : true,
+							autoclose : 1,
+							todayHighlight : true,
+							startView : 0,
+							minView : 0,
+							maxView : 1
+						});
 						
+						
+						map = new BMap.Map("l-map");
+
 						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
 						//getLocation();
 						//排除GPS定位
@@ -248,14 +268,14 @@ html,body {
 			cfdName = rs.business;
 			cfdPosition = addComp.province + addComp.city + addComp.district
 					+ addComp.street + cfdName;
-			if(cfdName == null || cfdName == ''){
+			if (cfdName == null || cfdName == '') {
 				cfdName = cfdPosition;
 			}
 			//设置出发地名称
 			$("#suggestId").val('我的位置');
 			//设置起始位置标记
 			setPlace(cfdStr);
-			
+
 		});
 	}
 	//GPS定位失败，采用其他方式进行定位（其他方式仅初始化地图展示中心，无法定位当前位置）
@@ -301,7 +321,7 @@ html,body {
 	function setPlace(flag) {
 		//解决有下拉列表的情况出现
 		$("#searchBtn").focus();
-		
+
 		var myValue = '';
 		if (flag == cfdStr) {
 			myValue = cfdPosition;
@@ -365,16 +385,29 @@ html,body {
 	};
 
 	function search() {
+		
 		var searchUrl;
 		var yysjStr = $("#yysjStr").val();
+		if(yysjStr == null || yysjStr == ''){
+			alert("请选择预约时间");
+			return ;
+		}
+		if(cfdPoint == null){
+			alert("请输入出发地");
+			return;
+		}
+		if(mddPoint == null){
+			alert("请输入目的地");
+			return;
+		}
 		var cfdmc = cfdName;
 		var cfdjd = cfdPoint.lng;
 		var cfdwd = cfdPoint.lat;
 		var mddmc = mddName;
 		var mddjd = mddPoint.lng;
 		var mddwd = mddPoint.lat;
-		//TODO 耗时还需要处理。 **小时**分钟   是否还有**天**小时**分钟呢。。。。
-		var yghsValue = yghs.replace("分钟", "");
+		
+		var yghsValue = dealYghs(yghs);
 		var ygjlValue = ygjl.replace("公里", "");
 		//TODO 如果非会员用户使用搜索，那么需要先通过post方法保存临时用户。
 
@@ -383,8 +416,31 @@ html,body {
 		searchUrl = searchUrl + "yysjStr=" + yysjStr + "&cfdmc=" + cfdmc
 				+ "&cfdjd=" + cfdjd + "&cfdwd=" + cfdwd + "&mddmc=" + mddmc
 				+ "&mddjd=" + mddjd + "&mddwd=" + mddwd + "&yghs=" + yghsValue
-				+ "&ygjl=" + ygjlValue;
+				+ "&ygjl=" + ygjlValue +"&ygms="+ getJlAHs();
 		window.location.href = searchUrl;
+	}
+	
+	function dealYghs(yghs){
+		var yghsVal = 0;
+		var tempYghs = yghs;
+		var hsArray;
+		
+		var index = tempYghs.indexOf("天");
+		if(index > 0){
+			hsArray = tempYghs.split("天");
+			tempYghs = hsArray[1];
+			yghsVal = yghsVal + parseInt(hsArray[0]) * 24 * 60;
+		}
+		
+		index = tempYghs.indexOf("小时");
+		if(index > 0){
+			hsArray = tempYghs.split("小时");
+			tempYghs = hsArray[1];
+			yghsVal = yghsVal + parseInt(hsArray[0]) * 60;
+		}
+		
+		yghsVal = yghsVal + parseInt(tempYghs.replace("分钟", ""));
+		return yghsVal;
 	}
 
 	function cfdChange() {
