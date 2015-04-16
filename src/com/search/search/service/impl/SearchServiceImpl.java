@@ -11,6 +11,7 @@ import com.core.search.bpo.SearchBpo;
 import com.core.search.model.SearchBatchModel;
 import com.core.search.model.SearchQueryModel;
 import com.core.search.model.SearchRecordModel;
+import com.core.search.model.SearchResDetailModel;
 import com.core.search.model.SearchResultModel;
 import com.core.search.model.SearchResultsModel;
 import com.core.user.model.UserForBusinessModel;
@@ -75,5 +76,11 @@ public class SearchServiceImpl extends SearchBaseService implements
 		searchResultsModel.setSearchRecordModel(searchRecordModel);
 		searchResultsModel.setSearchResultModels(searchResultModels);
 		return searchResultsModel;
+	}
+
+	@Override
+	public List<SearchResDetailModel> querySearchResDetailModels(String ssjlId,
+			String gsid) throws BaseException {
+		return searchBpo.querySearchResDetailModels(ssjlId, gsid);
 	}
 }

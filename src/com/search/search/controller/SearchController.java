@@ -16,6 +16,7 @@ import com.core.base.util.DsDateUtil;
 import com.core.search.model.SearchBatchModel;
 import com.core.search.model.SearchQueryModel;
 import com.core.search.model.SearchRecordModel;
+import com.core.search.model.SearchResDetailModel;
 import com.core.search.model.SearchResultModel;
 import com.core.search.model.SearchResultsModel;
 import com.core.user.model.UserForBusinessModel;
@@ -54,8 +55,6 @@ public class SearchController extends SearchBaseController {
 		userModel.setUserId("ldwtest");
 		session.setAttribute(SearchSessionNames.userForBusiness, userModel);
 
-		
-		
 		SearchBatchModel searchBatchModel;
 		SearchRecordModel searchRecordModel;
 		List<SearchResultModel> searchResultModels;
@@ -120,7 +119,7 @@ public class SearchController extends SearchBaseController {
 		map.put("sspcId", sspcId);
 		map.put("ssjlId", ssjlId);
 		map.put("searchOrderResultModels", searchResultModels);
-		map.put("ygms", request.getAttribute("ygms"));
+		map.put("ygms", request.getParameter("ygms"));
 
 		return "/searchResult";
 	}
@@ -133,5 +132,17 @@ public class SearchController extends SearchBaseController {
 			yysj = DsDateUtil.addDay(yysj, 1);
 		}
 		return yysj;
+	}
+
+	@RequestMapping("/test")
+	// @ResponseBody
+	public String test(ModelMap map, HttpServletRequest request)
+			throws BaseException {
+		String gsid = request.getParameter("gsid");
+		String ssjlid = request.getParameter("ssjlid");
+		List<SearchResDetailModel> searchResDetailModels = searchService
+				.querySearchResDetailModels(ssjlid, gsid);
+		map.put("searchResDetailModels", searchResDetailModels);
+		return "/modal/detailModal";
 	}
 }

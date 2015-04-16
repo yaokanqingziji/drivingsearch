@@ -24,6 +24,7 @@
 			<div class="span12">
 				<div class="alert">
 					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。
+					<br>${ygms}
 				</div>
 				<table class="table">
 					<thead>
@@ -32,6 +33,7 @@
 							<th>价格（元）</th>
 							<th>公司名称</th>
 							<th>电话预约</th>
+							<th>费用详情</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -39,54 +41,51 @@
 							<tr>
 								<td>${res.sspm}</td>
 								<td>${res.gsjg}</td>
-								<td>${res.gsmc}(${res.pjjb })</td>
+								<td>${res.gsmc}</td>
 								<td><button class="btn" type="button" onclick="saveLog()">
 										<a href="tel:${res.yydh} ">预约</a>
 									</button></td>
+								<td><button type="button" class="btn btn-xs btn-primary"
+										role="button"
+										onclick="detailView('${res.ssjlid}','${res.gsid}','${res.gsmc}','${res.gsjg}','${ygms}')">详情</button></td>
+
 							</tr>
 						</c:forEach>
+						<!-- <tr class="info">
+							<td>1</td>
+							<td>39.0(50.0)</td>
+							<td>E代驾 <br>(4星)
+							</td>
+							<td><button class="btn" type="button">预约</button></td>
+							<td>
+								<button type="button" class="btn btn-xs btn-primary"
+									role="button" onclick="test('E代驾  总费用39.0')">详情</button>
+							</td>
+						</tr> -->
 
-						<!-- 							<tr class="info">
-								<td>1</td>
-								<td>39.0(50.0)</td>
-								<td>E代驾 <br>(4星)
-								</td>
-								<td><button class="btn" type="button">预约</button></td>
-
-							</tr>
-							<tr class="warning">
-								<td>2</td>
-								<td>45.0(48.5)</td>
-								<td>途顺代驾<br>(3星)
-								</td>
-								<td><button class="btn" type="button">预约</button></td>
-							</tr>
-							<tr class="info">
-								<td>3</td>
-								<td>50.0(55.5)</td>
-								<td>V代驾<br>(4星)
-								</td>
-								<td><button class="btn" type="button">预约</button></td>
-							</tr>
-							<tr class="warning">
-								<td>4</td>
-								<td>50.5(52.0)</td>
-								<td>易代驾<br>(5星)
-								</td>
-								<td><button class="btn" type="button">预约</button></td>
-							</tr>
-							<tr class="info">
-								<td>5</td>
-								<td>50.5(51.0)</td>
-								<td>来个代驾啦啦啦啦啦啦<br>(4星)
-								</td>
-								<td><button class="btn" type="button">预约</button></td>
-							</tr>
- -->
 					</tbody>
 				</table>
 				<div class="alert">
 					<strong>友情提醒!</strong> <br>括号内的价格为延长一定耗时后的参考价格。
+				</div>
+
+				<div class="modal fade" id="detailModal" role="dialog"
+					aria-labelledby="detailModalTitle" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">×</button>
+								<h4 class="modal-title" id="detailModalTitle"></h4>
+							</div>
+							<div class="modal-body" id="detailModalContain"></div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -101,6 +100,28 @@
 	});
 
 	function saveLog() {
+		//TODO 保存预约记录
 		alert('a');
+	}
+
+	function detailView(ssjlid, gsid, gsmc, gsjg,ygms) {
+		$.post("${app}/search/test.do?ssjlid="+ssjlid+"&gsid="+gsid, function(data) {
+			$("#detailModalTitle").html(gsmc + "【费用：" + gsjg + "元】<br>"+ygms);
+			$("#detailModalContain").html(data);
+
+			$("#detailModalContain table tbody > tr:even").addClass("info");
+			$("#detailModalContain table tbody > tr:odd").addClass("warning");
+			
+			$('#detailModal').modal('show');
+		});
+		/* $('#detailModal').on('shown.bs.modal', function() {
+			$("#detailModalContain").html('ldw test ma le ge bi');
+
+		}); */
+		/* $('#detailModal').modal({
+			keyboard : false,
+			backdrop : false
+		}); 
+		$('#detailModal').modal('show');*/
 	}
 </script>

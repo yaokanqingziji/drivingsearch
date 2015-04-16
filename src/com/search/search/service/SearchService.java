@@ -1,6 +1,9 @@
 package com.search.search.service;
 
+import java.util.List;
+
 import com.core.search.model.SearchQueryModel;
+import com.core.search.model.SearchResDetailModel;
 import com.core.search.model.SearchResultsModel;
 import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
@@ -23,4 +26,17 @@ public interface SearchService {
 			SearchQueryModel searchQueryModel,
 			UserForBusinessModel userForBusinessModel)
 			throws BaseException;
+	
+	/** 
+	* @Description: 根据搜索记录ID与公司ID,获取搜索结果明细信息
+	* @param ssjlId
+	* @param gsid
+	* @return
+	* @throws BaseException
+	* @return List<SearchResDetailModel>   
+	* @author  ldw
+	* @date 2015年4月15日 上午9:19:18
+	*/ 
+	public List<SearchResDetailModel> querySearchResDetailModels(String ssjlId,
+			String gsid) throws BaseException;
 }

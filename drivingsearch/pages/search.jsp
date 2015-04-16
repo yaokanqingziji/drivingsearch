@@ -406,17 +406,19 @@ html,body {
 		var mddmc = mddName;
 		var mddjd = mddPoint.lng;
 		var mddwd = mddPoint.lat;
+		var ygms = $("#yg").html();
 		
 		var yghsValue = dealYghs(yghs);
 		var ygjlValue = ygjl.replace("公里", "");
 		//TODO 如果非会员用户使用搜索，那么需要先通过post方法保存临时用户。
 
 		//TODO 用户保存成功后进行搜索跳转。
+		
 		searchUrl = "${app}/search/searchForPersonDrive.do?";
 		searchUrl = searchUrl + "yysjStr=" + yysjStr + "&cfdmc=" + cfdmc
 				+ "&cfdjd=" + cfdjd + "&cfdwd=" + cfdwd + "&mddmc=" + mddmc
 				+ "&mddjd=" + mddjd + "&mddwd=" + mddwd + "&yghs=" + yghsValue
-				+ "&ygjl=" + ygjlValue +"&ygms="+ getJlAHs();
+				+ "&ygjl=" + ygjlValue +"&ygms="+ ygms;
 		window.location.href = searchUrl;
 	}
 	
