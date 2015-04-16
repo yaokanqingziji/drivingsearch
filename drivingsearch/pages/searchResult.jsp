@@ -23,8 +23,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<div class="alert">
-					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。
-					<br>${ygms}
+					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。 <br>${ygms}
 				</div>
 				<table class="table">
 					<thead>
@@ -42,7 +41,8 @@
 								<td>${res.sspm}</td>
 								<td>${res.gsjg}</td>
 								<td>${res.gsmc}</td>
-								<td><button class="btn" type="button" onclick="saveLog()">
+								<td><button class="btn" type="button"
+										onclick="saveLog('${res.gsid}','${res.ssjlid}','${res.yydh}')">
 										<a href="tel:${res.yydh} ">预约</a>
 									</button></td>
 								<td><button type="button" class="btn btn-xs btn-primary"
@@ -99,21 +99,26 @@
 		$(".table tbody > tr:odd").addClass("warning");
 	});
 
-	function saveLog() {
-		//TODO 保存预约记录
-		alert('a');
+	function saveLog(gsid, ssjlid, yydh) {
+		$.post("${app}/appoint/addAppoint.do?gsid=" + gsid + "&yyly=01&yylydx="
+				+ ssjlid + "&yylxrdh=" + yydh + "&djlx=01");
 	}
 
-	function detailView(ssjlid, gsid, gsmc, gsjg,ygms) {
-		$.post("${app}/search/test.do?ssjlid="+ssjlid+"&gsid="+gsid, function(data) {
-			$("#detailModalTitle").html(gsmc + "【费用：" + gsjg + "元】<br>"+ygms);
-			$("#detailModalContain").html(data);
+	function detailView(ssjlid, gsid, gsmc, gsjg, ygms) {
+		$.post(
+				"${app}/search/detailView.do?ssjlid=" + ssjlid + "&gsid="
+						+ gsid, function(data) {
+					$("#detailModalTitle").html(
+							gsmc + "【费用：" + gsjg + "元】<br>" + ygms);
+					$("#detailModalContain").html(data);
 
-			$("#detailModalContain table tbody > tr:even").addClass("info");
-			$("#detailModalContain table tbody > tr:odd").addClass("warning");
-			
-			$('#detailModal').modal('show');
-		});
+					$("#detailModalContain table tbody > tr:even").addClass(
+							"info");
+					$("#detailModalContain table tbody > tr:odd").addClass(
+							"warning");
+
+					$('#detailModal').modal('show');
+				});
 		/* $('#detailModal').on('shown.bs.modal', function() {
 			$("#detailModalContain").html('ldw test ma le ge bi');
 

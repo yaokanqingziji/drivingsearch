@@ -134,9 +134,9 @@ public class SearchController extends SearchBaseController {
 		return yysj;
 	}
 
-	@RequestMapping("/test")
+	@RequestMapping("/detailView")
 	// @ResponseBody
-	public String test(ModelMap map, HttpServletRequest request)
+	public String detailView(ModelMap map, HttpServletRequest request)
 			throws BaseException {
 		String gsid = request.getParameter("gsid");
 		String ssjlid = request.getParameter("ssjlid");
