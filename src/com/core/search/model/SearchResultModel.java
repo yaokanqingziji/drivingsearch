@@ -10,6 +10,7 @@ public class SearchResultModel {
 	private String pjjb;// 公司评价级别
 
 	private String yydh;// 预约电话
+	private String yylxr; //预约联系人
 
 	private BigDecimal gsjg;// 估算價格
 	private BigDecimal sspm;// 價格順序
@@ -78,4 +79,14 @@ public class SearchResultModel {
 		this.sspm = sspm;
 	}
 
+	public String getYylxr() {
+		return yylxr;
+	}
+
+	public void setYylxr(String yylxr) {
+		this.yylxr = yylxr;
+	}
+
+	
+	
 }

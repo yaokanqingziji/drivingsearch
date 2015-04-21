@@ -31,24 +31,22 @@
 							<th>排名</th>
 							<th>价格（元）</th>
 							<th>公司名称</th>
+							<th>联系人</th>
 							<th>电话预约</th>
-							<th>费用详情</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${searchOrderResultModels}" var="res">
 							<tr>
 								<td>${res.sspm}</td>
-								<td>${res.gsjg}</td>
+								<td><a class="btn" role="button"
+									onclick="detailView('${res.ssjlid}','${res.gsid}','${res.gsmc}','${res.gsjg}','${ygms}')">${res.gsjg}</button></td>
 								<td>${res.gsmc}</td>
+								<td>${res.yylxr}</td>
 								<td><button class="btn" type="button"
-										onclick="saveLog('${res.gsid}','${res.ssjlid}','${res.yydh}')">
+										onclick="saveLog('${res.gsid}','${res.ssjlid}','${res.yydh}','${res.yylxr}')">
 										<a href="tel:${res.yydh} ">预约</a>
 									</button></td>
-								<td><button type="button" class="btn btn-xs btn-primary"
-										role="button"
-										onclick="detailView('${res.ssjlid}','${res.gsid}','${res.gsmc}','${res.gsjg}','${ygms}')">详情</button></td>
-
 							</tr>
 						</c:forEach>
 						<!-- <tr class="info">
@@ -99,9 +97,9 @@
 		$(".table tbody > tr:odd").addClass("warning");
 	});
 
-	function saveLog(gsid, ssjlid, yydh) {
+	function saveLog(gsid, ssjlid, yydh, yylxr) {
 		$.post("${app}/appoint/addAppoint.do?gsid=" + gsid + "&yyly=01&yylydx="
-				+ ssjlid + "&yylxrdh=" + yydh + "&djlx=01");
+				+ ssjlid + "&yylxrdh=" + yydh + "&djlx=01&yylxr=" + yylxr);
 	}
 
 	function detailView(ssjlid, gsid, gsmc, gsjg, ygms) {
