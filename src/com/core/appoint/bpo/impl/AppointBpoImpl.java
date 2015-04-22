@@ -19,7 +19,7 @@ public class AppointBpoImpl extends SearchBaseBpo implements AppointBpo {
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" insert into ds.y_appoint(yyjlid,gsid,userid,yyly,yylydx,yylxr,yylxrdh,czsj,djlx,bz)");
+		sb.append(" insert into y_appoint(yyjlid,gsid,userid,yyly,yylydx,yylxr,yylxrdh,czsj,djlx,bz)");
 		sb.append(" values(:yyjlid,:gsid,:userid,:yyly,:yylydx,:yylxr,:yylxrdh,sysdate,:djlx,:bz)");
 
 		sql.setSQL(sb);

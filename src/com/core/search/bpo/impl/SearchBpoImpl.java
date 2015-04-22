@@ -622,7 +622,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" insert into ds.search_batch(sspcid,userid,sssj,yysj,cfdmc,cfdjd,cfdwd,");
+		sb.append(" insert into search_batch(sspcid,userid,sssj,yysj,cfdmc,cfdjd,cfdwd,");
 		sb.append("                             mddmc,mddjd,mddwd,yghs,ygjl,ddsj,bz)      ");
 		sb.append(" values(:sspcid,:userid,sysdate,:yysj,:cfdmc,:cfdjd,:cfdwd,");
 		sb.append("          :mddmc,:mddjd,:mddwd,:yghs,:ygjl,:ddsj,:bz) ");
@@ -651,7 +651,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" insert into ds.search_record(ssjlid,sspcid,sssj,yysj,mddmc,mddjd,mddwd");
+		sb.append(" insert into search_record(ssjlid,sspcid,sssj,yysj,mddmc,mddjd,mddwd");
 		sb.append("                             ,yghs,ygjl,ddsj,bz)      ");
 		sb.append(" values(:ssjlid,:sspcid,sysdate,:yysj,:mddmc,:mddjd,:mddwd,");
 		sb.append("          :yghs,:ygjl,:ddsj,:bz) ");
@@ -676,7 +676,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" insert into ds.search_result(ssjlid,gsid,sspcid,gsjg,sspm,jfbbid,bz) ");
+		sb.append(" insert into search_result(ssjlid,gsid,sspcid,gsjg,sspm,jfbbid,bz) ");
 		sb.append(" values(:ssjlid,:gsid,:sspcid,:gsjg,:sspm,:jfbbid,:bz)           ");
 		sql.setSQL(sb);
 		for (SearchResultDomain searchResultDomain : resultDomainList) {
@@ -701,7 +701,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" insert into ds.search_res_detail(ssjlid,gsid,jfxmid,jfbbid,xmfy,xmfyms,bz) ");
+		sb.append(" insert into search_res_detail(ssjlid,gsid,jfxmid,jfbbid,xmfy,xmfyms,bz) ");
 		sb.append(" values(:ssjlid,:gsid,:jfxmid,:jfbbid,:xmfy,:xmfyms,:bz)          ");
 		sql.setSQL(sb);
 		for (SearchResDetailDomain searchResDetailDomain : resDetailDomainList) {
@@ -749,7 +749,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		StringBuilder sb = new StringBuilder();
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		sb.append(" select r.ssjlid,r.gsid,r.sspcid,r.gsjg,r.sspm,r.jfbbid,r.bz,c.yylxr,c.yylxdh yydh,i.gsmc ");
-		sb.append("   from ds.search_result r,ds.c_regist c,ds.c_info i ");
+		sb.append("   from search_result r,c_regist c,c_info i ");
 		sb.append("  where r.ssjlid = :ssjlid ");
 		sb.append("         and r.gsid = c.gsid ");
 		sb.append("         and  r.gsid = i.gsid ");
@@ -767,7 +767,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		StringBuilder sb = new StringBuilder();
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		sb.append(" select  d.*,p.xmmc                          ");
-		sb.append(" from ds.search_res_detail d,ds.b_project p  ");
+		sb.append(" from search_res_detail d,b_project p  ");
 		sb.append(" where d.ssjlid = :ssjlid                    ");
 		sb.append("     and d.gsid = :gsid                      ");
 		sb.append("     and d.jfxmid = p.jfxmid                 ");
