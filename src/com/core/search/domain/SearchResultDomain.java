@@ -1,13 +1,12 @@
 package com.core.search.domain;
 
-import java.math.BigDecimal;
 
 public class SearchResultDomain {
 	private String ssjlid;
 	private String gsid;
 	private String sspcid;
-	private BigDecimal gsjg;
-	private BigDecimal sspm;
+	private Double gsjg;
+	private Integer sspm;
 	private String jfbbid;
 	private String bz;
 
@@ -35,19 +34,21 @@ public class SearchResultDomain {
 		this.sspcid = sspcid;
 	}
 
-	public BigDecimal getGsjg() {
+	
+
+	public Double getGsjg() {
 		return gsjg;
 	}
 
-	public void setGsjg(BigDecimal gsjg) {
+	public void setGsjg(Double gsjg) {
 		this.gsjg = gsjg;
 	}
 
-	public BigDecimal getSspm() {
+	public Integer getSspm() {
 		return sspm;
 	}
 
-	public void setSspm(BigDecimal sspm) {
+	public void setSspm(Integer sspm) {
 		this.sspm = sspm;
 	}
 

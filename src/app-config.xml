@@ -83,8 +83,8 @@
 
 		<!-- 系统字符集 -->
 		<property name="ENCODING" value="UTF-8" />
-		
-		<property name="dbType" value="oracle" />
+		<!-- value：oracle/mysql -->
+		<property name="dbType" value="mysql" />
 
 	</bean>
 	<!-- 初始化FrameGlobalNames -->

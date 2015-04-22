@@ -1,6 +1,5 @@
 package com.core.search.model;
 
-import java.math.BigDecimal;
 
 public class SearchResultModel {
 	private String sspcid;
@@ -12,8 +11,8 @@ public class SearchResultModel {
 	private String yydh;// 预约电话
 	private String yylxr; //预约联系人
 
-	private BigDecimal gsjg;// 估算價格
-	private BigDecimal sspm;// 價格順序
+	private Double gsjg;// 估算價格
+	private Integer sspm;// 價格順序
 
 	public String getSspcid() {
 		return sspcid;
@@ -63,19 +62,21 @@ public class SearchResultModel {
 		this.yydh = yydh;
 	}
 
-	public BigDecimal getGsjg() {
+
+	public Double getGsjg() {
 		return gsjg;
 	}
 
-	public void setGsjg(BigDecimal gsjg) {
+	public void setGsjg(Double gsjg) {
 		this.gsjg = gsjg;
 	}
 
-	public BigDecimal getSspm() {
+	
+	public Integer getSspm() {
 		return sspm;
 	}
 
-	public void setSspm(BigDecimal sspm) {
+	public void setSspm(Integer sspm) {
 		this.sspm = sspm;
 	}
 

@@ -10,4 +10,5 @@ public class SearchCodeNames extends BaseCodeNames {
 		public final static String tempUser = "0";// 临时用户
 
 	}
+	
 }

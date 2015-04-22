@@ -431,6 +431,9 @@ html,body {
 		if(index > 0){
 			hsArray = tempYghs.split("天");
 			tempYghs = hsArray[1];
+			if(tempYghs == null){
+				tempYghs = '';
+			}
 			yghsVal = yghsVal + parseInt(hsArray[0]) * 24 * 60;
 		}
 		
@@ -438,10 +441,18 @@ html,body {
 		if(index > 0){
 			hsArray = tempYghs.split("小时");
 			tempYghs = hsArray[1];
+			if(tempYghs == null){
+				tempYghs = '';
+			}
 			yghsVal = yghsVal + parseInt(hsArray[0]) * 60;
 		}
 		
-		yghsVal = yghsVal + parseInt(tempYghs.replace("分钟", ""));
+		index = tempYghs.indexOf("分钟");
+		if(index > 0){
+			hsArray = tempYghs.split("分钟");
+			yghsVal = yghsVal + parseInt(hsArray[0]) ;
+		}
+		
 		return yghsVal;
 	}
 

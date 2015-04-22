@@ -1,6 +1,5 @@
 package com.core.company.bpo.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,9 +14,11 @@ import com.core.company.model.CBillProjectModel;
 import com.core.company.model.CBillTimeModel;
 import com.core.company.model.CRegistResultModel;
 import com.core.company.model.CompanyBillModel;
+import com.core.company.model.CompanyBillResultModel;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.db.SQLExecutor;
 import com.ldw.frame.common.exception.BusinessException;
+import com.ldw.frame.common.global.CodeNames;
 
 @Component("com.core.company.bpo.impl.CompanyBillBpoImpl")
 public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo {
@@ -26,7 +27,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 			throws BaseException {
 		// 声明变量
 		CompanyBillModel companyBillModel = new CompanyBillModel(); // 返回结果
-		List<HashMap<String, Object>> cBillProjectResultList;// 计费标准列表
+		List<CompanyBillResultModel> cBillProjectResultList;// 计费标准列表
 		// 查询所有有效的注册公司下的计费标准
 		cBillProjectResultList = this.queryAllRegistCompanyBillByDjlx(djlx);
 		if (cBillProjectResultList == null
@@ -39,11 +40,12 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		return companyBillModel;
 	}
 
-	private List<HashMap<String, Object>> queryAllRegistCompanyBillByDjlx(
+	private List<CompanyBillResultModel> queryAllRegistCompanyBillByDjlx(
 			String djlx) throws BaseException {
-		List<HashMap<String, Object>> cBillProjectResultList;
+		List<CompanyBillResultModel> cBillProjectResultList;
 		StringBuilder sb = new StringBuilder();
 		SQLExecutor sql = this.getSession().getSQLExecutor();
+		String dbType = globalName.getDbType();
 
 		sb.append(" select c.gsmc,c.gsbh,                 ");
 		sb.append("        r.zcid,r.gsid,r.djlx,r.zczt,r.jfbbid,r.yxq,r.yylxr,r.yylxdh, ");
@@ -55,7 +57,14 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		sb.append("        c_b_time    t,              ");
 		sb.append("        c_b_project p               ");
 		sb.append("  where c.gsid = r.gsid                ");
-		sb.append("    and IFNULL(r.yxq, now()) >= now() ");
+		if(CodeNames.DBType.mysql.equals(dbType)){
+			sb.append("    and IFNULL(r.yxq, now()) >= now() ");
+		}else if(CodeNames.DBType.oracle.equals(dbType)){
+			sb.append("    and nvl(r.yxq, sysdate) >= sysdate ");
+		}else{
+			//以后再说吧
+		}
+		
 		sb.append("    and r.zczt = '01'                  ");
 		sb.append("    and r.djlx = '01'                  ");
 		sb.append("    and r.jfbbid = v.jfbbid            ");
@@ -66,13 +75,13 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		sb.append(" order by r.gsid,v.jfbbid,t.jfsjdid,p.jfxmid ");
 
 		sql.setSQL(sb);
-		cBillProjectResultList = sql.executeQuery();
+		cBillProjectResultList = sql.executeQueryBeanList(CompanyBillResultModel.class);
 
 		return cBillProjectResultList;
 	}
 
 	private void transResult(CompanyBillModel companyBillModel,
-			List<HashMap<String, Object>> cBillProjectResultList)
+			List<CompanyBillResultModel> cBillProjectResultList)
 			throws BaseException {
 		// 声明
 		List<CRegistResultModel> tempCRegistList = new ArrayList<CRegistResultModel>();
@@ -80,7 +89,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		HashMap<String, List<BillProjectModel>> tempBillProjectMap = new HashMap<String, List<BillProjectModel>>();
 		HashMap<String, List<CBillProjectModel>> tempCBillProjectMap = new HashMap<String, List<CBillProjectModel>>();
 
-		HashMap<String, Object> tempMap;
+		CompanyBillResultModel companyBillResultModel;
 		String zcid, jfbbid, jfsjdid, jfxmbh, cbproject,jfxmid;
 		// key:zcid
 		HashMap<String, CRegistResultModel> tempCRMap = new HashMap<String, CRegistResultModel>();
@@ -94,12 +103,12 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		CBillProjectModel cBillProjectModel;
 		// 转换
 		for (int i = 0, size = cBillProjectResultList.size(); i < size; i++) {
-			tempMap = cBillProjectResultList.get(i);
-			zcid = (String) tempMap.get("ZCID");
-			jfbbid = (String) tempMap.get("JFBBID");
-			jfsjdid = (String) tempMap.get("JFSJDID");
-			jfxmbh = (String) tempMap.get("JFXMBH");
-			jfxmid = (String) tempMap.get("JFXMID");
+			companyBillResultModel = cBillProjectResultList.get(i);
+			zcid = (String) companyBillResultModel.getZcid();
+			jfbbid = (String) companyBillResultModel.getJfbbid();
+			jfsjdid = (String) companyBillResultModel.getJfsjdid();
+			jfxmbh = (String) companyBillResultModel.getJfxmbh();
+			jfxmid = (String) companyBillResultModel.getJfxmid();
 
 			cbproject = jfsjdid + jfxmbh;
 
@@ -107,15 +116,15 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 			if (!tempCRMap.containsKey(zcid)) {
 				cRegistModel = new CRegistResultModel();
 				cRegistModel.setZcid(zcid);
-				cRegistModel.setGsbh((String) tempMap.get("GSBH"));
-				cRegistModel.setGsid((String) tempMap.get("GSID"));
-				cRegistModel.setGsmc((String) tempMap.get("GSMC"));
-				cRegistModel.setDjlx((String) tempMap.get("DJLX"));
-				cRegistModel.setZczt((String) tempMap.get("ZCZT"));
+				cRegistModel.setGsbh((String) companyBillResultModel.getGsbh());
+				cRegistModel.setGsid((String) companyBillResultModel.getGsid());
+				cRegistModel.setGsmc((String) companyBillResultModel.getGsmc());
+				cRegistModel.setDjlx((String) companyBillResultModel.getDjlx());
+				cRegistModel.setZczt((String) companyBillResultModel.getZczt());
 				cRegistModel.setJfbbid(jfbbid);
-				cRegistModel.setYxq((Date) tempMap.get("YXQ"));
-				cRegistModel.setYylxdh((String) tempMap.get("YYLXDH"));
-				cRegistModel.setYylxr((String) tempMap.get("YYLXR"));
+				cRegistModel.setYxq((Date) companyBillResultModel.getYxq());
+				cRegistModel.setYylxdh((String) companyBillResultModel.getYylxdh());
+				cRegistModel.setYylxr((String) companyBillResultModel.getYylxr());
 
 				tempCRMap.put(zcid, cRegistModel);
 				tempCRegistList.add(cRegistModel);
@@ -125,8 +134,8 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 				cBillTimeModel = new CBillTimeModel();
 				cBillTimeModel.setJfbbid(jfbbid);
 				cBillTimeModel.setJfsjdid(jfsjdid);
-				cBillTimeModel.setQssj((String) tempMap.get("QSSJ"));
-				cBillTimeModel.setZzsj((String) tempMap.get("ZZSJ"));
+				cBillTimeModel.setQssj((String) companyBillResultModel.getQssj());
+				cBillTimeModel.setZzsj((String) companyBillResultModel.getZzsj());
 
 				if (!tempCBillTimeMap.containsKey(jfbbid)) {
 					tempCBillTimeMap.put(jfbbid,
@@ -158,15 +167,15 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 			cBillProjectModel.setJfbbid(jfbbid);
 			cBillProjectModel.setJfsjdid(jfsjdid);
 			cBillProjectModel.setJfxmbh(jfxmbh);
-			cBillProjectModel.setJftjdw((String) tempMap.get("JFTJDW"));
-			cBillProjectModel.setJftjxx((String) tempMap.get("JFTJXX"));
-			cBillProjectModel.setJftjsx((String) tempMap.get("JFTJSX"));
-			cBillProjectModel.setSfbhsx((String) tempMap.get("SFBHSX"));
-			cBillProjectModel.setSfbhxx((String) tempMap.get("SFBHXX"));
-			cBillProjectModel.setJfbzdw((String) tempMap.get("JFBZDW"));
-			cBillProjectModel.setJfbzz((String) tempMap.get("JFBZZ"));
-			cBillProjectModel.setJfbzjsff((String) tempMap.get("JFBZJSFF"));
-			cBillProjectModel.setJfed((BigDecimal) tempMap.get("JFED"));
+			cBillProjectModel.setJftjdw((String) companyBillResultModel.getJftjdw());
+			cBillProjectModel.setJftjxx((String) companyBillResultModel.getJftjxx());
+			cBillProjectModel.setJftjsx((String) companyBillResultModel.getJftjsx());
+			cBillProjectModel.setSfbhsx((String) companyBillResultModel.getSfbhsx());
+			cBillProjectModel.setSfbhxx((String) companyBillResultModel.getSfbhxx());
+			cBillProjectModel.setJfbzdw((String) companyBillResultModel.getJfbzdw());
+			cBillProjectModel.setJfbzz((String) companyBillResultModel.getJfbzz());
+			cBillProjectModel.setJfbzjsff((String) companyBillResultModel.getJfbzjsff());
+			cBillProjectModel.setJfed(companyBillResultModel.getJfed());
 
 			if (!tempCBillProjectMap.containsKey(cbproject)) {
 				tempCBillProjectMap.put(cbproject,

@@ -1,6 +1,5 @@
 package com.core.search.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class SearchQueryModel {
@@ -20,9 +19,9 @@ public class SearchQueryModel {
 	private String mddwd;// 目的地纬度
 
 	// 预估距离(公里)
-	private BigDecimal ygjl;
+	private Double ygjl;
 	// 预估耗时（分钟）
-	private BigDecimal yghs;
+	private Integer yghs;
 
 	private Date ddsj; // 到达时间
 
@@ -90,19 +89,21 @@ public class SearchQueryModel {
 		this.mddwd = mddwd;
 	}
 
-	public BigDecimal getYgjl() {
+	
+
+	public Double getYgjl() {
 		return ygjl;
 	}
 
-	public void setYgjl(BigDecimal ygjl) {
+	public void setYgjl(Double ygjl) {
 		this.ygjl = ygjl;
 	}
 
-	public BigDecimal getYghs() {
+	public Integer getYghs() {
 		return yghs;
 	}
 
-	public void setYghs(BigDecimal yghs) {
+	public void setYghs(Integer yghs) {
 		this.yghs = yghs;
 	}
 

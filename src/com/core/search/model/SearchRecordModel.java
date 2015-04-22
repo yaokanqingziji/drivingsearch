@@ -1,6 +1,5 @@
 package com.core.search.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class SearchRecordModel {
@@ -8,8 +7,8 @@ public class SearchRecordModel {
 	private String sspcid;
 	private String ssjlid;
 
-	private BigDecimal yghs;
-	private BigDecimal ygjl;
+	private Integer yghs;
+	private Double ygjl;
 
 	private Date yysj;
 	private Date ddsj;
@@ -30,19 +29,21 @@ public class SearchRecordModel {
 		this.ssjlid = ssjlid;
 	}
 
-	public BigDecimal getYghs() {
+
+	public Integer getYghs() {
 		return yghs;
 	}
 
-	public void setYghs(BigDecimal yghs) {
+	public void setYghs(Integer yghs) {
 		this.yghs = yghs;
 	}
 
-	public BigDecimal getYgjl() {
+
+	public Double getYgjl() {
 		return ygjl;
 	}
 
-	public void setYgjl(BigDecimal ygjl) {
+	public void setYgjl(Double ygjl) {
 		this.ygjl = ygjl;
 	}
 

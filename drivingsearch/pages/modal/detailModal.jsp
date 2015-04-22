@@ -11,7 +11,7 @@
 		<c:forEach items="${searchResDetailModels}" var="res">
 			<tr>
 				<td>${res.xmmc}
-				<c:if test="${res.xmfyms != null}">【${res.xmfyms}】</c:if></td>
+				<c:if test="${res.xmfyms != null && res.xmfyms != ''}">【${res.xmfyms}】</c:if></td>
 				<td align="right">${res.xmfy}元</td>
 			</tr>
 		</c:forEach>

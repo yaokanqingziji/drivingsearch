@@ -1,6 +1,5 @@
 package com.core.search.model;
 
-import java.math.BigDecimal;
 
 public class SearchResDetailModel {
 	private String ssjlid;
@@ -8,7 +7,7 @@ public class SearchResDetailModel {
 	private String jfxmid;
 	private String xmmc;
 	private String jfbbid;
-	private BigDecimal xmfy;
+	private Double xmfy;
 	private String xmfyms;
 	private String bz;
 
@@ -44,11 +43,11 @@ public class SearchResDetailModel {
 		this.jfbbid = jfbbid;
 	}
 
-	public BigDecimal getXmfy() {
+	public Double getXmfy() {
 		return xmfy;
 	}
 
-	public void setXmfy(BigDecimal xmfy) {
+	public void setXmfy(Double xmfy) {
 		this.xmfy = xmfy;
 	}
 
@@ -75,6 +74,5 @@ public class SearchResDetailModel {
 	public void setXmmc(String xmmc) {
 		this.xmmc = xmmc;
 	}
-	
-	
+
 }

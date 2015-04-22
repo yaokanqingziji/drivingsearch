@@ -1,6 +1,5 @@
 package com.core.company.model;
 
-import java.math.BigDecimal;
 
 /**
  * @Description: 代驾公司计费项目标准
@@ -24,7 +23,7 @@ public class CBillProjectModel {
 	private String jfbzz;
 	private String jfbzjsff;
 
-	private BigDecimal jfed;
+	private Double jfed;
 
 	private String bz;
 
@@ -124,11 +123,13 @@ public class CBillProjectModel {
 		this.jfbzjsff = jfbzjsff;
 	}
 
-	public BigDecimal getJfed() {
+	
+
+	public Double getJfed() {
 		return jfed;
 	}
 
-	public void setJfed(BigDecimal jfed) {
+	public void setJfed(Double jfed) {
 		this.jfed = jfed;
 	}
 

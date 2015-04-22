@@ -1,13 +1,12 @@
 package com.core.search.domain;
 
-import java.math.BigDecimal;
 
 public class SearchResDetailDomain {
 	private String ssjlid;
 	private String gsid;
 	private String jfxmid;
 	private String jfbbid;
-	private BigDecimal xmfy;
+	private Double xmfy;
 	private String xmfyms;
 	private String bz;
 
@@ -43,11 +42,13 @@ public class SearchResDetailDomain {
 		this.jfbbid = jfbbid;
 	}
 
-	public BigDecimal getXmfy() {
+	
+
+	public Double getXmfy() {
 		return xmfy;
 	}
 
-	public void setXmfy(BigDecimal xmfy) {
+	public void setXmfy(Double xmfy) {
 		this.xmfy = xmfy;
 	}
 

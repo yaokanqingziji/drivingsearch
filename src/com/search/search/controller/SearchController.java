@@ -1,6 +1,5 @@
 package com.search.search.controller;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -69,8 +68,8 @@ public class SearchController extends SearchBaseController {
 		String mddmc = searchQueryModel.getMddmc();
 		String mddjd = searchQueryModel.getMddjd();
 		String mddwd = searchQueryModel.getMddwd();
-		BigDecimal ygjl = searchQueryModel.getYgjl();
-		BigDecimal yghs = searchQueryModel.getYghs();
+		Double ygjl = searchQueryModel.getYgjl();
+		Integer yghs = searchQueryModel.getYghs();
 		if (yysjStr == null || "".equals(yysjStr)) {
 			throw new BusinessException("请选择预约时间");
 		}

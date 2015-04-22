@@ -1,6 +1,5 @@
 package com.core.search.bpo.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +29,7 @@ import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.db.SQLExecutor;
 import com.ldw.frame.common.exception.BusinessException;
+import com.ldw.frame.common.global.CodeNames;
 import com.ldw.frame.common.util.SortUtil;
 
 @Component("com.core.search.bpo.impl.SearchBpoImpl")
@@ -189,7 +189,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		}
 		SortUtil.sortList(resultDomainList, "gsjg", 1);
 		for (int i = 0, size = resultDomainList.size(); i < size; i++) {
-			resultDomainList.get(i).setSspm(BigDecimal.valueOf(i + 1));
+			resultDomainList.get(i).setSspm(i + 1);
 		}
 	}
 
@@ -202,7 +202,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			throws BaseException {
 		String jfxmid, jfxmbh;
 		List<CBillProjectModel> cBillProjectModels;
-		BigDecimal gsjg = BigDecimal.ZERO;
+		Double gsjg = 0D;
 		SearchResultDomain searchResultDomain;
 		SearchResDetailDomain searchResDetailDomain;
 		String gsid = registResultModel.getGsid();
@@ -244,7 +244,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 				continue;
 			}
 			// 计算估算价格，为搜索结果提供估算总价格
-			gsjg = gsjg.add(searchResDetailDomain.getXmfy());
+			gsjg = gsjg + searchResDetailDomain.getXmfy();
 			// 更新resDetailDomainList
 			searchResDetailDomain.setGsid(gsid);
 			searchResDetailDomain.setJfbbid(jfbbid);
@@ -274,8 +274,8 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			List<CBillProjectModel> cBillProjectModels) throws BaseException {
 		SearchResDetailDomain searchResDetailDomain = new SearchResDetailDomain();
 		CBillProjectModel cBillProjectModel = cBillProjectModels.get(0); // 只可能有一条
-		BigDecimal xmfy = cBillProjectModel.getJfed();
-		if (xmfy == null || xmfy == BigDecimal.ZERO) {
+		Double xmfy = cBillProjectModel.getJfed();
+		if (xmfy == null || xmfy == 0D) {
 			return null;
 		}
 		searchResDetailDomain.setXmfy(xmfy);
@@ -297,7 +297,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			List<CBillProjectModel> cBillProjectModels) throws BaseException {
 		SearchResDetailDomain searchResDetailDomain = new SearchResDetailDomain();
 		String qqsj, zzsj;
-		BigDecimal xmfy = BigDecimal.ZERO;
+		Double xmfy = 0D;
 		for (CBillProjectModel cBillProjectModel : cBillProjectModels) {
 			qqsj = cBillProjectModel.getJftjxx();
 			zzsj = cBillProjectModel.getJftjsx();
@@ -306,7 +306,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 				xmfy = cBillProjectModel.getJfed();
 			}
 		}
-		if (xmfy == null || xmfy == BigDecimal.ZERO) {
+		if (xmfy == null || xmfy == 0D) {
 			return null;
 		}
 		searchResDetailDomain.setXmfy(xmfy);
@@ -324,17 +324,17 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 	 * @author ldw
 	 * @date 2015年4月13日 下午3:52:54
 	 */
-	private SearchResDetailDomain calcForYghs(BigDecimal yghs,
+	private SearchResDetailDomain calcForYghs(Integer yghs,
 			List<CBillProjectModel> cBillProjectModels) throws BaseException {
 		SearchResDetailDomain searchResDetailDomain = new SearchResDetailDomain();
-		BigDecimal maxHs;
+		Integer maxHs;
 		String jftjxx, jftjsx;
 		String jfbzStr;
-		BigDecimal jfxxVal, jfsxVal;
-		BigDecimal jfbzVal;
-		BigDecimal jfed;
+		Integer jfxxVal, jfsxVal;
+		Integer jfbzVal;
+		Double jfed;
 		String jfjsff;
-		BigDecimal xmfy = BigDecimal.ZERO;
+		Double xmfy = 0D;
 		String xmfyms = "";
 		String tempMs;
 		for (CBillProjectModel cBillProjectModel : cBillProjectModels) {
@@ -344,24 +344,25 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			jfed = cBillProjectModel.getJfed();
 			jfjsff = cBillProjectModel.getJfbzjsff();
 
-			jfbzVal = BigDecimal.valueOf(Double.valueOf(jfbzStr));
-			jfxxVal = BigDecimal.valueOf(Double.valueOf(jftjxx));
+			jfbzVal = Integer.valueOf(jfbzStr);
+			jfxxVal = Integer.valueOf(jftjxx);
 			if (jftjsx == null || "".equals(jftjsx)) {
 				jfsxVal = yghs;
 			} else {
-				jfsxVal = BigDecimal.valueOf(Double.valueOf(jftjsx));
+				jfsxVal = Integer.valueOf(jftjsx);
 			}
-			if (yghs.compareTo(jfsxVal) > 0) {
+			if (yghs > jfsxVal) {
 				maxHs = jfsxVal;
 			} else {
 				maxHs = yghs;
 			}
-			if (yghs.compareTo(jfxxVal) <= 0) { // 耗时不包含最低计费时间
+			if (yghs <= jfxxVal) { // 耗时不包含最低计费时间
 				continue;
 			}
 
-			xmfy = xmfy.add(jfed.multiply(this.getMath(maxHs.subtract(jfxxVal),
-					jfbzVal, jfjsff)));
+			xmfy = xmfy
+					+ (jfed * this.getMath(Double.valueOf(maxHs - jfxxVal),
+							Double.valueOf(jfbzVal), jfjsff));
 			tempMs = "(" + maxHs + " - " + jfxxVal + ") * " + jfed + "元/"
 					+ jfbzVal + "分钟";
 			if (xmfyms == null || "".equals(xmfyms)) {
@@ -371,7 +372,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			}
 		}
 
-		if (xmfy == null || xmfy == BigDecimal.ZERO) {
+		if (xmfy == null || xmfy == 0D) {
 			return null;
 		}
 		searchResDetailDomain.setXmfy(xmfy);
@@ -390,17 +391,17 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 	 * @author ldw
 	 * @date 2015年4月13日 下午3:55:30
 	 */
-	private SearchResDetailDomain calcForYgjl(BigDecimal ygjl,
+	private SearchResDetailDomain calcForYgjl(Double ygjl,
 			List<CBillProjectModel> cBillProjectModels) throws BaseException {
 		SearchResDetailDomain searchResDetailDomain = new SearchResDetailDomain();
-		BigDecimal maxJl;
+		Double maxJl;
 		String jftjxx, jftjsx;
 		String jfbzStr;
-		BigDecimal jfxxVal, jfsxVal;
-		BigDecimal jfbzVal;
-		BigDecimal jfed;
+		Double jfxxVal, jfsxVal;
+		Double jfbzVal;
+		Double jfed;
 		String jfjsff;
-		BigDecimal xmfy = BigDecimal.ZERO;
+		Double xmfy = 0D;
 		String xmfyms = "";
 		String tempMs;
 		for (CBillProjectModel cBillProjectModel : cBillProjectModels) {
@@ -410,24 +411,24 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			jfed = cBillProjectModel.getJfed();
 			jfjsff = cBillProjectModel.getJfbzjsff();
 
-			jfbzVal = BigDecimal.valueOf(Double.valueOf(jfbzStr));
-			jfxxVal = BigDecimal.valueOf(Double.valueOf(jftjxx));
+			jfbzVal = Double.valueOf(jfbzStr);
+			jfxxVal = Double.valueOf(jftjxx);
 			if (jftjsx == null || "".equals(jftjsx)) {
 				jfsxVal = ygjl;
 			} else {
-				jfsxVal = BigDecimal.valueOf(Double.valueOf(jftjsx));
+				jfsxVal = Double.valueOf(jftjsx);
 			}
-			if (ygjl.compareTo(jfsxVal) > 0) {
+			if (ygjl > jfsxVal) {
 				maxJl = jfsxVal;
 			} else {
 				maxJl = ygjl;
 			}
-			if (ygjl.compareTo(jfxxVal) <= 0) { // 耗时不包含最低计费时间
+			if (ygjl <= jfxxVal) { // 耗时不包含最低计费时间
 				continue;
 			}
 
-			xmfy = xmfy.add(jfed.multiply(this.getMath(maxJl.subtract(jfxxVal),
-					jfbzVal, jfjsff)));
+			xmfy = xmfy
+					+ (jfed * this.getMath(maxJl - jfxxVal, jfbzVal, jfjsff));
 			tempMs = "(" + maxJl + " - " + jfxxVal + ") * " + jfed + "元/"
 					+ jfbzVal + "公里";
 			if (xmfyms == null || "".equals(xmfyms)) {
@@ -436,7 +437,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 				xmfyms = xmfyms + " + " + tempMs;
 			}
 		}
-		if (xmfy == null || xmfy == BigDecimal.ZERO) {
+		if (xmfy == null || xmfy == 0D) {
 			return null;
 		}
 		searchResDetailDomain.setXmfy(xmfy);
@@ -463,7 +464,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		Double mddjd = Double.valueOf(searchQueryModel.getMddjd());// 目的地经度
 		Double mddwd = Double.valueOf(searchQueryModel.getMddwd());// 目的地纬度
 		SearchResDetailDomain searchResDetailDomain = new SearchResDetailDomain();
-		BigDecimal xmfy = BigDecimal.ZERO;
+		Double xmfy = 0D;
 		String xmfyms = "";
 		String jftjxx, jftjsx;
 		Double eastLngxx, eastLngsx;
@@ -471,7 +472,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 		Double northLatxx, northLatsx;
 		Double southLatxx, southLatsx;
 		String[] dlwzArr;
-		BigDecimal jfed;
+		Double jfed;
 
 		for (CBillProjectModel cBillProjectModel : cBillProjectModels) {
 			jftjxx = cBillProjectModel.getJftjxx();
@@ -479,7 +480,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 			jfed = cBillProjectModel.getJfed();
 
 			if (jftjxx == null || "".equals(jftjxx)) {
-				xmfy = xmfy.add(jfed);
+				xmfy = xmfy + jfed;
 				xmfyms = xmfyms + "";
 				continue;
 			} else {
@@ -506,7 +507,7 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 					|| (mddjd < westLngxx && mddjd >= westLngsx)
 					|| (mddwd > northLatxx && mddwd <= northLatsx)
 					|| (mddwd < southLatxx && mddwd >= southLatsx)) {
-				xmfy = xmfy.add(jfed);
+				xmfy = xmfy + jfed;
 				xmfyms = xmfyms + "";
 			}
 			// 判断出发地-地理位置
@@ -514,11 +515,11 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 					|| (cfdjd < westLngxx && cfdjd >= westLngsx)
 					|| (cfdwd > northLatxx && cfdwd <= northLatsx)
 					|| (cfdwd < southLatxx && cfdwd >= southLatsx)) {
-				xmfy = xmfy.add(jfed);
+				xmfy = xmfy + jfed;
 				xmfyms = xmfyms + "";
 			}
 		}
-		if (xmfy == null || xmfy == BigDecimal.ZERO) {
+		if (xmfy == null || xmfy == 0D) {
 			return null;
 		}
 		searchResDetailDomain.setXmfy(xmfy);
@@ -540,21 +541,17 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 	 * @author ldw
 	 * @date 2015年4月13日 下午7:07:47
 	 */
-	private BigDecimal getMath(BigDecimal numerator, BigDecimal denominator,
-			String jsff) throws BaseException {
-		BigDecimal result;
+	private Double getMath(Double numerator, Double denominator, String jsff)
+			throws BaseException {
+		Double result;
 		if (CoreCodeNames.Jfbzjsfs.sqz.equals(jsff)) {
-			result = BigDecimal.valueOf(Math.ceil(numerator.doubleValue()
-					/ denominator.doubleValue()));
+			result = Math.ceil(numerator / denominator);
 		} else if (CoreCodeNames.Jfbzjsfs.sswr.equals(jsff)) {
-			result = BigDecimal.valueOf(Math.round(numerator.doubleValue()
-					/ denominator.doubleValue()));
+			result = Double.valueOf(Math.round(numerator / denominator));
 		} else if (CoreCodeNames.Jfbzjsfs.xqz.equals(jsff)) {
-			result = BigDecimal.valueOf(Math.floor(numerator.doubleValue()
-					/ denominator.doubleValue()));
+			result = Math.floor(numerator / denominator);
 		} else {// 默认上取整
-			result = BigDecimal.valueOf(Math.ceil(numerator.doubleValue()
-					/ denominator.doubleValue()));
+			result = Math.ceil(numerator / denominator);
 		}
 		return result;
 	}
@@ -616,16 +613,24 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 	 */
 	private String addSearchBatch(SearchBatchDomain batchDomain)
 			throws BaseException {
-		String sspcid = dBUtil.generateSysIdForOracle("SEQ_DS", "SB");
+		String sspcid = dBUtil.generateSysId("SEQ_DS", "SB");
 		batchDomain.setSspcid(sspcid);
 
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
+		String dbType = globalName.getDbType();
 
 		sb.append(" insert into search_batch(sspcid,userid,sssj,yysj,cfdmc,cfdjd,cfdwd,");
 		sb.append("                             mddmc,mddjd,mddwd,yghs,ygjl,ddsj,bz)      ");
-		sb.append(" values(:sspcid,:userid,sysdate,:yysj,:cfdmc,:cfdjd,:cfdwd,");
-		sb.append("          :mddmc,:mddjd,:mddwd,:yghs,:ygjl,:ddsj,:bz) ");
+		if (CodeNames.DBType.oracle.equals(dbType)) {
+			sb.append(" values(:sspcid,:userid,sysdate,:yysj,:cfdmc,:cfdjd,:cfdwd,");
+			sb.append("          :mddmc,:mddjd,:mddwd,:yghs,:ygjl,:ddsj,:bz) ");
+		} else if (CodeNames.DBType.mysql.equals(dbType)) {
+			sb.append(" values(:sspcid,:userid,now(),:yysj,:cfdmc,:cfdjd,:cfdwd,");
+			sb.append("          :mddmc,:mddjd,:mddwd,:yghs,:ygjl,:ddsj,:bz) ");
+		} else { // 到时候再说。。。
+
+		}
 
 		sql.setSQL(sb);
 		sql.setBeans(batchDomain);
@@ -645,16 +650,24 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 	 */
 	private String addSearchRecord(SearchRecordDomain recordDomain)
 			throws BaseException {
-		String ssjlid = dBUtil.generateSysIdForOracle("SEQ_DS", "SR");
+		String ssjlid = dBUtil.generateSysId("SEQ_DS", "SR");
 		recordDomain.setSsjlid(ssjlid);
 
 		SQLExecutor sql = this.getSession().getSQLExecutor();
 		StringBuilder sb = new StringBuilder();
+		String dbType = globalName.getDbType();
 
 		sb.append(" insert into search_record(ssjlid,sspcid,sssj,yysj,mddmc,mddjd,mddwd");
 		sb.append("                             ,yghs,ygjl,ddsj,bz)      ");
-		sb.append(" values(:ssjlid,:sspcid,sysdate,:yysj,:mddmc,:mddjd,:mddwd,");
-		sb.append("          :yghs,:ygjl,:ddsj,:bz) ");
+		if (CodeNames.DBType.oracle.equals(dbType)) {
+			sb.append(" values(:ssjlid,:sspcid,sysdate,:yysj,:mddmc,:mddjd,:mddwd,");
+			sb.append("          :yghs,:ygjl,:ddsj,:bz) ");
+		} else if (CodeNames.DBType.mysql.equals(dbType)) {
+			sb.append(" values(:ssjlid,:sspcid,now(),:yysj,:mddmc,:mddjd,:mddwd,");
+			sb.append("          :yghs,:ygjl,:ddsj,:bz) ");
+		} else { // 到时候再说。。。
+
+		}
 
 		sql.setSQL(sb);
 		sql.setBeans(recordDomain);

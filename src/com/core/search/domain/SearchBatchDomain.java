@@ -1,6 +1,5 @@
 package com.core.search.domain;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class SearchBatchDomain {
@@ -14,8 +13,8 @@ public class SearchBatchDomain {
 	private String mddmc;
 	private String mddjd;
 	private String mddwd;
-	private BigDecimal yghs;
-	private BigDecimal ygjl;
+	private Integer yghs;
+	private Double ygjl;
 	private Date ddsj;
 	private String bz;
 
@@ -99,19 +98,19 @@ public class SearchBatchDomain {
 		this.mddwd = mddwd;
 	}
 
-	public BigDecimal getYghs() {
+	public Integer getYghs() {
 		return yghs;
 	}
 
-	public void setYghs(BigDecimal yghs) {
+	public void setYghs(Integer yghs) {
 		this.yghs = yghs;
 	}
 
-	public BigDecimal getYgjl() {
+	public Double getYgjl() {
 		return ygjl;
 	}
 
-	public void setYgjl(BigDecimal ygjl) {
+	public void setYgjl(Double ygjl) {
 		this.ygjl = ygjl;
 	}
 
