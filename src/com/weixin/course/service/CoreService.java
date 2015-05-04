@@ -45,22 +45,39 @@ public class CoreService {
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 			
-			StringBuffer contentMsg = new StringBuffer();  
-			contentMsg.append("欢迎访问<a href=\"http://www.baidu.com\">百度主页</a>").append("\n");  
-			contentMsg.append("您好，微信开发技术验证案例，请回复数字选择服务：").append("\n\n");  
-			contentMsg.append("1  单图文消息(含图片)").append("\n");  
-			contentMsg.append("2  单图文消息(不含图片)").append("\n");  
-			contentMsg.append("3  多图文消息(首条消息含图片)").append("\n");  
-			contentMsg.append("4  多图文消息(首条消息不含图片)").append("\n");  
-			contentMsg.append("5  多图文消息(最后一条消息不含图片)").append("\n");  
-			contentMsg.append("6  一键拨打电话、一键短信、智能识别").append("\n");
-			contentMsg.append("7 百度地图当前位置定位").append("\n");
-			contentMsg.append("点击查看 <a href=\"http://www.baidu.com\">百度主页</a>");
+			List<Article> articleList1 = new ArrayList<Article>();
+			
+			NewsMessage newsMessage1 = new NewsMessage();
+			newsMessage1.setToUserName(fromUserName);
+			newsMessage1.setFromUserName(toUserName);
+			newsMessage1.setCreateTime(new Date().getTime());
+			newsMessage1.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+			
+			Article article41 = new Article();
+			article41.setTitle("了解小来来");
+			article41.setDescription("");
+			article41.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/first.jpg");
+			article41.setUrl("http://blog.csdn.net/lyq8479/article/details/8937622");
 
-			textMessage.setContent(contentMsg.toString());
-			// 将文本消息对象转换成xml字符串
-			respContent = MessageUtil.messageToXml(textMessage);
+			Article article5 = new Article();
+			article5.setTitle("代驾市场现状");
+			article5.setDescription("");
+			article5.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/second.jpg");
+			article5.setUrl("http://blog.csdn.net/lyq8479/article/details/8941577");
 
+			Article article6 = new Article();
+			article6.setTitle("远离酒驾");
+			article6.setDescription("");
+			article6.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/third.jpg");
+			article6.setUrl("http://blog.csdn.net/lyq8479/article/details/8944988");
+
+			articleList1.add(article41);
+			articleList1.add(article5);
+			articleList1.add(article6);
+			newsMessage1.setArticleCount(articleList1.size());
+			newsMessage1.setArticles(articleList1);
+			respContent = MessageUtil.messageToXml(newsMessage1);
+			
 			// 文本消息
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
 				
@@ -75,6 +92,7 @@ public class CoreService {
 				newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 
 				List<Article> articleList = new ArrayList<Article>();
+				/*
 				// 单图文消息
 				if ("1".equals(content)) {
 					Article article = new Article();
@@ -196,27 +214,25 @@ public class CoreService {
 					respContent = MessageUtil.messageToXml(newsMessage);
 				}else if("6".equals(content)){
 					Article article = new Article();
-					article.setTitle("微信公众帐号开发教程Java版");
-					article.setDescription("本文章主要验证\n\n一键拨打电话\n\n一键发送短信\n\n电话号码主动识别");
+					article.setTitle("代驾搜索服务");
+					article.setDescription("代驾搜索服务");
 					// 将图片置为空
 					article.setPicUrl("");
-					article.setUrl("http://80316786lonely.duapp.com/index.jsp#mp.weixin.qq.com");
-					articleList.add(article);
-					newsMessage.setArticleCount(articleList.size());
-					newsMessage.setArticles(articleList);
-					respContent = MessageUtil.messageToXml(newsMessage);
-				}else if("7".equals(content)){
-					Article article = new Article();
-					article.setTitle("微信公众帐号开发教程Java版");
-					article.setDescription("本文章主要验证\n\n使用html5进行地理位置定位");
-					// 将图片置为空
-					article.setPicUrl("");
-					article.setUrl("http://80316786lonely.duapp.com/newzhaunhuan.jsp");
+					article.setUrl("http://115.28.128.212/drivingsearch");
 					articleList.add(article);
 					newsMessage.setArticleCount(articleList.size());
 					newsMessage.setArticles(articleList);
 					respContent = MessageUtil.messageToXml(newsMessage);
 				}
+				*/
+				
+				StringBuffer contentMsg = new StringBuffer();
+				contentMsg.append("十分感谢！小来来已收到您反馈的问题。").append("\n");
+				contentMsg.append("如果刚刚不是反馈问题，您可以点击屏幕下方菜单进入更多功能！").append("\n");
+				textMessage.setContent(contentMsg.toString());
+				// 将文本消息对象转换成xml字符串
+				respContent = MessageUtil.messageToXml(textMessage);
+				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {// 图片消息
 				respContent = "您发送的是图片消息！";
 				
@@ -267,6 +283,22 @@ public class CoreService {
 						respContent = MessageUtil.messageToXml(newsMessage);
 					} else if (eventKey.equals("iteye")) {
 						textMessage.setContent("ITeye即创办于2003年9月的JavaEye,从最初的以讨论Java技术为主的技术论坛，已经逐渐发展成为涵盖整个软件开发领域的综合性网站。\n\nhttp://www.iteye.com");
+						respContent = MessageUtil.messageToXml(textMessage);
+					}else if(eventKey.equals("yhhd")){//优惠活动返回文本消息
+						
+						StringBuffer contentMsg = new StringBuffer();
+						contentMsg.append("优惠活动正在筹备中，敬请期待!").append("\n");
+			
+						textMessage.setContent(contentMsg.toString());
+						// 将文本消息对象转换成xml字符串
+						respContent = MessageUtil.messageToXml(textMessage);
+					}else if(eventKey.equals("wtfk")){//问题反馈返回文本消息
+						
+						StringBuffer contentMsg = new StringBuffer();
+						contentMsg.append("非常感谢您的关注，请以“反馈”两字开头+您反馈的内容进行问题反馈。例如：").append("\n");
+						contentMsg.append("反馈：我觉着需要提供更多的代驾公司一共选择。").append("\n");
+						textMessage.setContent(contentMsg.toString());
+						// 将文本消息对象转换成xml字符串
 						respContent = MessageUtil.messageToXml(textMessage);
 					}
 				}
