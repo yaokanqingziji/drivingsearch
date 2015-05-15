@@ -52,17 +52,11 @@ html,body {
 						<legend></legend>
 						<br>
 						<div class="form-group">
-							<label for="yysjStr" class="col-md-2 control-label">预约时间：</label>
-							<div class="input-group date form_time col-md-2" data-date=""
-								data-date-format="hh:ii" data-link-field="yysjStr"
-								data-link-format="hh:ii">
-								<input class="form-control" size="16" type="text" value=""
-									readonly> <span class="input-group-addon"><span
-									class="glyphicon glyphicon-time"></span></span>
-							</div>
-							<input type="hidden" id="yysjStr" value="" /><br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：</label><input
+							<label>预约时间：</label> <input id="yysjStr" size="20" type="text"
+								value="" readonly class="form_datetime" style="width: 150px;" onfocus="resetDateTimePicker()">
+							<br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId" onchange="cfdChange()" size="20"
-								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：</label><input
+								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
 								value="" style="width: 150px;" /> <br> <label><font
 								id="yg" color="red"></font></label>
@@ -84,7 +78,6 @@ html,body {
 </body>
 </html>
 <script>
-
 	var mapJb = 18;
 	var cfdStr = "cfd";
 	var mddStr = "mdd";
@@ -108,24 +101,29 @@ html,body {
 	$(document)
 			.ready(
 					function() {
-						$('.form_time').datetimepicker({
-							language : 'fr',
-							weekStart : 1,
-							todayBtn : true,
+						
+						$(".form_datetime").datetimepicker({
+							//format : 'hh:ii',
+							todayBtn : false,
 							autoclose : 1,
 							todayHighlight : true,
 							startView : 0,
 							minView : 0,
 							maxView : 1
 						});
-						
+
+						$('.datetimepicker-minutes .prev i').addClass(
+								'glyphicon glyphicon-arrow-left');
+						$('.datetimepicker-minutes .next i').addClass(
+								'glyphicon glyphicon-arrow-right');
+
 						
 						map = new BMap.Map("l-map");
 
 						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
-						//getLocation();
+						getLocation();
 						//排除GPS定位
-						createOtherPosition();
+						//createOtherPosition();
 
 						var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
 						{
@@ -236,6 +234,12 @@ html,body {
 										});
 
 					});
+	
+	function resetDateTimePicker(){
+		
+	}
+	
+	
 
 	//GPS定位
 	function getLocation() {
@@ -272,7 +276,8 @@ html,body {
 				cfdName = cfdPosition;
 			}
 			//设置出发地名称
-			$("#suggestId").val('我的位置');
+			//$("#suggestId").val('我的位置');
+			$("#suggestId").val(cfdName);
 			//设置起始位置标记
 			setPlace(cfdStr);
 
@@ -385,18 +390,21 @@ html,body {
 	};
 
 	function search() {
-		
+
 		var searchUrl;
 		var yysjStr = $("#yysjStr").val();
-		if(yysjStr == null || yysjStr == ''){
+		if (yysjStr == null || yysjStr == '') {
 			alert("请选择预约时间");
-			return ;
+			return;
 		}
-		if(cfdPoint == null){
+		//因为格式为： 2015-05-15 22:35，仅取22:35
+		yysjStr = yysjStr.split(' ')[1];
+		
+		if (cfdPoint == null) {
 			alert("请输入出发地");
 			return;
 		}
-		if(mddPoint == null){
+		if (mddPoint == null) {
 			alert("请输入目的地");
 			return;
 		}
@@ -407,53 +415,77 @@ html,body {
 		var mddjd = mddPoint.lng;
 		var mddwd = mddPoint.lat;
 		var ygms = $("#yg").html();
-		
+
 		var yghsValue = dealYghs(yghs);
-		var ygjlValue = ygjl.replace("公里", "");
+		var ygjlValue = dealYgjl(ygjl);
 		//TODO 如果非会员用户使用搜索，那么需要先通过post方法保存临时用户。
 
 		//TODO 用户保存成功后进行搜索跳转。
-		
+
 		searchUrl = "${app}/search/searchForPersonDrive.do?";
 		searchUrl = searchUrl + "yysjStr=" + yysjStr + "&cfdmc=" + cfdmc
 				+ "&cfdjd=" + cfdjd + "&cfdwd=" + cfdwd + "&mddmc=" + mddmc
 				+ "&mddjd=" + mddjd + "&mddwd=" + mddwd + "&yghs=" + yghsValue
-				+ "&ygjl=" + ygjlValue +"&ygms="+ ygms;
+				+ "&ygjl=" + ygjlValue + "&ygms=" + ygms;
 		window.location.href = searchUrl;
 	}
-	
-	function dealYghs(yghs){
+
+	function dealYghs(yghs) {
 		var yghsVal = 0;
 		var tempYghs = yghs;
 		var hsArray;
-		
+
 		var index = tempYghs.indexOf("天");
-		if(index > 0){
+		if (index > 0) {
 			hsArray = tempYghs.split("天");
 			tempYghs = hsArray[1];
-			if(tempYghs == null){
+			if (tempYghs == null) {
 				tempYghs = '';
 			}
 			yghsVal = yghsVal + parseInt(hsArray[0]) * 24 * 60;
 		}
-		
+
 		index = tempYghs.indexOf("小时");
-		if(index > 0){
+		if (index > 0) {
 			hsArray = tempYghs.split("小时");
 			tempYghs = hsArray[1];
-			if(tempYghs == null){
+			if (tempYghs == null) {
 				tempYghs = '';
 			}
 			yghsVal = yghsVal + parseInt(hsArray[0]) * 60;
 		}
-		
+
 		index = tempYghs.indexOf("分钟");
-		if(index > 0){
+		if (index > 0) {
 			hsArray = tempYghs.split("分钟");
-			yghsVal = yghsVal + parseInt(hsArray[0]) ;
+			yghsVal = yghsVal + parseInt(hsArray[0]);
 		}
-		
+
 		return yghsVal;
+	}
+
+	function dealYgjl(ygjl) {
+		var ygjlVal = 0;
+		var tempYgjl = ygjl;
+		var hsArray;
+
+		var index = tempYgjl.indexOf("公里");
+		if (index > 0) {
+			hsArray = tempYgjl.split("公里");
+			tempYgjl = hsArray[1];
+			ygjlVal = ygjlVal + parseInt(hsArray[0]);
+		}
+		if (tempYgjl == null || tempYgjl == 0) {
+			return ygjlVal;
+		}
+
+		index = tempYgjl.indexOf("米");
+		if (index > 0) {
+			hsArray = tempYgjl.split("米");
+			ygjlVal = ygjlVal + parseInt(hsArray[0]) / 1000;
+		}
+
+		return ygjlVal;
 	}
 
 	function cfdChange() {
