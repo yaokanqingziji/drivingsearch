@@ -57,19 +57,19 @@ public class CoreService {
 			article41.setTitle("了解小来来");
 			article41.setDescription("");
 			article41.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/first.jpg");
-			article41.setUrl("http://blog.csdn.net/lyq8479/article/details/8937622");
+			article41.setUrl("http://115.28.128.212/drivingsearch/pages/html/lailai.jsp");
 
 			Article article5 = new Article();
 			article5.setTitle("代驾市场现状");
 			article5.setDescription("");
 			article5.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/second.jpg");
-			article5.setUrl("http://blog.csdn.net/lyq8479/article/details/8941577");
+			article5.setUrl("http://115.28.128.212/drivingsearch/pages/html/djxz.jsp");
 
 			Article article6 = new Article();
 			article6.setTitle("远离酒驾");
 			article6.setDescription("");
 			article6.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/third.jpg");
-			article6.setUrl("http://blog.csdn.net/lyq8479/article/details/8944988");
+			article6.setUrl("http://115.28.128.212/drivingsearch/pages/html/bkc.jsp");
 
 			articleList1.add(article41);
 			articleList1.add(article5);

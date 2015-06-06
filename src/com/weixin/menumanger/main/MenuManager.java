@@ -31,8 +31,8 @@ public class MenuManager {
 		ViewButton btn11 = new ViewButton();
 		btn11.setName("来个代驾");
 		btn11.setType("view");
-//		btn11.setUrl("http://115.28.128.212/drivingsearch");
-		btn11.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6350ba04eff526f5&redirect_uri=http%3A%2F%2F115.28.128.212%2Fdrivingsearch%2FoauthServlet&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
+		btn11.setUrl("http://115.28.128.212/drivingsearch");
+//		btn11.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6350ba04eff526f5&redirect_uri=http%3A%2F%2F115.28.128.212%2Fdrivingsearch%2FoauthServlet&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
 		//第二个一级菜单
 		ClickButton btn21 = new ClickButton();
 		btn21.setName("优惠活动");
