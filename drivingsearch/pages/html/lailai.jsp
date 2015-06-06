@@ -56,6 +56,7 @@
 						<p class="text-left text-danger lead">四、小来来诞生啦</p>
 						<p>
 							<img class="img-rounded" alt="140x140" src="images/logo.png" />
+						</p>
 						<p>一键计算代驾收费，自动比对最合适（pian
 							yi）方案，了解各项收费构成，解决代驾收费乱象，代驾过程中出现问题有迹可循，从此再无后顾之忧！！</p>
 						<p>
