@@ -23,7 +23,8 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<div class="alert">
-					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。 <br>${ygms}
+					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。 <br>
+					<font color="#FBE03D">${ygms}</font> 
 				</div>
 				<table class="table">
 					<thead>
@@ -63,9 +64,9 @@
 
 					</tbody>
 				</table>
-				<div class="alert">
+				<!-- <div class="alert">
 					<strong>友情提醒!</strong> <br>括号内的价格为延长一定耗时后的参考价格。
-				</div>
+				</div> -->
 
 				<div class="modal fade" id="detailModal" role="dialog"
 					aria-labelledby="detailModalTitle" aria-hidden="true">
