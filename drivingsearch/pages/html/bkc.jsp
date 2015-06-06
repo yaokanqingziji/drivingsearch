@@ -19,24 +19,24 @@
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 				<div class="articleContent">
-					<h2 class="text-center text-warning">喝酒不開車</h2>
+					<h2 class="text-center text-warning">喝酒不开车</h2>
 					<div id="contentTxt">
 					<p>
 							<img class="img-responsive" alt="" width="255" height="255"
 								src="images/bkc1.png" />
 						</p>
-						<p class="text-left text-primary lead">每次在新聞或聽到酒駕造成的事故，</p>
-						<p class="text-left text-primary lead">都會覺得既恐怖又痛心，</p>
-						<p class="text-left text-primary lead">因為酒後開車真的是一件非常恐怖的事！</p>
-						<p class="text-left text-primary lead">恐怖就在於酒醉的人認為自己根本沒醉，</p>
-						<p class="text-left text-primary lead">連造成事故都還不一定有自覺，</p>
-						<p class="text-left text-primary lead">也許生活中大大小小很多事情都有兩面對錯不一定，</p>
-						<p class="text-left text-primary lead">但酒駕這件事根本就是完完全全的錯誤！</p>
-						<p class="text-left text-primary lead">更何況這是可以預防的。</p>
-						<p class="text-left text-primary lead">或許現在國內法令罰得不夠重不夠狠，</p>
-						<p class="text-left text-primary lead">所以還是有很多人肆無忌憚，</p>
+						<p class="text-left text-primary lead">每次在新闻或听到酒驾造成的事故，</p>
+						<p class="text-left text-primary lead">都会觉得既恐怖又痛心，</p>
+						<p class="text-left text-primary lead">因为酒后开车真的是一件非常恐怖的事！</p>
+						<p class="text-left text-primary lead">恐怖就在于醉酒的人认为自己根本没醉，</p>
+						<p class="text-left text-primary lead">连造成事故都还不一定自觉，</p>
+						<p class="text-left text-primary lead">也许生活中大大小小很多事情都有两面，对错不一定，</p>
+						<p class="text-left text-primary lead">但酒驾这件事根本就是完完全全的错误！</p>
+						<p class="text-left text-primary lead">更何况这是可以预防的。</p>
+						<p class="text-left text-primary lead">或许现在国内法令罚得不够重不够狠，</p>
+						<p class="text-left text-primary lead">所以还是有很多人肆无忌惮，</p>
 						<p class="text-left text-primary lead">但是珍惜生命，</p>
-						<p class="text-left text-primary lead">請勿酒後開車！</p>
+						<p class="text-left text-primary lead">请勿酒后开车！</p>
 						<p>
 							<img class="img-responsive" alt="" width="275" height="206"
 								src="images/bkc2.png" />
