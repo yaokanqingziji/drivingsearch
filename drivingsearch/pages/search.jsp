@@ -20,6 +20,7 @@
 
 <script
 	src="http://api.map.baidu.com/api?ak=2ca7lg3IXlvAckxYfuGdCKyk&v=2.0"></script>
+<script src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
@@ -53,8 +54,8 @@ html,body {
 						<br>
 						<div class="form-group">
 							<label>预约时间：</label> <input id="yysjStr" size="20" type="text"
-								value="" readonly class="form_datetime" style="width: 150px;" onfocus="resetDateTimePicker()">
-							<br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
+								value="" readonly class="form_datetime" style="width: 150px;"
+								onfocus="resetDateTimePicker()"> <br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId" onchange="cfdChange()" size="20"
 								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
@@ -85,6 +86,8 @@ html,body {
 	var cfdPosition;
 	var cfdName;
 
+	var cfdGpsPoint;
+
 	var mddPoint;
 	var mddPosition;
 	var mddName;
@@ -101,7 +104,7 @@ html,body {
 	$(document)
 			.ready(
 					function() {
-						
+
 						$(".form_datetime").datetimepicker({
 							//format : 'hh:ii',
 							todayBtn : false,
@@ -117,7 +120,6 @@ html,body {
 						$('.datetimepicker-minutes .next i').addClass(
 								'glyphicon glyphicon-arrow-right');
 
-						
 						map = new BMap.Map("l-map");
 
 						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
@@ -234,17 +236,19 @@ html,body {
 										});
 
 					});
-	
-	function resetDateTimePicker(){
-		
-	}
-	
-	
 
-	//GPS定位
+	function resetDateTimePicker() {
+
+	}
+
+	//GPS定位  首先采用百度定位，百度定位失败采用Gps定位
 	function getLocation() {
+		baiduGps();
+	}
+	//	htmlGPS定位失败，采用其他方式
+	function htmlGps() {
 		if (navigator.geolocation) { //支持GPS定位
-			navigator.geolocation.getCurrentPosition(setGpsPosition,
+			navigator.geolocation.getCurrentPosition(translatePoint,
 					locationError, {
 						enableHighAccuracy : true,
 						maximumAge : 1000
@@ -256,14 +260,49 @@ html,body {
 		}
 	}
 
+	function baiduGps() {
+		var geolocationControl;
+		//定位控件
+		geolocationControl = new BMap.GeolocationControl();
+		geolocationControl.addEventListener("locationSuccess", function(e) {
+			// 定位成功事件
+			//var address = '';
+			//alert(JSON.stringify(e.addressComponent));
+			setGpsPosition(e.point);
+
+			//alert(e.point.lng);
+			//alert(e.point.lat);
+
+			/* address += e.addressComponent.province;
+			  address += e.addressComponent.city;
+			  address += e.addressComponent.district;
+			  address += e.addressComponent.street;
+			  address += e.addressComponent.streetNumber;
+			  alert("当前定位地址为：" + address); */
+		});
+		geolocationControl.addEventListener("locationError", function(e) {
+			// 定位失败事件，采用html5定位方式
+			htmlGps();
+		});
+		//map.addControl(geolocationControl);
+
+		//使用百度地图定位
+		geolocationControl.location();
+	}
+
+	function translatePoint(position) {
+		var currentLat = position.coords.latitude;
+		var currentLon = position.coords.longitude;
+		var gpsPoint = new BMap.Point(currentLon, currentLat);
+		BMap.Convertor.translate(gpsPoint, 0, setGpsPosition); //转换坐标 
+	}
+
 	//GPS定位成功回调。定位中心点 同时设置起始位置
-	function setGpsPosition(value) {
+	function setGpsPosition(point) {
+
+		cfdGpsPoint = point;
+
 		var geoc = new BMap.Geocoder();
-		//获取经纬度
-		var longitude = value.coords.longitude;
-		var latitude = value.coords.latitude;
-		// 创建点坐标
-		var point = new BMap.Point(longitude, latitude);
 		//根据坐标创建地图中心
 		map.centerAndZoom(point, mapJb);
 		//根据坐标获取cfdName,cfdPosition 类似实现ac的onconfirm
@@ -334,13 +373,17 @@ html,body {
 			myValue = mddPosition;
 		}
 		map.clearOverlays(); //清除地图上所有覆盖物
-		if (driving != null) {//清楚推荐路线
+		if (driving != null) {//清除推荐路线
 			driving.clearResults();
 		}
 		function markAndCalc() {
 			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
 			if (flag == cfdStr) {
+				if (cfdGpsPoint != undefined) {
+					pp = cfdGpsPoint;
+				}
 				cfdPoint = pp;
+
 			} else if (flag == mddStr) {
 				mddPoint = pp;
 			}
@@ -399,7 +442,7 @@ html,body {
 		}
 		//因为格式为： 2015-05-15 22:35，仅取22:35
 		yysjStr = yysjStr.split(' ')[1];
-		
+
 		if (cfdPoint == null) {
 			alert("请输入出发地");
 			return;
