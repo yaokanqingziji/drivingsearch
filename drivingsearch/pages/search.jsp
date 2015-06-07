@@ -84,9 +84,8 @@ html,body {
 <script>
 	var currTime;
 	var cfycsj = 15; //出发延长时间（15分钟）
-	var cfsjms="";
-	
-	
+	var cfsjms = "";
+
 	var mapJb = 18;
 	var cfdStr = "cfd";
 	var mddStr = "mdd";
@@ -211,7 +210,7 @@ html,body {
 		});
 	}
 	$(document).ready(function() {
-		
+
 		//时间插件设置
 		initDatePicker();
 
@@ -295,9 +294,9 @@ html,body {
 			//$("#suggestId").val('我的位置');
 			$("#suggestId").val(cfdName);
 			//设置起始位置标记
-			try{
+			try {
 				setPlace(cfdStr);
-			}catch(e){
+			} catch (e) {
 				baiduGps();
 			}
 		});
@@ -325,11 +324,11 @@ html,body {
 	//排除GPS定位的其他定位。仅设置地图中心点
 	function createOtherPosition() {
 		//定位方式二，根据城市名称定位。 其中城市名称可以通过参数配置
-		//map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
+		map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
 
 		//定位方式三，根据经纬度定位。 经纬度通过参数配置。 该方式相比方式二有一个好处是：可以自定义城市中心展示
-		var point = new BMap.Point(116.331212, 322.897445);//济南泉城广场 
-		map.centerAndZoom(point, mapJb);
+		//var point = new BMap.Point(116.331212, 322.897445);//济南泉城广场 
+		//map.centerAndZoom(point, mapJb);
 
 		//定位方式四，根据ip自动定位,不确定手机是否可用,还未验证
 		/* var point = new BMap.Point(1161.331212, 3222.897445);//经纬度随便写的。。
@@ -358,17 +357,28 @@ html,body {
 			driving.clearResults();
 		}
 		function markAndCalc() {
-			var pp ;
-			try{
+			var pp;
+			if (flag == cfdStr
+					&& (cfdGpsPoint != undefined || cfdGpsPoint != null)) {
+				pp = cfdGpsPoint;
+			} else {
+				try {
+					pp = local.getResults().getPoi(0).point;
+				} catch (e) {
+					baiduGps();
+				}
+			}
+			/* try{
 				pp = local.getResults().getPoi(0).point;//获取第一个智能搜索的结果
 			}catch(e){
 				baiduGps();
-			}
-			
+			} */
+
 			if (flag == cfdStr) {
-				if (cfdGpsPoint != undefined || cfdGpsPoint != null) {
-					pp = cfdGpsPoint;
-				}
+				/* 				if (cfdGpsPoint != undefined || cfdGpsPoint != null) {
+				 pp = cfdGpsPoint;
+				 }
+				 */
 				cfdPoint = pp;
 
 			} else if (flag == mddStr) {
@@ -425,7 +435,7 @@ html,body {
 
 		var searchUrl;
 		var yysjStr = $("#yysjStr").val();
-		cfsjms="";
+		cfsjms = "";
 		if (yysjStr == null || yysjStr == '') {
 			alert("请选择预约时间");
 			return;
@@ -552,22 +562,22 @@ html,body {
 			return;
 		}
 	}
-	
+
 	//处理出发时间， 如果出发时间不超过当前时间15分钟，按照当前时间15分钟为出发时间
 	function dealCfsj(yysjStr) {
 		var currDate = DateUtil.toDate(currTime);
 		var yysjDate = DateUtil.toDate(yysjStr);
 		//比较当前时间与出发时间的大小
-		if(yysjDate < currDate){//如果出发时间少于当前时间，那么不考虑此处理。
+		if (yysjDate < currDate) {//如果出发时间少于当前时间，那么不考虑此处理。
 			return yysjStr;
-		}else{//如果出发时间不少于当前时间，比较出发时间与当前时间+15分钟后的大小
+		} else {//如果出发时间不少于当前时间，比较出发时间与当前时间+15分钟后的大小
 			currDate.setMinutes(currDate.getMinutes() + cfycsj);
-			if(currDate > yysjDate ){
-				
+			if (currDate > yysjDate) {
+
 				cfsjms = "(为了估算的更为准确，考虑到代驾人员到达需要时间，将您选择的出发时间稍微向后延长)";
-				
+
 				return DateUtil.toString(currDate);
-			}else{
+			} else {
 				return yysjStr;
 			}
 		}
