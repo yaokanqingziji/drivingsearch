@@ -35,7 +35,7 @@
 						<p class="text-left text-primary lead">更何况这是可以预防的。</p>
 						<p class="text-left text-primary lead">或许现在国内法令罚得不够重不够狠，</p>
 						<p class="text-left text-primary lead">所以还是有很多人肆无忌惮，</p>
-						<p class="text-left text-primary lead">但是珍惜生命，</p>
+						<p class="text-left text-primary lead">珍惜生命，</p>
 						<p class="text-left text-primary lead">请勿酒后开车！</p>
 						<p>
 							<img class="img-responsive" alt="" width="275" height="206"
