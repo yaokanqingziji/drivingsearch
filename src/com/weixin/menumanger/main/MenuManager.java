@@ -43,11 +43,11 @@ public class MenuManager {
 		ViewButton btn31 = new ViewButton();
 		btn31.setName("关于我们");
 		btn31.setType("view");
-		btn31.setUrl("http://www.duopao.com");
+		btn31.setUrl("http://115.28.128.212/drivingsearch/pages/html/lailai.jsp");
 		
 		//第三个一级菜单的第二个子菜单
 		ViewButton btn32 = new ViewButton();
-		btn32.setName("服务声明");
+		btn32.setName("用户协议");
 		btn32.setType("view");
 		btn32.setUrl("http://www.duopao.com");
 		
@@ -58,10 +58,15 @@ public class MenuManager {
 		btn33.setKey("wtfk");
 		
 		//第三个一级菜单的第四个子菜单
-		ViewButton btn34 = new ViewButton();
+//		ViewButton btn34 = new ViewButton();
+//		btn34.setName("代驾合作");
+//		btn34.setType("view");
+//		btn34.setUrl("http://www.duopao.com");
+		
+		ClickButton btn34 = new ClickButton();
 		btn34.setName("代驾合作");
-		btn34.setType("view");
-		btn34.setUrl("http://www.duopao.com");
+		btn34.setType("click");
+		btn34.setKey("djhz");
 
 		//第三个一级菜单
 		ComplexButton mainBtn3 = new ComplexButton();

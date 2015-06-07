@@ -234,19 +234,50 @@ public class CoreService {
 				respContent = MessageUtil.messageToXml(textMessage);
 				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {// 图片消息
-				respContent = "您发送的是图片消息！";
+				
+				StringBuffer contentMsg = new StringBuffer();
+				contentMsg.append("您发送的是图片消息!").append("\n");
+				contentMsg.append("目前系统暂不支持图片消息!").append("\n");
+				
+				textMessage.setContent(contentMsg.toString());
+				// 将文本消息对象转换成xml字符串
+				respContent = MessageUtil.messageToXml(textMessage);
 				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) {// 语音消息
-				respContent = "您发送的是语音消息！";
+				StringBuffer contentMsg = new StringBuffer();
+				contentMsg.append("您发送的是语音消息!").append("\n");
+				contentMsg.append("目前系统暂不支持语音消息!").append("\n");
+				
+				textMessage.setContent(contentMsg.toString());
+				// 将文本消息对象转换成xml字符串
+				respContent = MessageUtil.messageToXml(textMessage);
 				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VIDEO)) {// 视频消息
-				respContent = "您发送的是视频消息！";
+				StringBuffer contentMsg = new StringBuffer();
+				contentMsg.append("您发送的是视频消息!").append("\n");
+				contentMsg.append("目前系统暂不支持视频消息!").append("\n");
+				
+				textMessage.setContent(contentMsg.toString());
+				// 将文本消息对象转换成xml字符串
+				respContent = MessageUtil.messageToXml(textMessage);
 				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) {// 地理位置消息
-				respContent = "您发送的是地理位置消息！";
+				StringBuffer contentMsg = new StringBuffer();
+				contentMsg.append("您发送的是地理位置消息!").append("\n");
+				contentMsg.append("目前系统暂不支持地理位置消息!").append("\n");
+				
+				textMessage.setContent(contentMsg.toString());
+				// 将文本消息对象转换成xml字符串
+				respContent = MessageUtil.messageToXml(textMessage);
 				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LINK)) {// 链接消息
-				respContent = "您发送的是链接消息！";
+				StringBuffer contentMsg = new StringBuffer();
+				contentMsg.append("您发送的是链接消息!").append("\n");
+				contentMsg.append("目前系统暂不支持链接消息!").append("\n");
+				
+				textMessage.setContent(contentMsg.toString());
+				// 将文本消息对象转换成xml字符串
+				respContent = MessageUtil.messageToXml(textMessage);
 				
 			}else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {// 事件推送
 				// 事件类型
@@ -296,7 +327,15 @@ public class CoreService {
 						
 						StringBuffer contentMsg = new StringBuffer();
 						contentMsg.append("非常感谢您的关注，请以“反馈”两字开头+您反馈的内容进行问题反馈。例如：").append("\n");
-						contentMsg.append("反馈：我觉着需要提供更多的代驾公司一共选择。").append("\n");
+						contentMsg.append("反馈：我觉着需要提供更多的代驾公司以供选择。").append("\n");
+						textMessage.setContent(contentMsg.toString());
+						// 将文本消息对象转换成xml字符串
+						respContent = MessageUtil.messageToXml(textMessage);
+					}else if(eventKey.equals("djhz")){//代驾合作返回文本消息
+						
+						StringBuffer contentMsg = new StringBuffer();
+						contentMsg.append("代驾合作规定正在商讨制作中，敬请期待!").append("\n");
+			
 						textMessage.setContent(contentMsg.toString());
 						// 将文本消息对象转换成xml字符串
 						respContent = MessageUtil.messageToXml(textMessage);
