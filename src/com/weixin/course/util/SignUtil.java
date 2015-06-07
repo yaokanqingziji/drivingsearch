@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public class SignUtil {
 	// 与开发模式接口配置信息中的Token保持一致
-	private static String token = "weixin";
+	private static String token = "drivingsearch";
 
 	/**
 	 * 校验签名
