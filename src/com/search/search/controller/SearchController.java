@@ -119,17 +119,19 @@ public class SearchController extends SearchBaseController {
 		map.put("ssjlId", ssjlId);
 		map.put("searchOrderResultModels", searchResultModels);
 		map.put("ygms", request.getParameter("ygms"));
-
+		map.put("yysj",DsDateUtil.dateToString(searchQueryModel.getYysj(), "HH:mm"));
+		map.put("ddsj",DsDateUtil.dateToString(searchQueryModel.getDdsj(), "HH:mm"));
+		map.put("cfsjms", request.getParameter("cfsjms"));
 		return "/searchResult";
 	}
 
 	private Date getYysj(String yysjStr) {
 		Date yysj = DsDateUtil.setTime(yysjStr);
-		Date currTime = DsDateUtil.getCurrDate();
+		/*Date currTime = DsDateUtil.getCurrDate();
 
 		if (currTime.compareTo(yysj) > 0) {
 			yysj = DsDateUtil.addDay(yysj, 1);
-		}
+		}*/
 		return yysj;
 	}
 

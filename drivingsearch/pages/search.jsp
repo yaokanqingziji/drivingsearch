@@ -22,6 +22,9 @@
 	src="http://api.map.baidu.com/api?ak=2ca7lg3IXlvAckxYfuGdCKyk&v=2.0"></script>
 <script src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
 
+
+<script src="/drivingsearch/js/util/DateUtil.js"></script>
+
 <link rel="stylesheet"
 	href="/drivingsearch/bootstrap3.3.0/dist/css/bootstrap.min.css" />
 <link
@@ -53,14 +56,14 @@ html,body {
 						<legend></legend>
 						<br>
 						<div class="form-group">
-							<label>预约时间：</label> <input id="yysjStr" size="20" type="text"
-								value="" readonly class="form_datetime" style="width: 150px;"
-								onfocus="resetDateTimePicker()"> <br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
+							<label>出发时间：</label> <input id="yysjStr" size="20" type="text"
+								value="" readonly class="form_datetime" style="width: 120px;">
+							<label>(请点击选择)</label><br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId" onchange="cfdChange()" size="20"
-								style="width: 150px;" /> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：&nbsp;</label><input
+								style="width: 120px;" /><label>(默认当前位置)</label> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
-								value="" style="width: 150px;" /> <br> <label><font
-								id="yg" color="red"></font></label>
+								value="" style="width: 120px;" /><label>(请输入并选择您要去的地方)</label>
+							<br> <label><font id="yg" color="red"></font></label>
 						</div>
 						<legend></legend>
 						<button class="btn btn-warning" type="button" onclick="search()"
@@ -79,6 +82,11 @@ html,body {
 </body>
 </html>
 <script>
+	var currTime;
+	var cfycsj = 15; //出发延长时间（15分钟）
+	var cfsjms="";
+	
+	
 	var mapJb = 18;
 	var cfdStr = "cfd";
 	var mddStr = "mdd";
@@ -101,149 +109,147 @@ html,body {
 	var locationErrMsg = "";//自动定位失败原因
 
 	var map;
-	$(document)
-			.ready(
-					function() {
 
-						$(".form_datetime").datetimepicker({
-							//format : 'hh:ii',
-							todayBtn : false,
-							autoclose : 1,
-							todayHighlight : true,
-							startView : 0,
-							minView : 0,
-							maxView : 1
-						});
+	//时间插件初始化
+	function initDatePicker() {
+		$(".form_datetime").datetimepicker({
+			//format : 'hh:ii',
+			todayBtn : false,
+			autoclose : 1,
+			todayHighlight : true,
+			startView : 0,
+			minView : 0,
+			maxView : 1
+		});
 
-						$('.datetimepicker-minutes .prev i').addClass(
-								'glyphicon glyphicon-arrow-left');
-						$('.datetimepicker-minutes .next i').addClass(
-								'glyphicon glyphicon-arrow-right');
-
-						map = new BMap.Map("l-map");
-
-						//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
-						getLocation();
-						//排除GPS定位
-						//createOtherPosition();
-
-						var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
-						{
-							"input" : "suggestId",
-							"location" : map
-						});
-						var ac2 = new BMap.Autocomplete( //为目的地输入框建立一个自动完成的对象
-						{
-							"input" : "suggestId2",
-							"location" : map
-						});
-
-						ac.addEventListener("onhighlight",
-								function(e) { //鼠标放在下拉列表上的事件
-									var str = "";
-									var _value = e.fromitem.value;
-									var value = "";
-									if (e.fromitem.index > -1) {
-										value = _value.province + _value.city
-												+ _value.district
-												+ _value.street
-												+ _value.business;
-									}
-									str = "FromItem<br />index = "
-											+ e.fromitem.index
-											+ "<br />value = " + value;
-
-									value = "";
-									if (e.toitem.index > -1) {
-										_value = e.toitem.value;
-										value = _value.province + _value.city
-												+ _value.district
-												+ _value.street
-												+ _value.business;
-									}
-									str += "<br />ToItem<br />index = "
-											+ e.toitem.index + "<br />value = "
-											+ value;
-									$("#searchResultPanel").innerHTML = str;
-								});
-
-						ac
-								.addEventListener(
-										"onconfirm",
-										function(e) { //鼠标点击下拉列表后的事件
-											var _value = e.item.value;
-											cfdName = _value.business;
-											cfdPosition = _value.province
-													+ _value.city
-													+ _value.district
-													+ _value.street
-													+ _value.business;
-
-											$("#searchResultPanel").innerHTML = "onconfirm<br />index = "
-													+ e.item.index
-													+ "<br />myValue = "
-													+ cfdName;
-											setPlace(cfdStr);
-										});
-
-						ac2.addEventListener("onhighlight",
-								function(e) { //鼠标放在下拉列表上的事件
-									var str = "";
-									var _value = e.fromitem.value;
-									var value = "";
-									if (e.fromitem.index > -1) {
-										value = _value.province + _value.city
-												+ _value.district
-												+ _value.street
-												+ _value.business;
-									}
-									str = "FromItem<br />index = "
-											+ e.fromitem.index
-											+ "<br />value = " + value;
-
-									value = "";
-									if (e.toitem.index > -1) {
-										_value = e.toitem.value;
-										value = _value.province + _value.city
-												+ _value.district
-												+ _value.street
-												+ _value.business;
-									}
-									str += "<br />ToItem<br />index = "
-											+ e.toitem.index + "<br />value = "
-											+ value;
-
-									$("#searchResultPanel2").innerHTML = str;
-								});
-
-						ac2
-								.addEventListener(
-										"onconfirm",
-										function(e) { //鼠标点击下拉列表后的事件
-											var _value = e.item.value;
-											mddName = _value.business;
-											mddPosition = _value.province
-													+ _value.city
-													+ _value.district
-													+ _value.street
-													+ _value.business;
-											$("#searchResultPanel2").innerHTML = "onconfirm<br />index = "
-													+ e.item.index
-													+ "<br />myValue = "
-													+ mddName;
-
-											setPlace(mddStr);
-										});
-
-					});
-
-	function resetDateTimePicker() {
-
+		$('.datetimepicker-minutes .prev i').addClass(
+				'glyphicon glyphicon-arrow-left');
+		$('.datetimepicker-minutes .next i').addClass(
+				'glyphicon glyphicon-arrow-right');
 	}
+
+	//初始化地址输入框
+	function initAutocomplete() {
+		var ac = new BMap.Autocomplete( //为出发地输入框建立一个自动完成的对象
+		{
+			"input" : "suggestId",
+			"location" : map
+		});
+		var ac2 = new BMap.Autocomplete( //为目的地输入框建立一个自动完成的对象
+		{
+			"input" : "suggestId2",
+			"location" : map
+		});
+
+		ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+			var str = "";
+			var _value = e.fromitem.value;
+			var value = "";
+			if (e.fromitem.index > -1) {
+				value = _value.province + _value.city + _value.district
+						+ _value.street + _value.business;
+			}
+			str = "FromItem<br />index = " + e.fromitem.index
+					+ "<br />value = " + value;
+
+			value = "";
+			if (e.toitem.index > -1) {
+				_value = e.toitem.value;
+				value = _value.province + _value.city + _value.district
+						+ _value.street + _value.business;
+			}
+			str += "<br />ToItem<br />index = " + e.toitem.index
+					+ "<br />value = " + value;
+			$("#searchResultPanel").innerHTML = str;
+		});
+
+		ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+			var _value = e.item.value;
+			cfdName = _value.business;
+			cfdPosition = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+
+			$("#searchResultPanel").innerHTML = "onconfirm<br />index = "
+					+ e.item.index + "<br />myValue = " + cfdName;
+
+			cfdGpsPoint = null;
+			setPlace(cfdStr);
+		});
+
+		ac2.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+			var str = "";
+			var _value = e.fromitem.value;
+			var value = "";
+			if (e.fromitem.index > -1) {
+				value = _value.province + _value.city + _value.district
+						+ _value.street + _value.business;
+			}
+			str = "FromItem<br />index = " + e.fromitem.index
+					+ "<br />value = " + value;
+
+			value = "";
+			if (e.toitem.index > -1) {
+				_value = e.toitem.value;
+				value = _value.province + _value.city + _value.district
+						+ _value.street + _value.business;
+			}
+			str += "<br />ToItem<br />index = " + e.toitem.index
+					+ "<br />value = " + value;
+
+			$("#searchResultPanel2").innerHTML = str;
+		});
+
+		ac2.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+			var _value = e.item.value;
+			mddName = _value.business;
+			mddPosition = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+			$("#searchResultPanel2").innerHTML = "onconfirm<br />index = "
+					+ e.item.index + "<br />myValue = " + mddName;
+
+			setPlace(mddStr);
+		});
+	}
+	$(document).ready(function() {
+		
+		//时间插件设置
+		initDatePicker();
+
+		//设置出发时间默认值
+		var currDateObj = new Date();
+		currTime = DateUtil.toString(currDateObj);
+		$("#yysjStr").val(currTime);
+
+		//初始化地图
+		map = new BMap.Map("l-map");
+
+		//初始化地址输入框
+		initAutocomplete();
+
+		//定位方式一GPS定位，如果定位不成功之后再进行其他方式定位
+		getLocation();
+		//排除GPS定位
+		//createOtherPosition();
+
+	});
 
 	//GPS定位  首先采用百度定位，百度定位失败采用Gps定位
 	function getLocation() {
 		baiduGps();
+	}
+	//百度地图api定位
+	function baiduGps() {
+		var geolocation = new BMap.Geolocation();
+		geolocation.getCurrentPosition(function(r) {
+			if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+				//定位成功
+				setGpsPosition(r.point);
+			} else {
+				//定位失败，使用html定位
+				htmlGps();
+			}
+		});
+
 	}
 	//	htmlGPS定位失败，采用其他方式
 	function htmlGps() {
@@ -260,44 +266,15 @@ html,body {
 		}
 	}
 
-	function baiduGps() {
-		var geolocationControl;
-		//定位控件
-		geolocationControl = new BMap.GeolocationControl();
-		geolocationControl.addEventListener("locationSuccess", function(e) {
-			// 定位成功事件
-			//var address = '';
-			//alert(JSON.stringify(e.addressComponent));
-			setGpsPosition(e.point);
-
-			//alert(e.point.lng);
-			//alert(e.point.lat);
-
-			/* address += e.addressComponent.province;
-			  address += e.addressComponent.city;
-			  address += e.addressComponent.district;
-			  address += e.addressComponent.street;
-			  address += e.addressComponent.streetNumber;
-			  alert("当前定位地址为：" + address); */
-		});
-		geolocationControl.addEventListener("locationError", function(e) {
-			// 定位失败事件，采用html5定位方式
-			htmlGps();
-		});
-		//map.addControl(geolocationControl);
-
-		//使用百度地图定位
-		geolocationControl.location();
-	}
-
+	//html定位后，需要进行坐标转换
 	function translatePoint(position) {
 		var currentLat = position.coords.latitude;
 		var currentLon = position.coords.longitude;
 		var gpsPoint = new BMap.Point(currentLon, currentLat);
-		BMap.Convertor.translate(gpsPoint, 0, setGpsPosition); //转换坐标 
+		BMap.Convertor.translate(gpsPoint, 0, setGpsPosition); //转换坐标 后，调用setGpsPosition
 	}
 
-	//GPS定位成功回调。定位中心点 同时设置起始位置
+	//定位成功回调。定位中心点 同时设置起始位置
 	function setGpsPosition(point) {
 
 		cfdGpsPoint = point;
@@ -318,8 +295,11 @@ html,body {
 			//$("#suggestId").val('我的位置');
 			$("#suggestId").val(cfdName);
 			//设置起始位置标记
-			setPlace(cfdStr);
-
+			try{
+				setPlace(cfdStr);
+			}catch(e){
+				baiduGps();
+			}
 		});
 	}
 	//GPS定位失败，采用其他方式进行定位（其他方式仅初始化地图展示中心，无法定位当前位置）
@@ -345,11 +325,11 @@ html,body {
 	//排除GPS定位的其他定位。仅设置地图中心点
 	function createOtherPosition() {
 		//定位方式二，根据城市名称定位。 其中城市名称可以通过参数配置
-		map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
+		//map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
 
 		//定位方式三，根据经纬度定位。 经纬度通过参数配置。 该方式相比方式二有一个好处是：可以自定义城市中心展示
-		//var point = new BMap.Point(116.331212,322.897445);//济南泉城广场 
-		//map.centerAndZoom(point,mapJb);
+		var point = new BMap.Point(116.331212, 322.897445);//济南泉城广场 
+		map.centerAndZoom(point, mapJb);
 
 		//定位方式四，根据ip自动定位,不确定手机是否可用,还未验证
 		/* var point = new BMap.Point(1161.331212, 3222.897445);//经纬度随便写的。。
@@ -362,6 +342,7 @@ html,body {
 		myCity.get(setMapCenterByip); */
 	}
 
+	//在地图上标记地理位置
 	function setPlace(flag) {
 		//解决有下拉列表的情况出现
 		$("#searchBtn").focus();
@@ -377,9 +358,15 @@ html,body {
 			driving.clearResults();
 		}
 		function markAndCalc() {
-			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+			var pp ;
+			try{
+				pp = local.getResults().getPoi(0).point;//获取第一个智能搜索的结果
+			}catch(e){
+				baiduGps();
+			}
+			
 			if (flag == cfdStr) {
-				if (cfdGpsPoint != undefined) {
+				if (cfdGpsPoint != undefined || cfdGpsPoint != null) {
 					pp = cfdGpsPoint;
 				}
 				cfdPoint = pp;
@@ -415,11 +402,7 @@ html,body {
 		local.search(myValue);
 	}
 
-	//在页面中显示耗时与距离
-	function getJlAHs() {
-		$("#yg").text("距离：" + ygjl + "，预计耗时：" + yghs);
-	}
-
+	//地图起始与终止坐标定位后，计算导航信息
 	function searchComplete(results) {
 		if (driving == null || driving == undefined) {
 			return;
@@ -432,14 +415,25 @@ html,body {
 		ygjl = plan.getDistance(true); //获取距离
 	};
 
+	//在页面中显示耗时与距离
+	function getJlAHs() {
+		$("#yg").text("距离：" + ygjl + "，预计耗时：" + yghs);
+	}
+
+	//点击搜索按钮进行代驾搜索
 	function search() {
 
 		var searchUrl;
 		var yysjStr = $("#yysjStr").val();
+		cfsjms="";
 		if (yysjStr == null || yysjStr == '') {
 			alert("请选择预约时间");
 			return;
 		}
+
+		//处理出发时间
+		yysjStr = dealCfsj(yysjStr);
+
 		//因为格式为： 2015-05-15 22:35，仅取22:35
 		yysjStr = yysjStr.split(' ')[1];
 
@@ -469,10 +463,11 @@ html,body {
 		searchUrl = searchUrl + "yysjStr=" + yysjStr + "&cfdmc=" + cfdmc
 				+ "&cfdjd=" + cfdjd + "&cfdwd=" + cfdwd + "&mddmc=" + mddmc
 				+ "&mddjd=" + mddjd + "&mddwd=" + mddwd + "&yghs=" + yghsValue
-				+ "&ygjl=" + ygjlValue + "&ygms=" + ygms;
+				+ "&ygjl=" + ygjlValue + "&ygms=" + ygms + "&cfsjms=" + cfsjms;
 		window.location.href = searchUrl;
 	}
 
+	//处理预估耗时，转换为分钟表示
 	function dealYghs(yghs) {
 		var yghsVal = 0;
 		var tempYghs = yghs;
@@ -507,6 +502,7 @@ html,body {
 		return yghsVal;
 	}
 
+	//处理距离，转换为公里表示
 	function dealYgjl(ygjl) {
 		var ygjlVal = 0;
 		var tempYgjl = ygjl;
@@ -531,17 +527,21 @@ html,body {
 		return ygjlVal;
 	}
 
+	//出发地变换时，清空出发地相关全局参数。
 	function cfdChange() {
 		var cfd = $("#suggestId").val();
 		if (cfd == null || cfd == '') {
 			cfdPoint = null;
 			cfdPosition = null;
 			cfdName = null;
+
+			cfdGpsPoint = null;
 		} else {
 			return;
 		}
 	}
 
+	//目的地变换时，清空目的地相关全局参数
 	function mddChange() {
 		var mdd = $("#suggestId2").val();
 		if (mdd == null || mdd == '') {
@@ -550,6 +550,26 @@ html,body {
 			mddName = null;
 		} else {
 			return;
+		}
+	}
+	
+	//处理出发时间， 如果出发时间不超过当前时间15分钟，按照当前时间15分钟为出发时间
+	function dealCfsj(yysjStr) {
+		var currDate = DateUtil.toDate(currTime);
+		var yysjDate = DateUtil.toDate(yysjStr);
+		//比较当前时间与出发时间的大小
+		if(yysjDate < currDate){//如果出发时间少于当前时间，那么不考虑此处理。
+			return yysjStr;
+		}else{//如果出发时间不少于当前时间，比较出发时间与当前时间+15分钟后的大小
+			currDate.setMinutes(currDate.getMinutes() + cfycsj);
+			if(currDate > yysjDate ){
+				
+				cfsjms = "(为了估算的更为准确，考虑到代驾人员到达需要时间，将您选择的出发时间稍微向后延长)";
+				
+				return DateUtil.toString(currDate);
+			}else{
+				return yysjStr;
+			}
 		}
 	}
 </script>

@@ -1,5 +1,6 @@
 package com.core.base.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -83,6 +84,20 @@ public class DsDateUtil {
 			return false;
 		}
 		return true;
+	}
+	
+	//format yyyyMMddHHmmss
+	public static String dateToString(Date date, String format)
+			 {
+		if (date == null) {
+			return null;
+		}
+		if (format == null || format.equalsIgnoreCase("")) {
+			return null;
+		}
+
+		SimpleDateFormat df = new SimpleDateFormat(format);
+		return df.format(date);
 	}
 
 }

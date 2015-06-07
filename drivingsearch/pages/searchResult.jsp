@@ -24,7 +24,11 @@
 			<div class="span12">
 				<div class="alert">
 					<strong>友情提醒!</strong> <br>信息仅供参考，实际价格请以代驾公司为准。 <br>
-					<font color="#FBE03D">${ygms}</font> 
+					<font color="red">出发时间：${yysj}， 到达时间：${ddsj}</font> <br>
+					<font color="red">${ygms}</font> <br>
+					<c:if test="${cfsjms != null && cfsjms != ''}">
+						<font color="red">${cfsjms}</font> <br>
+					</c:if>
 				</div>
 				<table class="table">
 					<thead>
