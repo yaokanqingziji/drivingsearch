@@ -57,7 +57,7 @@ public class SearchServiceImpl extends SearchBaseService implements
 		String sspcId, ssjlId;
 
 		// 1.获取计费标准
-		companyBillModel = companyBillBpo.getAllRegistCompanyBillByDjlx(djlx);
+		companyBillModel = companyBillBpo.getAllRegistCompanyBillByDjlx(djlx,searchQueryModel.getDjCity());
 		if(companyBillModel == null){
 			throw new BusinessException("没有代驾信息");
 		}

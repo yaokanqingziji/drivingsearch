@@ -23,16 +23,16 @@ import com.ldw.frame.common.global.CodeNames;
 @Component("com.core.company.bpo.impl.CompanyBillBpoImpl")
 public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo {
 
-	public CompanyBillModel getAllRegistCompanyBillByDjlx(String djlx)
+	public CompanyBillModel getAllRegistCompanyBillByDjlx(String djlx,String djCity)
 			throws BaseException {
 		// 声明变量
 		CompanyBillModel companyBillModel = new CompanyBillModel(); // 返回结果
 		List<CompanyBillResultModel> cBillProjectResultList;// 计费标准列表
 		// 查询所有有效的注册公司下的计费标准
-		cBillProjectResultList = this.queryAllRegistCompanyBillByDjlx(djlx);
+		cBillProjectResultList = this.queryAllRegistCompanyBillByDjlx(djlx,djCity);
 		if (cBillProjectResultList == null
 				|| cBillProjectResultList.size() <= 0) {
-			throw new BusinessException("不存在可提供代驾服务的代驾公司！");
+			throw new BusinessException("不存在可提供代驾服务的"+djCity+"代驾公司！");
 		}
 		// 转换结果为CompanyBillModel
 		this.transResult(companyBillModel, cBillProjectResultList);
@@ -41,7 +41,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 	}
 
 	private List<CompanyBillResultModel> queryAllRegistCompanyBillByDjlx(
-			String djlx) throws BaseException {
+			String djlx,String djCity) throws BaseException {
 		List<CompanyBillResultModel> cBillProjectResultList;
 		StringBuilder sb = new StringBuilder();
 		SQLExecutor sql = this.getSession().getSQLExecutor();
@@ -67,6 +67,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		
 		sb.append("    and r.zczt = '01'                  ");
 		sb.append("    and r.djlx = '01'                  ");
+		sb.append("    and c.sscs = :sscs                  ");
 		sb.append("    and r.jfbbid = v.jfbbid            ");
 		sb.append("    and r.jfbbid = t.jfbbid            ");
 		sb.append("    and v.jfbbid = t.jfbbid            ");
@@ -75,6 +76,7 @@ public class CompanyBillBpoImpl extends SearchBaseBpo implements CompanyBillBpo 
 		sb.append(" order by r.gsid,v.jfbbid,t.jfsjdid,p.jfxmid ");
 
 		sql.setSQL(sb);
+		sql.setString("sscs", djCity);
 		cBillProjectResultList = sql.executeQueryBeanList(CompanyBillResultModel.class);
 
 		return cBillProjectResultList;
