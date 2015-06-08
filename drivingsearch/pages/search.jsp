@@ -56,23 +56,36 @@ html,body {
 						<legend></legend>
 						<br>
 						<div class="form-group">
-							<label>出发时间：</label> <input id="yysjStr" size="20" type="text"
-								value="" readonly class="form_datetime" style="width: 120px;">
-							<label>(请点击选择)</label><br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
-								type="text" id="suggestId" onchange="cfdChange()" size="20"
-								style="width: 120px;" /><label>(默认当前位置)</label> <br> <label>目&nbsp;&nbsp;的&nbsp;&nbsp;地：&nbsp;</label><input
+							<label>请输入并选择您要去的地方：</label><input
 								type="text" id="suggestId2" onchange="mddChange()" size="20"
-								value="" style="width: 120px;" /><label>(请输入并选择您要去的地方)</label>
+								value="" style="width: 260px;" />
 							<br> <label><font id="yg" color="red"></font></label>
 						</div>
 						<legend></legend>
-						<button class="btn btn-warning" type="button" onclick="search()"
-							id="searchBtn">搜索</button>
+						<button class="btn btn-lg btn-block btn-warning" type="button" onclick="search()"
+							id="searchBtn">点击此处查看代驾排名</button>
 						<div id="searchResultPanel"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 
 						<div id="searchResultPanel2"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
+							<br>
+					<div class="form-group">
+					<label>您可以设置出发时间与出发地，进行搜索呦</label>
+					<br>
+							<label>出发时间：</label> <input id="yysjStr" size="20" type="text"
+								value="" readonly class="form_datetime" style="width: 180px;">
+							<br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
+								type="text" id="suggestId" onchange="cfdChange()" size="20"
+								style="width: 180px;" /> <br> 
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+						</div>
 			</div>
 			</fieldset>
 			</form>
