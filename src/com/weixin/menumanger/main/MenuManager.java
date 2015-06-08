@@ -49,7 +49,7 @@ public class MenuManager {
 		ViewButton btn32 = new ViewButton();
 		btn32.setName("用户协议");
 		btn32.setType("view");
-		btn32.setUrl("http://www.duopao.com");
+		btn32.setUrl("http://115.28.128.212/drivingsearch/pages/html/yhxy.jsp");
 		
 		//第三个一级菜单的第三个子菜单
 		ClickButton btn33 = new ClickButton();
@@ -67,11 +67,16 @@ public class MenuManager {
 		btn34.setName("代驾合作");
 		btn34.setType("click");
 		btn34.setKey("djhz");
+		
+		ViewButton btn35 = new ViewButton();
+		btn35.setName("问卷调查");
+		btn35.setType("view");
+		btn35.setUrl("http://www.lediaocha.com/m/s/fqwhvu");
 
 		//第三个一级菜单
 		ComplexButton mainBtn3 = new ComplexButton();
 		mainBtn3.setName("关于我们");
-		mainBtn3.setSub_button(new Button[] { btn31,btn32,btn33,btn34});
+		mainBtn3.setSub_button(new Button[] { btn31,btn32,btn33,btn34,btn35});
 		
 		//生成菜单
 		Menu menu = new Menu();
