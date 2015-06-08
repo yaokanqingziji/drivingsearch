@@ -24,6 +24,8 @@ public class SearchQueryModel {
 	private Integer yghs;
 
 	private Date ddsj; // 到达时间
+	
+	private String djCity;//代驾地市
 
 	public String getSspcid() {
 		return sspcid;
@@ -122,5 +124,15 @@ public class SearchQueryModel {
 	public void setDdsj(Date ddsj) {
 		this.ddsj = ddsj;
 	}
+
+	public String getDjCity() {
+		return djCity;
+	}
+
+	public void setDjCity(String djCity) {
+		this.djCity = djCity;
+	}
+	
+	
 
 }

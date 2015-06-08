@@ -14,6 +14,6 @@ public interface CompanyBillBpo {
 	 * @author ldw
 	 * @date 2015年3月21日 下午11:33:46
 	 */
-	public CompanyBillModel getAllRegistCompanyBillByDjlx(String djlx)
+	public CompanyBillModel getAllRegistCompanyBillByDjlx(String djlx,String djCity)
 			throws BaseException;
 }

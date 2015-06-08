@@ -56,35 +56,29 @@ html,body {
 						<legend></legend>
 						<br>
 						<div class="form-group">
-							<label>请输入并选择您要去的地方：</label><input
-								type="text" id="suggestId2" onchange="mddChange()" size="20"
-								value="" style="width: 260px;" />
+							<label>请输入并选择您要去的地方：</label><input type="text" id="suggestId2"
+								onchange="mddChange()"  size="20" value="" style="width: 240px;" />
+								<img class="img-rounded" onclick="clearMddAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
 							<br> <label><font id="yg" color="red"></font></label>
 						</div>
 						<legend></legend>
-						<button class="btn btn-lg btn-block btn-warning" type="button" onclick="search()"
-							id="searchBtn">点击此处查看代驾排名</button>
+						<button class="btn btn-lg btn-block btn-warning" type="button"
+							onclick="search()" id="searchBtn">点击此处查看代驾排名</button>
 						<div id="searchResultPanel"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 
 						<div id="searchResultPanel2"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
-							<br>
-					<div class="form-group">
-					<label>您可以设置出发时间与出发地，进行搜索呦</label>
-					<br>
-							<label>出发时间：</label> <input id="yysjStr" size="20" type="text"
-								value="" readonly class="form_datetime" style="width: 180px;">
-							<br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
-								type="text" id="suggestId" onchange="cfdChange()" size="20"
-								style="width: 180px;" /> <br> 
-								<br>
-								<br>
-								<br>
-								<br>
-								<br>
-								<br>
-								<br>
+						<br>
+						<div class="form-group">
+							<label>您可以设置出发时间与出发地，进行搜索呦</label> <br> <label>出发时间：</label>
+							<input id="yysjStr" size="20" type="text" value="" readonly
+								class="form_datetime" style="width: 180px;"> <br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
+								type="text" id="suggestId" onchange="cfdChange()"  size="20"
+								style="width: 180px;" /> 
+								<img class="img-rounded" onclick="clearCfdAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
+								<br> <br> <br> <br>
+							<br> <br> <br> <br>
 						</div>
 			</div>
 			</fieldset>
@@ -95,6 +89,7 @@ html,body {
 </body>
 </html>
 <script>
+	var dsCity = "济南市";
 	var currTime;
 	var cfycsj = 15; //出发延长时间（15分钟）
 	var cfsjms = "";
@@ -185,6 +180,7 @@ html,body {
 					+ e.item.index + "<br />myValue = " + cfdName;
 
 			cfdGpsPoint = null;
+			dsCity = _value.city;
 			setPlace(cfdStr);
 		});
 
@@ -297,6 +293,7 @@ html,body {
 		//根据坐标获取cfdName,cfdPosition 类似实现ac的onconfirm
 		geoc.getLocation(point, function(rs) {
 			var addComp = rs.addressComponents;
+			dsCity = addComp.city;
 			cfdName = rs.business;
 			cfdPosition = addComp.province + addComp.city + addComp.district
 					+ addComp.street + cfdName;
@@ -337,7 +334,7 @@ html,body {
 	//排除GPS定位的其他定位。仅设置地图中心点
 	function createOtherPosition() {
 		//定位方式二，根据城市名称定位。 其中城市名称可以通过参数配置
-		map.centerAndZoom("济南", mapJb); // 初始化地图,设置城市和地图级别。
+		map.centerAndZoom(dsCity, mapJb); // 初始化地图,设置城市和地图级别。
 
 		//定位方式三，根据经纬度定位。 经纬度通过参数配置。 该方式相比方式二有一个好处是：可以自定义城市中心展示
 		//var point = new BMap.Point(116.331212, 322.897445);//济南泉城广场 
@@ -451,6 +448,7 @@ html,body {
 		cfsjms = "";
 		if (yysjStr == null || yysjStr == '') {
 			alert("请选择预约时间");
+			$("#yysjStr").focus();
 			return;
 		}
 
@@ -462,10 +460,12 @@ html,body {
 
 		if (cfdPoint == null) {
 			alert("请输入出发地");
+			$("#suggestId").focus();
 			return;
 		}
 		if (mddPoint == null) {
 			alert("请输入目的地");
+			$("#suggestId2").focus();
 			return;
 		}
 		var cfdmc = cfdName;
@@ -478,6 +478,10 @@ html,body {
 
 		var yghsValue = dealYghs(yghs);
 		var ygjlValue = dealYgjl(ygjl);
+		
+		if(dsCity == null || dsCity == ''){
+			dsCity = "济南市";
+		}
 		//TODO 如果非会员用户使用搜索，那么需要先通过post方法保存临时用户。
 
 		//TODO 用户保存成功后进行搜索跳转。
@@ -486,7 +490,8 @@ html,body {
 		searchUrl = searchUrl + "yysjStr=" + yysjStr + "&cfdmc=" + cfdmc
 				+ "&cfdjd=" + cfdjd + "&cfdwd=" + cfdwd + "&mddmc=" + mddmc
 				+ "&mddjd=" + mddjd + "&mddwd=" + mddwd + "&yghs=" + yghsValue
-				+ "&ygjl=" + ygjlValue + "&ygms=" + ygms + "&cfsjms=" + cfsjms;
+				+ "&ygjl=" + ygjlValue + "&ygms=" + ygms + "&cfsjms=" + cfsjms
+				+ "&djCity=" + dsCity;
 		window.location.href = searchUrl;
 	}
 
@@ -554,26 +559,46 @@ html,body {
 	function cfdChange() {
 		var cfd = $("#suggestId").val();
 		if (cfd == null || cfd == '') {
-			cfdPoint = null;
-			cfdPosition = null;
-			cfdName = null;
-
-			cfdGpsPoint = null;
+			clearCfd();
 		} else {
 			return;
 		}
+	}
+	
+	function clearCfd(){
+		$("#suggestId").val("");
+		cfdPoint = null;
+		cfdPosition = null;
+		cfdName = null;
+
+		cfdGpsPoint = null;
+	}
+	
+	function clearCfdAndFocus(){
+		clearCfd();
+		$("#suggestId").focus();
 	}
 
 	//目的地变换时，清空目的地相关全局参数
 	function mddChange() {
 		var mdd = $("#suggestId2").val();
 		if (mdd == null || mdd == '') {
-			mddPoint = null;
-			mddPosition = null;
-			mddName = null;
+			clearMdd();
 		} else {
 			return;
 		}
+	}
+	
+	function clearMdd(){
+		$("#suggestId2").val("");
+		mddPoint = null;
+		mddPosition = null;
+		mddName = null;
+	}
+	
+	function clearMddAndFocus(){
+		clearMdd();
+		$("#suggestId2").focus();
 	}
 
 	//处理出发时间， 如果出发时间不超过当前时间15分钟，按照当前时间15分钟为出发时间

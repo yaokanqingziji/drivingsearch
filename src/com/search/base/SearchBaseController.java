@@ -94,10 +94,10 @@ public class SearchBaseController extends BaseController {
 	 * @return 返回错误页面
 	 */
 	@ExceptionHandler(BusinessException.class)
-	@ResponseBody
 	public String expBusiException(BusinessException ex,
 			HttpServletRequest request) {
-		return ex.getMessage();
+		request.setAttribute("msg", ex.getMessage());
+		return "/error";
 	}
 
 	/**
