@@ -220,6 +220,8 @@ html,body {
 	}
 	$(document).ready(function() {
 
+		cfdGpsPoint = null;
+		
 		//时间插件设置
 		initDatePicker();
 
@@ -254,6 +256,7 @@ html,body {
 				setGpsPosition(r.point);
 			} else {
 				//定位失败，使用html定位
+				alert('地图定位失败');
 				htmlGps();
 			}
 		});
