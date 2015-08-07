@@ -13,6 +13,10 @@ public class SearchResultModel {
 
 	private Double gsjg;// 估算價格
 	private Integer sspm;// 價格順序
+	
+	private String jfbbid; //计费版本ID
+	private String qtjfms; //其他计费描述，主要是针对无法用算法计费的信息
+	private String jfms;
 
 	public String getSspcid() {
 		return sspcid;
@@ -86,6 +90,30 @@ public class SearchResultModel {
 
 	public void setYylxr(String yylxr) {
 		this.yylxr = yylxr;
+	}
+
+	public String getJfbbid() {
+		return jfbbid;
+	}
+
+	public void setJfbbid(String jfbbid) {
+		this.jfbbid = jfbbid;
+	}
+
+	public String getQtjfms() {
+		return qtjfms;
+	}
+
+	public void setQtjfms(String qtjfms) {
+		this.qtjfms = qtjfms;
+	}
+
+	public String getJfms() {
+		return jfms;
+	}
+
+	public void setJfms(String jfms) {
+		this.jfms = jfms;
 	}
 
 	

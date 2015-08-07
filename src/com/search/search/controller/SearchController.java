@@ -13,6 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.core.base.util.DsDateUtil;
+import com.core.billversion.model.BillVersionResultModel;
+import com.core.billversion.service.CompanyBillVersionService;
 import com.core.search.model.SearchBatchModel;
 import com.core.search.model.SearchQueryModel;
 import com.core.search.model.SearchRecordModel;
@@ -34,6 +36,9 @@ public class SearchController extends SearchBaseController {
 
 	@Autowired
 	private SearchService searchService;
+	
+	@Autowired
+	private CompanyBillVersionService companyBillVersionService;
 
 	/**
 	 * @Description: 个人代驾搜索（区别于商务代驾）
@@ -118,6 +123,9 @@ public class SearchController extends SearchBaseController {
 		searchBatchModel = searchResultModel.getSearchBatchModel();
 		searchRecordModel = searchResultModel.getSearchRecordModel();
 		searchResultModels = searchResultModel.getSearchResultModels();
+		
+		//处理搜索结果
+		this.setJfms(searchResultModels);
 
 		sspcId = searchBatchModel.getSspcid();
 		ssjlId = searchRecordModel.getSsjlid();
@@ -132,6 +140,31 @@ public class SearchController extends SearchBaseController {
 				DsDateUtil.dateToString(searchQueryModel.getDdsj(), "HH:mm"));
 		map.put("cfsjms", request.getParameter("cfsjms"));
 		return "/searchResult";
+	}
+	
+	private void setJfms(List<SearchResultModel> searchResultModels) throws BaseException{
+		if(searchResultModels == null || searchResultModels.size() <= 0){
+			return;
+		}
+		BillVersionResultModel billVersionResultModel;
+		String jfbbid;
+		//先获取所有的有效的计费版本信息
+		HashMap<String, BillVersionResultModel> versionMap = companyBillVersionService.queryBillVersionMap();
+		if(versionMap == null || versionMap.isEmpty()){
+			return;
+		}
+		for(SearchResultModel searchResultModel : searchResultModels){
+			jfbbid = searchResultModel.getJfbbid();
+			if(!versionMap.containsKey(jfbbid)){
+				continue;
+			}
+			billVersionResultModel = versionMap.get(jfbbid);
+			if(billVersionResultModel == null){
+				continue;
+			}
+			searchResultModel.setJfms(billVersionResultModel.getJfms());
+			searchResultModel.setQtjfms(billVersionResultModel.getQtjfms());
+		}
 	}
 
 	private void setHoliday(SearchQueryModel searchQueryModel,

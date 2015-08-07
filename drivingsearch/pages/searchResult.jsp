@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset=utf-8 " />
+<meta charset="utf-8" />
 
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0,maximum-scale=0.8 ,minimum-scale=0.2, user-scalable=no" />
@@ -36,7 +36,8 @@
 							<th>排名</th>
 							<th>价格（元）</th>
 							<th>公司名称</th>
-							<th>联系人</th>
+							<!-- <th>联系人</th> -->
+							<th>提醒</th>
 							<th>电话预约</th>
 						</tr>
 					</thead>
@@ -47,7 +48,8 @@
 								<td><a class="btn" role="button"
 									onclick="detailView('${res.ssjlid}','${res.gsid}','${res.gsmc}','${res.gsjg}','${ygms}')">${res.gsjg}</button></td>
 								<td>${res.gsmc}</td>
-								<td>${res.yylxr}</td>
+								<%-- <td>${res.yylxr}</td> --%>
+								<td>${res.qtjfms}</td>
 								<td><button class="btn" type="button"
 										onclick="saveLog('${res.gsid}','${res.ssjlid}','${res.yydh}','${res.yylxr}')">
 										<a href="tel:${res.yydh} ">预约</a>
