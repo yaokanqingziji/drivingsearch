@@ -10,6 +10,7 @@ public class CoreCodeNames extends BaseCodeNames {
 		public final static String hsjf = "hsjf";// 耗时计费
 		public final static String lcjf = "lcjf";// 里程计费
 		public final static String dlwz = "dlwz";// 地理位置，比如二环外加收20元
+		public final static String jrjf = "jrjf"; //节日计费
 
 		public final static String cfdjdwz = "cfdjdwz";// 出发地经度
 		public final static String cfdwdwz = "cfdwdwz";// 出发地纬度

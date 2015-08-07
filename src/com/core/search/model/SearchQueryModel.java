@@ -26,6 +26,9 @@ public class SearchQueryModel {
 	private Date ddsj; // 到达时间
 	
 	private String djCity;//代驾地市
+	
+	private Boolean isHoliday; //是否节日
+	private String holidayName;//节日名称
 
 	public String getSspcid() {
 		return sspcid;
@@ -132,6 +135,23 @@ public class SearchQueryModel {
 	public void setDjCity(String djCity) {
 		this.djCity = djCity;
 	}
+
+	public Boolean getIsHoliday() {
+		return isHoliday;
+	}
+
+	public void setIsHoliday(Boolean isHoliday) {
+		this.isHoliday = isHoliday;
+	}
+
+	public String getHolidayName() {
+		return holidayName;
+	}
+
+	public void setHolidayName(String holidayName) {
+		this.holidayName = holidayName;
+	}
+
 	
 	
 

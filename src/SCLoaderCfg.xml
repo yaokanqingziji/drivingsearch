@@ -11,5 +11,11 @@
 			<bean>com.ldw.frame.refer.SampleBean</bean>
 			<method>autoRun</method>
 		</element> -->
+		
+		<element>
+			<name>holiday</name>
+			<bean>com.core.holiday.service.HolidayService</bean>
+			<method>loadHoliday</method>
+		</element>
 	</elements>
 </SCLoader>

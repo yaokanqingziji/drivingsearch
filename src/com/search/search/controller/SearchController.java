@@ -1,6 +1,7 @@
 package com.search.search.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.core.user.model.UserForBusinessModel;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.exception.AppException;
 import com.ldw.frame.common.exception.BusinessException;
+import com.ldw.frame.common.util.DateUtil;
 import com.search.base.SearchBaseController;
 import com.search.base.SearchSessionNames;
 import com.search.search.service.SearchService;
@@ -43,6 +45,7 @@ public class SearchController extends SearchBaseController {
 	 * @author ldw
 	 * @date 2015年1月27日 下午2:16:33
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/searchForPersonDrive")
 	// @ResponseBody
 	public String searchForPersonDrive(ModelMap map,
@@ -57,7 +60,7 @@ public class SearchController extends SearchBaseController {
 		SearchBatchModel searchBatchModel;
 		SearchRecordModel searchRecordModel;
 		List<SearchResultModel> searchResultModels;
-		Date yysj;
+		Date yysj, ddsj;
 		String sspcId;
 		String ssjlId;
 		// 校验搜索信息项
@@ -99,8 +102,12 @@ public class SearchController extends SearchBaseController {
 		}
 		// 根据预约时间字符串设置预约时间(预约时间需要特殊处理)
 		yysj = this.getYysj(yysjStr);
+		ddsj = DsDateUtil.addMinute(yysj, yghs.intValue());
 		searchQueryModel.setYysj(yysj);
-		searchQueryModel.setDdsj(DsDateUtil.addMinute(yysj, yghs.intValue()));
+		searchQueryModel.setDdsj(ddsj);
+		// 设置节日
+		this.setHoliday(searchQueryModel, (HashMap<String, String>) this
+				.getObjectFromContext(request, SearchSessionNames.holiday));
 		// 查询（估算代驾费用并返回估算结果）
 		SearchResultsModel searchResultModel = searchService
 				.searchForPersonDrive(searchQueryModel,
@@ -119,19 +126,42 @@ public class SearchController extends SearchBaseController {
 		map.put("ssjlId", ssjlId);
 		map.put("searchOrderResultModels", searchResultModels);
 		map.put("ygms", request.getParameter("ygms"));
-		map.put("yysj",DsDateUtil.dateToString(searchQueryModel.getYysj(), "HH:mm"));
-		map.put("ddsj",DsDateUtil.dateToString(searchQueryModel.getDdsj(), "HH:mm"));
+		map.put("yysj",
+				DsDateUtil.dateToString(searchQueryModel.getYysj(), "HH:mm"));
+		map.put("ddsj",
+				DsDateUtil.dateToString(searchQueryModel.getDdsj(), "HH:mm"));
 		map.put("cfsjms", request.getParameter("cfsjms"));
 		return "/searchResult";
 	}
 
+	private void setHoliday(SearchQueryModel searchQueryModel,
+			HashMap<String, String> holidayMap) throws BaseException {
+		if (searchQueryModel == null) {
+			return;
+		}
+
+		searchQueryModel.setIsHoliday(false);
+
+		if (holidayMap == null || holidayMap.isEmpty()) {
+			return;
+		}
+		Date yysj = searchQueryModel.getYysj();
+		Date ddsj = searchQueryModel.getDdsj();
+		String yysjStr = DateUtil.dateToString(yysj);
+		String ddsjStr = DateUtil.dateToString(ddsj);
+		if (holidayMap.containsKey(yysjStr)) {
+			searchQueryModel.setIsHoliday(true);
+			searchQueryModel.setHolidayName(holidayMap.get(yysjStr));
+			return;
+		} else if (holidayMap.containsKey(ddsjStr)) {
+			searchQueryModel.setIsHoliday(true);
+			searchQueryModel.setHolidayName(holidayMap.get(ddsjStr));
+			return;
+		}
+	}
+
 	private Date getYysj(String yysjStr) {
 		Date yysj = DsDateUtil.setTime(yysjStr);
-		/*Date currTime = DsDateUtil.getCurrDate();
-
-		if (currTime.compareTo(yysj) > 0) {
-			yysj = DsDateUtil.addDay(yysj, 1);
-		}*/
 		return yysj;
 	}
 

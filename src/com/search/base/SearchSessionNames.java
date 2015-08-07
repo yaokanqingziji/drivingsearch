@@ -11,5 +11,8 @@ public class SearchSessionNames {
 	public static final String userRel = "userRel";
 	// 业务用用户
 	public static final String userForBusiness = "userForBusiness";
+	
+	//节日
+	public static final String holiday = "holiday";
 
 }

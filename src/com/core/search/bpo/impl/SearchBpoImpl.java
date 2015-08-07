@@ -237,7 +237,11 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 				// 地理位置计费
 				searchResDetailDomain = this.calcForDlwz(searchQueryModel,
 						cBillProjectModels);
-			} else {
+			} else if (CoreCodeNames.PersonBillProject.jrjf.equals(jfxmbh)) {
+				// 节日计费
+				searchResDetailDomain = this.calcForJrjf(searchQueryModel,
+						cBillProjectModels);
+			}else {
 				continue;
 			}
 			if (searchResDetailDomain == null) {
@@ -260,6 +264,29 @@ public class SearchBpoImpl extends SearchBaseBpo implements SearchBpo {
 
 		resultDomainList.add(searchResultDomain);
 	}
+	
+	private SearchResDetailDomain calcForJrjf(SearchQueryModel searchQueryModel,
+			List<CBillProjectModel> cBillProjectModels) throws BaseException {
+		Boolean isHoliday;
+		String holidayName;
+		SearchResDetailDomain searchResDetailDomain = new SearchResDetailDomain();
+		
+		isHoliday = searchQueryModel.getIsHoliday();
+		holidayName = searchQueryModel.getHolidayName();
+		
+		if(isHoliday == null || !isHoliday){
+			return null;
+		}
+		CBillProjectModel cBillProjectModel = cBillProjectModels.get(0); // 只可能有一条
+		Double xmfy = cBillProjectModel.getJfed();
+		if (xmfy == null || xmfy == 0D) {
+			return null;
+		}
+		searchResDetailDomain.setXmfy(xmfy);
+		searchResDetailDomain.setXmfyms(holidayName);
+		return searchResDetailDomain;
+	}
+
 
 	/**
 	 * @Description: 计算起步价（以起始时间为准）

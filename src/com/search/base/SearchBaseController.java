@@ -70,6 +70,13 @@ public class SearchBaseController extends BaseController {
 		return sessionObj;
 	}
 
+	protected Object getObjectFromContext(HttpServletRequest request,
+			String sessionKey) throws BaseException {
+		Object sessionObj = request.getServletContext()
+				.getAttribute(sessionKey);
+		return sessionObj;
+	}
+
 	/**
 	 * @Description: 为分页预留的分页方法
 	 * @param request
