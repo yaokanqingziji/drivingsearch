@@ -22,6 +22,7 @@ import com.core.search.model.SearchResDetailModel;
 import com.core.search.model.SearchResultModel;
 import com.core.search.model.SearchResultsModel;
 import com.core.user.model.UserForBusinessModel;
+import com.core.user.service.UserService;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.exception.AppException;
 import com.ldw.frame.common.exception.BusinessException;
@@ -36,9 +37,41 @@ public class SearchController extends SearchBaseController {
 
 	@Autowired
 	private SearchService searchService;
-	
+
 	@Autowired
 	private CompanyBillVersionService companyBillVersionService;
+
+	@Autowired
+	private UserService userService;
+
+	@RequestMapping("/enterSearch")
+	public String enterSearch(ModelMap map, HttpServletRequest request)
+			throws BaseException {
+		// 获取参数
+		String uid;
+		uid = request.getParameter("uid");
+		if (uid == null || "".equals(uid)) {
+			throw new AppException("用户UID为空！");
+		}
+		// 设置userSession
+		this.setUserSession(request);
+		// 返回页面
+		return "/search";
+	}
+
+	private void setUserSession(HttpServletRequest request)
+			throws BaseException {
+		HttpSession session = request.getSession();
+		UserForBusinessModel userForBusinessModel;
+		// 获取参数
+		String uid;
+		uid = request.getParameter("uid");
+		// 根据参数获取user
+		userForBusinessModel = userService.getBusinessUser(uid);
+		// 将user保存到session中
+		session.setAttribute(SearchSessionNames.userForBusiness,
+				userForBusinessModel);
+	}
 
 	/**
 	 * @Description: 个人代驾搜索（区别于商务代驾）
@@ -56,11 +89,6 @@ public class SearchController extends SearchBaseController {
 	public String searchForPersonDrive(ModelMap map,
 			HttpServletRequest request, SearchQueryModel searchQueryModel)
 			throws BaseException {
-		// TODO 需要删除
-		HttpSession session = request.getSession();
-		UserForBusinessModel userModel = new UserForBusinessModel();
-		userModel.setUserId("ldwtest");
-		session.setAttribute(SearchSessionNames.userForBusiness, userModel);
 
 		SearchBatchModel searchBatchModel;
 		SearchRecordModel searchRecordModel;
@@ -123,8 +151,9 @@ public class SearchController extends SearchBaseController {
 		searchBatchModel = searchResultModel.getSearchBatchModel();
 		searchRecordModel = searchResultModel.getSearchRecordModel();
 		searchResultModels = searchResultModel.getSearchResultModels();
-		
-		//处理搜索结果
+		// 只取前5条作为结果展示（这里需要优化，应该根据不同的客户端展示不同的条数）
+		searchResultModels.remove(5);
+		// 处理搜索结果
 		this.setJfms(searchResultModels);
 
 		sspcId = searchBatchModel.getSspcid();
@@ -141,25 +170,27 @@ public class SearchController extends SearchBaseController {
 		map.put("cfsjms", request.getParameter("cfsjms"));
 		return "/searchResult";
 	}
-	
-	private void setJfms(List<SearchResultModel> searchResultModels) throws BaseException{
-		if(searchResultModels == null || searchResultModels.size() <= 0){
+
+	private void setJfms(List<SearchResultModel> searchResultModels)
+			throws BaseException {
+		if (searchResultModels == null || searchResultModels.size() <= 0) {
 			return;
 		}
 		BillVersionResultModel billVersionResultModel;
 		String jfbbid;
-		//先获取所有的有效的计费版本信息
-		HashMap<String, BillVersionResultModel> versionMap = companyBillVersionService.queryBillVersionMap();
-		if(versionMap == null || versionMap.isEmpty()){
+		// 先获取所有的有效的计费版本信息
+		HashMap<String, BillVersionResultModel> versionMap = companyBillVersionService
+				.queryBillVersionMap();
+		if (versionMap == null || versionMap.isEmpty()) {
 			return;
 		}
-		for(SearchResultModel searchResultModel : searchResultModels){
+		for (SearchResultModel searchResultModel : searchResultModels) {
 			jfbbid = searchResultModel.getJfbbid();
-			if(!versionMap.containsKey(jfbbid)){
+			if (!versionMap.containsKey(jfbbid)) {
 				continue;
 			}
 			billVersionResultModel = versionMap.get(jfbbid);
-			if(billVersionResultModel == null){
+			if (billVersionResultModel == null) {
 				continue;
 			}
 			searchResultModel.setJfms(billVersionResultModel.getJfms());
