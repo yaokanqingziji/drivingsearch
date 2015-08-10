@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset=utf-8 " />
+<meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0, user-scalable=no" />
 <script src="/drivingsearch/js/jquery-1.9.1.js"></script>
@@ -253,10 +253,11 @@ html,body {
 		geolocation.getCurrentPosition(function(r) {
 			if (this.getStatus() == BMAP_STATUS_SUCCESS) {
 				//定位成功
+				//alert('256L,百度定位成功,lng='+r.point.lng+',lat='+r.point.lat);
 				setGpsPosition(r.point);
 			} else {
 				//定位失败，使用html定位
-				alert('地图定位失败');
+				//alert('260L,地图定位失败,开始html定位');
 				htmlGps();
 			}
 		});
@@ -287,7 +288,7 @@ html,body {
 
 	//定位成功回调。定位中心点 同时设置起始位置
 	function setGpsPosition(point) {
-
+		//alert('291L,setGpsPosition开始，lng='+point.lng+',lat='+point.lat);
 		cfdGpsPoint = point;
 
 		var geoc = new BMap.Geocoder();
@@ -300,9 +301,11 @@ html,body {
 			cfdName = rs.business;
 			cfdPosition = addComp.province + addComp.city + addComp.district
 					+ addComp.street + cfdName;
+			//alert('304L,根据point获取信息结果：dsCity='+dsCity+',cfgName='+cfdName+',cfgPosition='+cfdPosition);
 			if (cfdName == null || cfdName == '') {
 				cfdName = cfdPosition;
 			}
+			
 			//设置出发地名称
 			//$("#suggestId").val('我的位置');
 			$("#suggestId").val(cfdName);
@@ -356,6 +359,7 @@ html,body {
 
 	//在地图上标记地理位置
 	function setPlace(flag) {
+		//alert('362L,setPlace开始，flag='+flag);
 		//解决有下拉列表的情况出现
 		$("#searchBtn").focus();
 
@@ -365,6 +369,7 @@ html,body {
 		} else if (flag = mddStr) {
 			myValue = mddPosition;
 		}
+		//alert('372L,作为显示信息myValue='+myValue);
 		map.clearOverlays(); //清除地图上所有覆盖物
 		if (driving != null) {//清除推荐路线
 			driving.clearResults();
@@ -373,6 +378,7 @@ html,body {
 			var pp;
 			if (flag == cfdStr
 					&& (cfdGpsPoint != undefined || cfdGpsPoint != null)) {
+				//alert('381L,hoho~,这才是正确的哦~');
 				pp = cfdGpsPoint;
 			} else {
 				try {
@@ -381,6 +387,7 @@ html,body {
 					baiduGps();
 				}
 			}
+			//alert('389L,pp为定位点，lng='+pp.lng+',lat='+pp.lat+'。啊啊啊，是否与之前的坐标一样呢？');
 			/* try{
 				pp = local.getResults().getPoi(0).point;//获取第一个智能搜索的结果
 			}catch(e){
@@ -419,10 +426,18 @@ html,body {
 				$("#yg").text('');
 			}
 		}
-		var local = new BMap.LocalSearch(map, { //智能搜索
-			onSearchComplete : markAndCalc
-		});
-		local.search(myValue);
+		if (flag == cfdStr
+				&& (cfdGpsPoint != undefined || cfdGpsPoint != null)) {
+			//alert('431L,唉，我不搜索啦');
+			markAndCalc();
+		}else{
+			var local = new BMap.LocalSearch(map, { //智能搜索
+				onSearchComplete : markAndCalc
+			});
+			//alert('437L,智能搜索开始。为什么搜索开始后才执行定位呢呢呢呢？那还搜索什么呢呢呢，myValue='+myValue);
+			local.search(myValue);
+		}
+		
 	}
 
 	//地图起始与终止坐标定位后，计算导航信息
