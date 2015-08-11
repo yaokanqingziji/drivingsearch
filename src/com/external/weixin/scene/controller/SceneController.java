@@ -1,10 +1,7 @@
 package com.external.weixin.scene.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,8 +18,7 @@ public class SceneController extends SearchBaseController {
 
 	@RequestMapping("/addScene")
 	@ResponseBody
-	public String addScene(ModelMap map, HttpServletRequest request,
-			SceneDomain sceneDomain) throws BaseException {
+	public String addScene(SceneDomain sceneDomain) throws BaseException {
 		sceneService.addScene(sceneDomain);
 		return "ok";
 	}

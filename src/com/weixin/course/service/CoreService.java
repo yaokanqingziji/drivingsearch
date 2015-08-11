@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.weixin.course.message.resp.Article;
 import com.weixin.course.message.resp.NewsMessage;
 import com.weixin.course.message.resp.TextMessage;
@@ -20,6 +23,15 @@ import com.weixin.course.util.MessageUtil;
  * @date 2015-02-28
  */
 public class CoreService {
+	private static <T> T getSpringClass(Class<T> SpringClassType,
+			HttpServletRequest request) {
+		ApplicationContext ac = WebApplicationContextUtils
+				.getWebApplicationContext(request.getSession()
+						.getServletContext());
+
+		return SpringClassType.cast(ac.getBean(SpringClassType.getName()));
+	}
+
 	/**
 	 * 处理微信发来的请求
 	 * 
@@ -27,7 +39,10 @@ public class CoreService {
 	 * @return xml
 	 */
 	public static String processRequest(HttpServletRequest request) {
-		
+
+		/*SceneController sceneController = (SceneController) getSpringClass(
+				SceneController.class, request);
+		sceneController.addScene(sceneDomain);*/
 		// xml格式的消息数据
 		String respContent = null;
 		try {
