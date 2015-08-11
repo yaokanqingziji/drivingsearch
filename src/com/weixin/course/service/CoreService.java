@@ -1,9 +1,11 @@
 package com.weixin.course.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.weixin.course.message.resp.Article;
@@ -37,6 +39,9 @@ public class CoreService {
 			String toUserName = requestMap.get("ToUserName");
 			// 消息类型
 			String msgType = requestMap.get("MsgType");
+			
+			//时间
+			Long CreateTime = Long.parseLong(requestMap.get("CreateTime"));
 
 			// 回复文本消息
 			TextMessage textMessage = new TextMessage();
@@ -56,20 +61,20 @@ public class CoreService {
 			Article article41 = new Article();
 			article41.setTitle("了解小来来");
 			article41.setDescription("");
-			article41.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/first.jpg");
-			article41.setUrl("http://115.28.128.212/drivingsearch/pages/html/lailai.jsp");
+			article41.setPicUrl("http://115.28.180.16/drivingsearch/pages/image/first.jpg");
+			article41.setUrl("http://115.28.180.16/drivingsearch/pages/html/lailai.jsp");
 
 			Article article5 = new Article();
 			article5.setTitle("代驾市场现状");
 			article5.setDescription("");
-			article5.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/second.jpg");
-			article5.setUrl("http://115.28.128.212/drivingsearch/pages/html/djxz.jsp");
+			article5.setPicUrl("http://115.28.180.16/drivingsearch/pages/image/second.jpg");
+			article5.setUrl("http://115.28.180.16/drivingsearch/pages/html/djxz.jsp");
 
 			Article article6 = new Article();
 			article6.setTitle("远离酒驾");
 			article6.setDescription("");
-			article6.setPicUrl("http://115.28.128.212/drivingsearch/pages/image/third.jpg");
-			article6.setUrl("http://115.28.128.212/drivingsearch/pages/html/bkc.jsp");
+			article6.setPicUrl("http://115.28.180.16/drivingsearch/pages/image/third.jpg");
+			article6.setUrl("http://115.28.180.16/drivingsearch/pages/html/bkc.jsp");
 
 			articleList1.add(article41);
 			articleList1.add(article5);
@@ -218,7 +223,7 @@ public class CoreService {
 					article.setDescription("代驾搜索服务");
 					// 将图片置为空
 					article.setPicUrl("");
-					article.setUrl("http://115.28.128.212/drivingsearch");
+					article.setUrl("http://115.28.180.16/drivingsearch");
 					articleList.add(article);
 					newsMessage.setArticleCount(articleList.size());
 					newsMessage.setArticles(articleList);
@@ -285,6 +290,15 @@ public class CoreService {
 				// 关注
 				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 					//
+					
+					Date date = new Date(CreateTime);
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date);
+					System.out.println( date);
+					System.out.println( cal.get(Calendar.YEAR));
+					System.out.println( cal.get(Calendar.MONTH));
+					System.out.println(  cal.get(Calendar.DAY_OF_MONTH));
+					
 				}else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {// 取消关注
 					// TODO 取消订阅后用户不会再收到公众账号发送的消息，因此不需要回复
 				}else if (eventType.equals(MessageUtil.EVENT_TYPE_SCAN)) {// 扫描带参数二维码
