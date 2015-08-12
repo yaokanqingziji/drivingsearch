@@ -55,7 +55,7 @@
 
 								</a></td>
 								<td><a class="btn" role="button"
-									onclick="jfView('${res.jfms}'">${res.gsmc}</a></td>
+									onclick="jfView('${res.jfms}')">${res.gsmc}</a></td>
 								<td>${res.yylxr}</td>
 								<td><button class="btn" type="button"
 										onclick="saveLog('${res.gsid}','${res.ssjlid}','${res.yydh}','${res.yylxr}')">

@@ -10,7 +10,7 @@ import com.external.weixin.scene.service.SceneService;
 import com.ldw.frame.base.BaseException;
 import com.search.base.SearchBaseController;
 
-@Controller("com.external.weixin.scene.controller.SceneController")
+@Controller
 @RequestMapping("/scene")
 public class SceneController extends SearchBaseController {
 	@Autowired

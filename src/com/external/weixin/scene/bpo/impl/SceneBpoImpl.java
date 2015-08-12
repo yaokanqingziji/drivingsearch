@@ -25,7 +25,7 @@ public class SceneBpoImpl extends SearchBaseBpo implements SceneBpo {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" insert into w_scene(qdid,scene,year,month,day)");
-		sb.append(" values(:qdid,:scene,:year,:month,:day");
+		sb.append(" values(:qdid,:scene,:year,:month,:day)");
 		
 		sql.setSQL(sb);
 		sql.setBeans(sceneDomain);

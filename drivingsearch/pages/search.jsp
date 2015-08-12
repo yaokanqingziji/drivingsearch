@@ -56,7 +56,12 @@ html,body {
 						<legend></legend>
 						<br>
 						<div class="form-group">
-							<label>请输入并选择您要去的地方：</label><input type="text" id="suggestId2"
+						<label>定位不准？请手动输入出发地：</label><input
+								type="text" id="suggestId" onchange="cfdChange()"  size="20"
+								style="width: 240px;" /> 
+								<img class="img-rounded" onclick="clearCfdAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
+							<br><br>
+							<label>请输入并选择您要去的目的地：</label><input type="text" id="suggestId2"
 								onchange="mddChange()"  size="20" value="" style="width: 240px;" />
 								<img class="img-rounded" onclick="clearMddAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
 							<br> <label><font id="yg" color="red"></font></label>
@@ -73,10 +78,13 @@ html,body {
 						<div class="form-group">
 							<label>您可以设置出发时间与出发地，进行搜索呦</label> <br> <label>出发时间：</label>
 							<input id="yysjStr" size="20" type="text" value="" readonly
-								class="form_datetime" style="width: 180px;"> <br /> <label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
+								class="form_datetime" style="width: 180px;"> <br /> 
+								<!-- 
+								<label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
 								type="text" id="suggestId" onchange="cfdChange()"  size="20"
 								style="width: 180px;" /> 
 								<img class="img-rounded" onclick="clearCfdAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
+								 -->
 								<br> <br> <br> <br>
 							<br> <br> <br> <br>
 						</div>
