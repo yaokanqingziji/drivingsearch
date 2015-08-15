@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.search.base.SearchGlobalNames;
 import com.weixin.course.message.resp.Article;
 import com.weixin.course.message.resp.NewsMessage;
 import com.weixin.course.message.resp.TextMessage;
@@ -48,18 +48,6 @@ public class CoreService {
 	 */
 	public static String processRequest(HttpServletRequest request) {
 		
-		
-		/*String url = "http://" + SearchGlobalNames.serverIp + ":"
-				+ SearchGlobalNames.serverPort
-				+ "/drivingsearch/scene/addScene.do?scene=大酒店"
-				+ "&year=2015&month=8&day=12";
-		try {
-			httpClientFromGet(url);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
-		
-		
 		// xml格式的消息数据
 		String respContent = null;
 		try {
@@ -73,7 +61,7 @@ public class CoreService {
 			String msgType = requestMap.get("MsgType");
 
 			// 时间
-			Long CreateTime = Long.parseLong(requestMap.get("CreateTime"));
+			String CreateTime = requestMap.get("CreateTime");
 
 			// 回复文本消息
 			TextMessage textMessage = new TextMessage();
@@ -90,9 +78,15 @@ public class CoreService {
 			newsMessage1.setCreateTime(new Date().getTime());
 			newsMessage1.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 
+			Article article3 = new Article();
+			article3.setTitle("当前平台仅为内部测试使用，不参与任何商业用途。其中涉及到的代驾公司仅为参考信息。特此声明：该平台不承担任何法律责任");
+			article3.setDescription("");
+			article3.setPicUrl("");
+			article3.setUrl("");
+			
 			Article article41 = new Article();
 			article41.setTitle("了解小来来");
-			article41.setDescription("");
+			article41.setDescription("本系统为测试系统，所有数据均为伪造，如有雷同，纯属巧合！");
 			article41
 					.setPicUrl("http://115.28.180.16/drivingsearch/pages/image/first.jpg");
 			article41
@@ -110,6 +104,7 @@ public class CoreService {
 			article6.setPicUrl("http://115.28.180.16/drivingsearch/pages/image/third.jpg");
 			article6.setUrl("http://115.28.180.16/drivingsearch/pages/html/bkc.jsp");
 
+			articleList1.add(article3);
 			articleList1.add(article41);
 			articleList1.add(article5);
 			articleList1.add(article6);
@@ -309,13 +304,22 @@ public class CoreService {
 				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 					//
 
-					Date date = new Date(CreateTime);
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(date);
-					System.out.println(date);
-					System.out.println(cal.get(Calendar.YEAR));
-					System.out.println(cal.get(Calendar.MONTH));
-					System.out.println(cal.get(Calendar.DAY_OF_MONTH));
+					String date = com.weixin.course.util.SignUtil.formatTime(CreateTime);
+					String year = date.substring(0,4);
+					String month = date.substring(5,7);
+					String day = date.substring(8,10);
+					String EventKey = requestMap.get("EventKey");
+					System.out.println("EventKey:"+EventKey);
+					
+					String url = "http://" + SearchGlobalNames.serverIp + ":"
+							+ SearchGlobalNames.serverPort
+							+ "/drivingsearch/scene/addScene.do?scene="+EventKey.substring(8)
+							+ "&year="+year+"&month="+month+"&day="+day;
+					try {
+						httpClientFromGet(url);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 
 				} else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {// 取消关注
 					// TODO 取消订阅后用户不会再收到公众账号发送的消息，因此不需要回复
@@ -376,6 +380,35 @@ public class CoreService {
 						textMessage.setContent(contentMsg.toString());
 						// 将文本消息对象转换成xml字符串
 						respContent = MessageUtil.messageToXml(textMessage);
+					}else if (eventKey.equals("yjjdj")) {// 一键叫代驾
+
+						StringBuffer contentMsg = new StringBuffer();
+						contentMsg.append("5公里内请拨打电话:13953133759").append("\n");
+						contentMsg.append("5公里外请拨打电话:13953133759").append("\n");
+
+						textMessage.setContent(contentMsg.toString());
+						// 将文本消息对象转换成xml字符串
+						respContent = MessageUtil.messageToXml(textMessage);
+					}else if (eventKey.equals("laigedaijia")) {// 一键叫代驾
+
+						Article article = new Article();
+						article.setTitle("小来来主页");
+						article.setDescription("");
+						article.setPicUrl("");
+						article.setUrl("http://115.28.180.16/drivingsearch?uid="+fromUserName);
+						List<Article> articleList = new ArrayList<Article>();
+						articleList.add(article);
+						// 创建图文消息
+						NewsMessage newsMessage = new NewsMessage();
+						newsMessage.setToUserName(fromUserName);
+						newsMessage.setFromUserName(toUserName);
+						newsMessage.setCreateTime(new Date().getTime());
+						newsMessage
+								.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+						newsMessage.setArticleCount(articleList.size());
+						newsMessage.setArticles(articleList);
+						respContent = MessageUtil.messageToXml(newsMessage);
+						
 					}
 				}
 			}
