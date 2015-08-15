@@ -166,6 +166,12 @@ public class CoreService {
 					article3.setPicUrl("");
 					article3.setUrl("");
 					
+					Article article2 = new Article();
+					article2.setTitle("特此声明：该平台不承担任何法律责任");
+					article2.setDescription("");
+					article2.setPicUrl("");
+					article2.setUrl("");
+					
 					Article article41 = new Article();
 					article41.setTitle("了解小来来");
 					article41.setDescription("本系统为测试系统，所有数据均为伪造，如有雷同，纯属巧合！");
@@ -186,6 +192,7 @@ public class CoreService {
 					article6.setPicUrl("http://115.28.180.16/drivingsearch/pages/image/third.jpg");
 					article6.setUrl("http://115.28.180.16/drivingsearch/pages/html/bkc.jsp");
 
+					articleList1.add(article2);
 					articleList1.add(article3);
 					articleList1.add(article41);
 					articleList1.add(article5);
@@ -236,8 +243,8 @@ public class CoreService {
 					}else if (eventKey.equals("yjjdj")) {// 一键叫代驾
 
 						StringBuffer contentMsg = new StringBuffer();
-						contentMsg.append("5公里内请拨打电话:13953133759").append("\n");
-						contentMsg.append("5公里外请拨打电话:13953133759").append("\n");
+						contentMsg.append("5公里内请拨打电话:1395310xxxx").append("\n");
+						contentMsg.append("5公里外请拨打电话:1395310xxxx").append("\n");
 
 						textMessage.setContent(contentMsg.toString());
 						// 将文本消息对象转换成xml字符串

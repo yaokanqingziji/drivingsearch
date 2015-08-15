@@ -20,10 +20,17 @@ public class Erweimacreate {
 	//生成编码后的认证页面
 	public static void main(String[] args) {
 		
-		String appId = "wx6350ba04eff526f5";
+		//生产环境
+		// 第三方用户唯一凭证
+		String appId = "wx22133dfb2266f29d";
 		// 第三方用户唯一凭证密钥
-		String appSecret = "6fc66c0c5b9488bc8d38b6d08443935b";
-		String qdmc = "吴增河";
+		String appSecret = "853e4417d6c80d01a7039ee47979a329";
+		
+		//测试环境
+//		String appId = "wx6350ba04eff526f5";
+//		// 第三方用户唯一凭证密钥
+//		String appSecret = "6fc66c0c5b9488bc8d38b6d08443935b";
+		String qdmc = "刘大伟";
 		int qddm = 0;
 		
 		getErweima(appId,appSecret,qdmc,qddm,"1");

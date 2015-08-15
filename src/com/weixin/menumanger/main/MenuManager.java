@@ -108,10 +108,16 @@ public class MenuManager {
 
 	public static void main(String[] args) {
 		//测试微信号： gh_ca2cf140c207
+		//生产环境
 		// 第三方用户唯一凭证
-		String appId = "wx6350ba04eff526f5";
+		String appId = "wx22133dfb2266f29d";
 		// 第三方用户唯一凭证密钥
-		String appSecret = "6fc66c0c5b9488bc8d38b6d08443935b";
+		String appSecret = "853e4417d6c80d01a7039ee47979a329";
+		
+		//测试环境
+//		String appId = "wx6350ba04eff526f5";
+//		// 第三方用户唯一凭证密钥
+//		String appSecret = "6fc66c0c5b9488bc8d38b6d08443935b";
 
 		// 调用接口获取凭证
 		Token token = CommonUtil.getToken(appId, appSecret);
