@@ -1,5 +1,6 @@
 package com.search.search.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +94,7 @@ public class SearchController extends SearchBaseController {
 		SearchBatchModel searchBatchModel;
 		SearchRecordModel searchRecordModel;
 		List<SearchResultModel> searchResultModels;
+		List<SearchResultModel> searchResultModelList;
 		Date yysj, ddsj;
 		String sspcId;
 		String ssjlId;
@@ -151,17 +153,26 @@ public class SearchController extends SearchBaseController {
 		searchBatchModel = searchResultModel.getSearchBatchModel();
 		searchRecordModel = searchResultModel.getSearchRecordModel();
 		searchResultModels = searchResultModel.getSearchResultModels();
+		
+		searchResultModelList = new ArrayList<SearchResultModel>();
 		// 只取前5条作为结果展示（这里需要优化，应该根据不同的客户端展示不同的条数）
-		searchResultModels.remove(5);
+		if(searchResultModels != null && searchResultModels.size() > 5){
+			for(int i=0;i<5;i++){
+				searchResultModelList.add(searchResultModels.get(i));
+			}
+		}else{
+			searchResultModelList = searchResultModels;
+		}
+		
 		// 处理搜索结果
-		this.setJfms(searchResultModels);
+		this.setJfms(searchResultModelList);
 
 		sspcId = searchBatchModel.getSspcid();
 		ssjlId = searchRecordModel.getSsjlid();
 
 		map.put("sspcId", sspcId);
 		map.put("ssjlId", ssjlId);
-		map.put("searchOrderResultModels", searchResultModels);
+		map.put("searchOrderResultModels", searchResultModelList);
 		map.put("ygms", request.getParameter("ygms"));
 		map.put("yysj",
 				DsDateUtil.dateToString(searchQueryModel.getYysj(), "HH:mm"));

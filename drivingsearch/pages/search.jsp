@@ -37,7 +37,7 @@ html,body {
 }
 
 #l-map {
-	height: 50%;
+	height: 45%;
 	width: 100%;
 }
 </style>
@@ -54,17 +54,23 @@ html,body {
 				<form>
 					<fieldset>
 						<legend></legend>
-						<br>
 						<div class="form-group">
-						<label>定位不准？请手动输入出发地：</label><input
+						<label><font color="#E78823">定位不准？请手动输入出发地：</font></label><input
 								type="text" id="suggestId" onchange="cfdChange()"  size="20"
 								style="width: 240px;" /> 
 								<img class="img-rounded" onclick="clearCfdAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
-							<br><br>
-							<label>请输入并选择您要去的目的地：</label><input type="text" id="suggestId2"
+							<br />
+							<label><font color="#E78823">请输入并选择您要去的目的地：</font></label><input type="text" id="suggestId2"
 								onchange="mddChange()"  size="20" value="" style="width: 240px;" />
 								<img class="img-rounded" onclick="clearMddAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
-							<br> <label><font id="yg" color="red"></font></label>
+							<br /> 
+							
+							<label><font color="#E78823">已为您默认了出发时间，您可以重新设置：</font></label> 
+							<input id="yysjStr" size="20" type="text" value="" readonly
+								class="form_datetime" style="width: 240px;"> 
+							<br /> 
+							
+							<label><font id="yg" color="red"></font></label>
 						</div>
 						<legend></legend>
 						<button class="btn btn-lg btn-block btn-warning" type="button"
@@ -75,19 +81,6 @@ html,body {
 						<div id="searchResultPanel2"
 							style="border: 1px solid #C0C0C0; width: 150px; height: auto; display: none;"></div>
 						<br>
-						<div class="form-group">
-							<label>您可以设置出发时间与出发地，进行搜索呦</label> <br> <label>出发时间：</label>
-							<input id="yysjStr" size="20" type="text" value="" readonly
-								class="form_datetime" style="width: 180px;"> <br /> 
-								<!-- 
-								<label>出&nbsp;&nbsp;发&nbsp;&nbsp;地：&nbsp;</label><input
-								type="text" id="suggestId" onchange="cfdChange()"  size="20"
-								style="width: 180px;" /> 
-								<img class="img-rounded" onclick="clearCfdAndFocus()" alt="" width="25" height="25" src="../images/clear.png" />
-								 -->
-								<br> <br> <br> <br>
-							<br> <br> <br> <br>
-						</div>
 			</div>
 			</fieldset>
 			</form>
@@ -313,6 +306,7 @@ html,body {
 			if (cfdName == null || cfdName == '') {
 				cfdName = cfdPosition;
 			}
+			cfdName = "位置定位：" + cfdName;
 			
 			//设置出发地名称
 			//$("#suggestId").val('我的位置');
