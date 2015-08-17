@@ -40,17 +40,17 @@ public class MenuManager {
 		btn11.setType("click");
 		btn11.setKey("laigedaijia");
 		
+		ClickButton btn12 = new ClickButton();
+		btn12.setName("一键叫代驾");
+		btn12.setType("click");
+		btn12.setKey("yjjdj");
+		
 		//第二个一级菜单
 		ClickButton btn21 = new ClickButton();
 		btn21.setName("优惠活动");
 		btn21.setType("click");
 		btn21.setKey("yhhd");
 		
-		ClickButton btn22 = new ClickButton();
-		btn22.setName("一键叫代驾");
-		btn22.setType("click");
-		btn22.setKey("yjjdj");
-
 		//第三个一级菜单的第一个子菜单
 		ViewButton btn31 = new ViewButton();
 		btn31.setName("关于我们");
@@ -96,12 +96,12 @@ public class MenuManager {
 		mainBtn3.setSub_button(new Button[] { btn31,btn32,btn33,btn34,btn35});
 		
 		ComplexButton mainBtn2 = new ComplexButton();
-		mainBtn2.setName("优惠活动");
-		mainBtn2.setSub_button(new Button[] { btn21,btn22});
+		mainBtn2.setName("来个代驾");
+		mainBtn2.setSub_button(new Button[] { btn11,btn12});
 		
 		//生成菜单
 		Menu menu = new Menu();
-		menu.setButton(new Button[] { btn11, mainBtn2, mainBtn3 });
+		menu.setButton(new Button[] { mainBtn2, btn21, mainBtn3 });
 
 		return menu;
 	}
