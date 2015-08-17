@@ -252,7 +252,7 @@ public class CoreService {
 					}else if (eventKey.equals("laigedaijia")) {// 一键叫代驾
 
 						Article article = new Article();
-						article.setTitle("小来来主页");
+						article.setTitle("点击进入 来个代驾代驾搜索服务平台");
 						article.setDescription("");
 						article.setPicUrl("");
 						article.setUrl("http://115.28.180.16/drivingsearch?uid="+fromUserName);
