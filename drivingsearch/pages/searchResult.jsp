@@ -38,7 +38,7 @@
 							<th>排名</th>
 							<th>价格（元）</th>
 							<th>公司名称</th>
-							<th>联系人</th>
+							<th>公司星级</th>
 							<th>电话预约</th>
 						</tr>
 					</thead>
@@ -56,7 +56,12 @@
 								</a></td>
 								<td><a class="btn" role="button"
 									onclick="jfView('${res.jfms}')">${res.gsmc}</a></td>
-								<td>${res.yylxr}</td>
+								<td><img alt="" src="../images/x1.png" width="25" height="25" />
+									<img alt="" src="../images/x1.png" width="25" height="25" />
+									<img alt="" src="../images/x1.png" width="25" height="25" />
+									<img alt="" src="../images/x2.png" width="25" height="25" />
+									<img alt="" src="../images/x2.png"  width="25" height="25" />
+								</td>
 								<td><button class="btn" type="button"
 										onclick="saveLog('${res.gsid}','${res.ssjlid}','${res.yydh}','${res.yylxr}')">
 										<a href="tel:${res.yydh} ">预约</a>
