@@ -2,7 +2,10 @@ package com.weixin.course.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,7 +84,7 @@ public class SignUtil {
 	 * @param  str
 	 * @return 验证通过返回true
 	 */
-	public static boolean isMobile(String str) { 
+	public static boolean isMobile(String str) {
 		Pattern p = null;
 		Matcher m = null;
 		boolean b = false; 
@@ -89,5 +92,17 @@ public class SignUtil {
 		m = p.matcher(str);
 		b = m.matches(); 
 		return b;
+	}
+	
+	/**
+	 * 微信createTime转换为标准的时间
+	 * @param createTime
+	 * @return
+	 */
+	public static String formatTime(String createTime) {
+		// 将微信传入的CreateTime转换成long类型，再乘以1000
+		long msgCreateTime = Long.parseLong(createTime) * 1000L;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(new Date(msgCreateTime));
 	}
 }
