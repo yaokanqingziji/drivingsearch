@@ -63,6 +63,8 @@ public class CoreService {
 			// 时间
 			String CreateTime = requestMap.get("CreateTime");
 			
+			String Content = requestMap.get("Content");
+			
 			// 回复文本消息
 			TextMessage textMessage = new TextMessage();
 			textMessage.setToUserName(fromUserName);
@@ -80,6 +82,16 @@ public class CoreService {
 				textMessage.setContent(contentMsg.toString());
 				// 将文本消息对象转换成xml字符串
 				respContent = MessageUtil.messageToXml(textMessage);
+				String date = com.weixin.course.util.SignUtil.formatTime(CreateTime);
+				String url = "http://" + SearchGlobalNames.serverIp + ":"
+						+ SearchGlobalNames.serverPort
+						+ "/drivingsearch/savemessage/saveMessage.do?wxid="+fromUserName
+						+ "&message="+Content+"&time="+date;
+				try {
+					httpClientFromGet(url);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 
 			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {// 图片消息
 

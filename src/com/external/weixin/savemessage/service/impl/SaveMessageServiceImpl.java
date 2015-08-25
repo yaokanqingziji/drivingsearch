@@ -9,7 +9,7 @@ import com.external.weixin.savemessage.service.SaveMessageService;
 import com.ldw.frame.base.BaseException;
 import com.search.base.SearchBaseService;
 
-@Service("com.external.weixin.scene.service.impl.SceneServiceImpl")
+@Service("com.external.weixin.savemessage.service.impl.SaveMessageServiceImpl")
 public class SaveMessageServiceImpl extends SearchBaseService implements SaveMessageService {
 
 	@Autowired
