@@ -25,7 +25,7 @@ public class MessageBpoImpl extends SearchBaseBpo implements MessageBpo {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" insert into w_message(zjid,wxid,message,time)");
-		sb.append(" values(:zjid,:wxid,:message,:time)");
+		sb.append(" values(:zjid,:wxid,:message,now())");
 		
 		sql.setSQL(sb);
 		sql.setBeans(savemessageDomain);

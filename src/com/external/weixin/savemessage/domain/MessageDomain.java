@@ -5,7 +5,6 @@ public class MessageDomain {
 	private  String zjid;
 	private String wxid;
 	private String message;
-	private String time;
 	
 	public String getZjid() {
 		return zjid;
@@ -24,12 +23,6 @@ public class MessageDomain {
 	}
 	public void setMessage(String message) {
 		this.message = message;
-	}
-	public String getTime() {
-		return time;
-	}
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 }
