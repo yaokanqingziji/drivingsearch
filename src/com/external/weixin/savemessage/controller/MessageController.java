@@ -5,20 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.external.weixin.savemessage.domain.SaveMessageDomain;
-import com.external.weixin.savemessage.service.SaveMessageService;
+import com.external.weixin.savemessage.domain.MessageDomain;
+import com.external.weixin.savemessage.service.MessageService;
 import com.ldw.frame.base.BaseException;
 import com.search.base.SearchBaseController;
 
 @Controller
-@RequestMapping("/savemessage")
-public class SaveMessageController extends SearchBaseController {
+@RequestMapping("/message")
+public class MessageController extends SearchBaseController {
 	@Autowired
-	private SaveMessageService savemessageService;
+	private MessageService savemessageService;
 
 	@RequestMapping("/saveMessage")
 	@ResponseBody
-	public String saveMessage(SaveMessageDomain savemessageDomain) throws BaseException {
+	public String saveMessage(MessageDomain savemessageDomain) throws BaseException {
 		savemessageService.saveMessage(savemessageDomain);
 		return "ok";
 	}

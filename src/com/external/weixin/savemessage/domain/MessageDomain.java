@@ -1,7 +1,7 @@
 package com.external.weixin.savemessage.domain;
 
 
-public class SaveMessageDomain {
+public class MessageDomain {
 	private  String zjid;
 	private String wxid;
 	private String message;

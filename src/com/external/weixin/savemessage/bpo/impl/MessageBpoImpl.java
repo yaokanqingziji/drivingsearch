@@ -3,17 +3,17 @@ package com.external.weixin.savemessage.bpo.impl;
 import org.springframework.stereotype.Component;
 
 import com.core.base.SearchBaseBpo;
-import com.external.weixin.savemessage.bpo.SaveMessageBpo;
-import com.external.weixin.savemessage.domain.SaveMessageDomain;
+import com.external.weixin.savemessage.bpo.MessageBpo;
+import com.external.weixin.savemessage.domain.MessageDomain;
 import com.ldw.frame.base.BaseException;
 import com.ldw.frame.common.db.SQLExecutor;
 
-@Component("com.external.weixin.savemessage.bpo.impl.SaveMessageBpoImpl")
-public class SaveMessageBpoImpl extends SearchBaseBpo implements SaveMessageBpo {
+@Component("com.external.weixin.savemessage.bpo.impl.MessageBpoImpl")
+public class MessageBpoImpl extends SearchBaseBpo implements MessageBpo {
 
 
 	@Override
-	public String saveMessage(SaveMessageDomain savemessageDomain) throws BaseException {
+	public String saveMessage(MessageDomain savemessageDomain) throws BaseException {
 		String zjid;
 		if(savemessageDomain == null){
 			return null;

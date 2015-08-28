@@ -85,7 +85,7 @@ public class CoreService {
 				String date = com.weixin.course.util.SignUtil.formatTime(CreateTime);
 				String url = "http://" + SearchGlobalNames.serverIp + ":"
 						+ SearchGlobalNames.serverPort
-						+ "/drivingsearch/savemessage/saveMessage.do?wxid="+fromUserName
+						+ "/drivingsearch/message/saveMessage.do?wxid="+fromUserName
 						+ "&message="+Content+"&time="+date;
 				try {
 					httpClientFromGet(url);
